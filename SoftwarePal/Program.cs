@@ -18,14 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add builder.Services to the container.
 builder.Services.AddCors();
-builder.Services.AddControllers(config =>
-{
-    var policy = new AuthorizationPolicyBuilder()
-                                 .RequireAuthenticatedUser()
-                                 .Build();
-    config.Filters.Add(new AuthorizeFilter(policy));
-}
-);
+builder.Services.AddControllers();
 var connectionString = builder.Configuration.GetConnectionString("ConnStr");
 builder.Services.AddDbContext<ApplicationDBContext>(
                 options => options.UseSqlServer(connectionString,
