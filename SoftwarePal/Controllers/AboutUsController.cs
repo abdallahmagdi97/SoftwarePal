@@ -20,12 +20,10 @@ namespace SoftwarePal.Controllers
     public class AboutUsController : ControllerBase
     {
         private readonly IAboutUsService _aboutUsService;
-        private readonly IUserService _userService;
 
-        public AboutUsController(IAboutUsService aboutUsService, IUserService userService)
+        public AboutUsController(IAboutUsService aboutUsService)
         {
             _aboutUsService = aboutUsService;
-            _userService = userService;
         }
 
         [AllowAnonymous]

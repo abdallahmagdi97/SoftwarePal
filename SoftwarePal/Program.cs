@@ -95,15 +95,11 @@ app.UseCors(
     options => options.WithOrigins(origins).AllowAnyMethod().AllowAnyHeader()
 );
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapControllers();
 
