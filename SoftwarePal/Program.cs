@@ -112,10 +112,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
-string[] origins = { "http://localhost:4200", 
-    "https://wfm-test.iskraemeco.com.eg", "http://wfm:4200", 
-    "https://wfm-test.iskraemeco.com.eg:443", "http://localhost:5050", 
-    " http://10.0.61.13:8011" };
+string[] origins = { "http://localhost:5030" };
 app.UseCors(
     options => options.WithOrigins(origins).AllowAnyMethod().AllowAnyHeader()
 );
