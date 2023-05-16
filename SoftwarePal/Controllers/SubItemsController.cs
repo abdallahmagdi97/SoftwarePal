@@ -42,7 +42,7 @@ namespace SoftwarePal.Controllers
             return Ok(subItems);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
         public async Task<IActionResult> AddSubItem([FromForm] SubItem subItem)
         {

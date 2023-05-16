@@ -36,7 +36,7 @@ namespace SoftwarePal.Controllers
             return Ok(blog);
         }
 
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetBlogs()
         {
@@ -44,7 +44,7 @@ namespace SoftwarePal.Controllers
             return Ok(blogs);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
         public async Task<IActionResult> AddBlog([FromBody] Models.Blog blog)
         {
@@ -52,7 +52,7 @@ namespace SoftwarePal.Controllers
             return Ok(blog);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBlog(int id, [FromBody] Models.Blog blog)
         {
@@ -69,7 +69,7 @@ namespace SoftwarePal.Controllers
             return Ok(blog);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBlog(int id)
         {

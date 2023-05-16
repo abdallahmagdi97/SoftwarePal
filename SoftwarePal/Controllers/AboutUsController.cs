@@ -34,25 +34,24 @@ namespace SoftwarePal.Controllers
             return Ok(aboutUs);
         }
 
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAboutUs()
         {
             var aboutUs = await _aboutUsService.GetAll();
             return Ok(aboutUs);
         }
-
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
-        public async Task<IActionResult> AddAboutUs([FromBody] Models.AboutUs aboutUs)
+        public async Task<IActionResult> AddAboutUs([FromBody] AboutUs aboutUs)
         {
             await _aboutUsService.Add(aboutUs);
             return Ok(aboutUs);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAboutUs(int id, [FromBody] Models.AboutUs aboutUs)
+        public async Task<IActionResult> UpdateAboutUs(int id, [FromBody] AboutUs aboutUs)
         {
             var existingAboutUs = await _aboutUsService.GetById(id);
             if (existingAboutUs == null)
@@ -64,7 +63,7 @@ namespace SoftwarePal.Controllers
             return Ok(aboutUs);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAboutUs(int id)
         {

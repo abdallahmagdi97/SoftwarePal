@@ -36,7 +36,7 @@ namespace SoftwarePal.Controllers
             return Ok(slider);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpGet]
         public async Task<IActionResult> GetSliders()
         {
@@ -44,7 +44,7 @@ namespace SoftwarePal.Controllers
             return Ok(sliders);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
         public async Task<IActionResult> AddSlider([FromBody] Slider slider)
         {
@@ -52,7 +52,7 @@ namespace SoftwarePal.Controllers
             return Ok(slider);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSlider(int id, [FromBody] Slider slider)
         {
@@ -69,7 +69,7 @@ namespace SoftwarePal.Controllers
             return Ok(slider);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSlider(int id)
         {

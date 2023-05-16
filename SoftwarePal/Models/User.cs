@@ -31,6 +31,7 @@ namespace SoftwarePal.Models
     public enum UserRole
     {
         Admin,
+        Moderator,
         User
     }
 }

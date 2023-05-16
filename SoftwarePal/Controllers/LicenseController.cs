@@ -39,7 +39,7 @@ namespace SoftwarePal.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetLicense(int id)
         {
@@ -47,7 +47,7 @@ namespace SoftwarePal.Controllers
             return Ok(license);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpGet]
         public async Task<IActionResult> GetLicenses()
         {
@@ -55,7 +55,7 @@ namespace SoftwarePal.Controllers
             return Ok(licenses);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
         public async Task<IActionResult> AddLicense([FromBody] Models.License license)
         {
@@ -63,7 +63,7 @@ namespace SoftwarePal.Controllers
             return Ok(license);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateLicense(int id, [FromBody] Models.License license)
         {
@@ -81,7 +81,7 @@ namespace SoftwarePal.Controllers
             return Ok(license);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLicense(int id)
         {

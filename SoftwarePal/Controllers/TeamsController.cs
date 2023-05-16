@@ -37,7 +37,7 @@ namespace SoftwarePal.Controllers
             return Ok(team);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpGet]
         public async Task<IActionResult> GetTeams()
         {
@@ -45,7 +45,7 @@ namespace SoftwarePal.Controllers
             return Ok(teams);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
         public async Task<IActionResult> AddTeam([FromBody] Team team)
         {
@@ -53,7 +53,7 @@ namespace SoftwarePal.Controllers
             return Ok(team);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTeam(int id, [FromBody] Team team)
         {
@@ -70,7 +70,7 @@ namespace SoftwarePal.Controllers
             return Ok(team);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTeam(int id)
         {

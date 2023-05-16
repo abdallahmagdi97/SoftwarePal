@@ -37,7 +37,7 @@ namespace SoftwarePal.Controllers
             return Ok(voucher);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpGet]
         public async Task<IActionResult> GetVouchers()
         {
@@ -45,7 +45,7 @@ namespace SoftwarePal.Controllers
             return Ok(vouchers);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
         public async Task<IActionResult> AddVoucher([FromBody] Models.Voucher voucher)
         {
@@ -53,7 +53,7 @@ namespace SoftwarePal.Controllers
             return Ok(voucher);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateVoucher(int id, [FromBody] Models.Voucher voucher)
         {
@@ -70,7 +70,7 @@ namespace SoftwarePal.Controllers
             return Ok(voucher);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVoucher(int id)
         {

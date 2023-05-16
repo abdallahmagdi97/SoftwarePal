@@ -37,7 +37,7 @@ namespace SoftwarePal.Controllers
             return Ok(item);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpGet]
         public async Task<IActionResult> GetItems()
         {
@@ -45,7 +45,7 @@ namespace SoftwarePal.Controllers
             return Ok(items);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
         public async Task<IActionResult> AddItem([FromForm] Item item)
         {
@@ -53,7 +53,7 @@ namespace SoftwarePal.Controllers
             return Ok(item);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateItem(int id, [FromBody] Item item)
         {
@@ -70,7 +70,7 @@ namespace SoftwarePal.Controllers
             return Ok(item);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(int id)
         {

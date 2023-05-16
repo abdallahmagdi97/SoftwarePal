@@ -42,7 +42,7 @@ namespace SoftwarePal.Controllers
             return Ok(categories);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
         public async Task<IActionResult> AddCategory([FromForm] Category category)
         {
@@ -50,7 +50,7 @@ namespace SoftwarePal.Controllers
             return Ok(category);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] Models.Category category)
         {
@@ -64,7 +64,7 @@ namespace SoftwarePal.Controllers
             return Ok(category);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
