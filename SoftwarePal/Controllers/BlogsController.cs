@@ -46,8 +46,10 @@ namespace SoftwarePal.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
-        public async Task<IActionResult> AddBlog([FromBody] Models.Blog blog)
+        public async Task<IActionResult> AddBlog([FromForm] Blog blog)
         {
+            if (blog.Image != null)
+                blog.ImageName = await _blogService.SaveImage(blog.Image);
             await _blogService.Add(blog);
             return Ok(blog);
         }
@@ -65,6 +67,8 @@ namespace SoftwarePal.Controllers
             {
                 return BadRequest();
             }
+            if (blog.Image != null)
+                blog.ImageName = await _blogService.SaveImage(blog.Image);
             await _blogService.Update(blog);
             return Ok(blog);
         }

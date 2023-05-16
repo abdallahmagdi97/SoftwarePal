@@ -49,6 +49,8 @@ namespace SoftwarePal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTeam([FromBody] Team team)
         {
+            if (team.Image != null)
+                team.ImageName = await _teamService.SaveImage(team.Image);
             await _teamService.Add(team);
             return Ok(team);
         }
@@ -66,6 +68,8 @@ namespace SoftwarePal.Controllers
             {
                 return BadRequest();
             }
+            if (team.Image != null)
+                team.ImageName = await _teamService.SaveImage(team.Image);
             await _teamService.Update(team);
             return Ok(team);
         }

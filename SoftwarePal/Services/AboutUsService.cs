@@ -43,6 +43,36 @@ namespace SoftwarePal.Services
         {
             return await _aboutUsRepository.Update(aboutUs);
         }
+
+        public async Task<string> SaveImage(IFormFile image)
+        {
+            string path = "";
+            try
+            {
+                if (image.Length > 0)
+                {
+                    path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "Images\\AboutUs"));
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    var fullPath = Path.Combine(path, "AboutUs-" + Guid.NewGuid());
+                    using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        await image.CopyToAsync(fileStream);
+                    }
+                    return fullPath;
+                }
+                else
+                {
+                    throw new Exception("File empty");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("File Copy Failed", ex);
+            }
+        }
     }
 
     public interface IAboutUsService
@@ -53,5 +83,6 @@ namespace SoftwarePal.Services
         Task<AboutUs> Update(AboutUs aboutUs);
         void Delete(AboutUs aboutUs);
         Task SaveChanges();
+        Task<string> SaveImage(IFormFile image);
     }
 }

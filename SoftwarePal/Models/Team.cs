@@ -10,5 +10,6 @@ namespace SoftwarePal.Models
         public string Description { get; set; }
         [NotMapped]
         public IFormFile? Image { get; set; }
+        public string? ImageName { get; set; }
     }
 }

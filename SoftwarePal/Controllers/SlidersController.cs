@@ -48,6 +48,8 @@ namespace SoftwarePal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddSlider([FromBody] Slider slider)
         {
+            if (slider.Image != null)
+                slider.ImageName = await _sliderService.SaveImage(slider.Image);
             await _sliderService.Add(slider);
             return Ok(slider);
         }
@@ -65,6 +67,8 @@ namespace SoftwarePal.Controllers
             {
                 return BadRequest();
             }
+            if (slider.Image != null)
+                slider.ImageName = await _sliderService.SaveImage(slider.Image);
             await _sliderService.Update(slider);
             return Ok(slider);
         }

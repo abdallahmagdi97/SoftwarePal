@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Reflection.Metadata;
 
 namespace SoftwarePal.Controllers
 {
@@ -45,6 +46,8 @@ namespace SoftwarePal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddAboutUs([FromBody] AboutUs aboutUs)
         {
+            if (aboutUs.Image != null)
+                aboutUs.ImageName = await _aboutUsService.SaveImage(aboutUs.Image);
             await _aboutUsService.Add(aboutUs);
             return Ok(aboutUs);
         }
@@ -58,7 +61,8 @@ namespace SoftwarePal.Controllers
             {
                 return NotFound();
             }
-
+            if (aboutUs.Image != null)
+                aboutUs.ImageName = await _aboutUsService.SaveImage(aboutUs.Image);
             await _aboutUsService.Update(aboutUs);
             return Ok(aboutUs);
         }

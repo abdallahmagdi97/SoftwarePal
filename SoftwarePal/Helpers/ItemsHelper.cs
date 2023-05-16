@@ -51,7 +51,11 @@ namespace SoftwarePal.Helpers
                 if (item.ItemImages[i].Image.Length > 0)
                 {
                     // C:\\Users\\aedris\\source\\repos\\SoftwarePal\\SoftwarePal
-                    var filePath = Path.Combine("G:\\SP", "Images", "Item", item.ItemImages[i].ImageName);
+                    var filePath = Path.Combine(Environment.CurrentDirectory, "Images", "Item", (item.ItemImages[i].ImageName ?? "item") + Guid.NewGuid());
+                    if (!Directory.Exists(filePath))
+                    {
+                        Directory.CreateDirectory(filePath);
+                    }
                     item.ItemImages[i].ImageName = filePath;
                     images.Add(filePath);
                     using (var stream = System.IO.File.Create(filePath))

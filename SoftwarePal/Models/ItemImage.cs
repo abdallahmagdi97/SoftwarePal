@@ -7,7 +7,7 @@ namespace SoftwarePal.Models
     {
         public int Id { get; set; }
         public int ItemId { get; set; }
-        public string ImageName { get; set; }
+        public string? ImageName { get; set; }
         [NotMapped]
         public IFormFile Image { get; set; }
         public int ImageOrder { get; set; }

@@ -12,5 +12,6 @@ namespace SoftwarePal.Models
         public IFormFile Image { get; set; }
         public int Order { get; set; }
         public bool Status { get; set; } = true;
+        public string? ImageName { get; set; }
     }
 }

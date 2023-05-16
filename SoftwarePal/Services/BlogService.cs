@@ -43,6 +43,37 @@ namespace SoftwarePal.Services
         {
             return await _blogRepository.Update(blog);
         }
+
+        public async Task<string> SaveImage(IFormFile image)
+        {
+            string path = "";
+            try
+            {
+                if (image.Length > 0)
+                {
+                    path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "Images\\Blog"));
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    var fullPath = Path.Combine(path, "Blog-" + Guid.NewGuid());
+                    using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        await image.CopyToAsync(fileStream);
+                    }
+                    return fullPath;
+                }
+                else
+                {
+                    throw new Exception("File empty");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("File Copy Failed", ex);
+            }
+        }
+    
     }
 
     public interface IBlogService
@@ -53,5 +84,6 @@ namespace SoftwarePal.Services
         Task<Blog> Update(Blog blog);
         void Delete(Blog blog);
         Task SaveChanges();
+        Task<string> SaveImage(IFormFile image);
     }
 }

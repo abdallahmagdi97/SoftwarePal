@@ -19,17 +19,22 @@ namespace SoftwarePal.Services
         public async Task<Category> Add(Category category)
         {
             var savedCategory = await _categoryRepository.Add(category);
-
+            string path = "";
             if (category.Image.Length > 0)
             {
                 // C:\\Users\\aedris\\source\\repos\\SoftwarePal\\SoftwarePal
                 // _hostingEnvironment?.WebRootPath
-                var filePath = Path.Combine("C:\\Users\\aedris\\source\\repos\\SoftwarePal\\SoftwarePal", "Images","Category", category.ImageName);
-                category.ImageName = filePath;
-                using (var stream = System.IO.File.Create(filePath))
+                path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "Images\\Category"));
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                var fullPath = Path.Combine(path, "Category-" + Guid.NewGuid());
+                using (var stream = File.Create(fullPath))
                 {
                     category.Image.CopyTo(stream);
                 }
+                category.ImageName = fullPath;
                 await _categoryRepository.SaveImage(category);
             }
             savedCategory.Image = null;

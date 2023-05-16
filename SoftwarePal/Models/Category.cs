@@ -10,10 +10,10 @@ namespace SoftwarePal.Models
         public string Name { get; set; }
         public string Description { get; set; }
         [NotMapped]
-        public IFormFile Image { get; set; }
-        public bool InMenu { get; set; }
+        public IFormFile? Image { get; set; }
+        public bool InMenu { get; set; } = true;
         public int Order { get; set; }
         public bool Status { get; set; } = true;
-        public string ImageName { get; set; }
+        public string? ImageName { get; set; }
     }
 }
