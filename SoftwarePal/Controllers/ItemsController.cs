@@ -55,7 +55,7 @@ namespace SoftwarePal.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateItem(int id, [FromBody] Item item)
+        public async Task<IActionResult> UpdateItem(int id, [FromForm] Item item)
         {
             var existingItem = await _itemService.GetById(id);
             if (existingItem == null)

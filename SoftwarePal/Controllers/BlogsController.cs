@@ -56,7 +56,7 @@ namespace SoftwarePal.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBlog(int id, [FromBody] Models.Blog blog)
+        public async Task<IActionResult> UpdateBlog(int id, [FromForm] Models.Blog blog)
         {
             var existingBlog = await _blogService.GetById(id);
             if (existingBlog == null)

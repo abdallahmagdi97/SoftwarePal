@@ -44,7 +44,7 @@ namespace SoftwarePal.Controllers
         }
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
-        public async Task<IActionResult> AddAboutUs([FromBody] AboutUs aboutUs)
+        public async Task<IActionResult> AddAboutUs([FromForm] AboutUs aboutUs)
         {
             if (aboutUs.Image != null)
                 aboutUs.ImageName = await _aboutUsService.SaveImage(aboutUs.Image);
@@ -54,7 +54,7 @@ namespace SoftwarePal.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAboutUs(int id, [FromBody] AboutUs aboutUs)
+        public async Task<IActionResult> UpdateAboutUs(int id, [FromForm] AboutUs aboutUs)
         {
             var existingAboutUs = await _aboutUsService.GetById(id);
             if (existingAboutUs == null)

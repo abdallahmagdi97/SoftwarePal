@@ -46,7 +46,7 @@ namespace SoftwarePal.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
-        public async Task<IActionResult> AddSlider([FromBody] Slider slider)
+        public async Task<IActionResult> AddSlider([FromForm] Slider slider)
         {
             if (slider.Image != null)
                 slider.ImageName = await _sliderService.SaveImage(slider.Image);
@@ -56,7 +56,7 @@ namespace SoftwarePal.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSlider(int id, [FromBody] Slider slider)
+        public async Task<IActionResult> UpdateSlider(int id, [FromForm] Slider slider)
         {
             var existingSlider = await _sliderService.GetById(id);
             if (existingSlider == null)

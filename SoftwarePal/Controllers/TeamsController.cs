@@ -47,7 +47,7 @@ namespace SoftwarePal.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
-        public async Task<IActionResult> AddTeam([FromBody] Team team)
+        public async Task<IActionResult> AddTeam([FromForm] Team team)
         {
             if (team.Image != null)
                 team.ImageName = await _teamService.SaveImage(team.Image);
@@ -57,7 +57,7 @@ namespace SoftwarePal.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTeam(int id, [FromBody] Team team)
+        public async Task<IActionResult> UpdateTeam(int id, [FromForm] Team team)
         {
             var existingTeam = await _teamService.GetById(id);
             if (existingTeam == null)

@@ -52,7 +52,7 @@ namespace SoftwarePal.Controllers
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory(int id, [FromBody] Models.Category category)
+        public async Task<IActionResult> UpdateCategory(int id, [FromForm] Models.Category category)
         {
             var existingCategory = _categoryService.GetById(id);
             if (existingCategory == null)
