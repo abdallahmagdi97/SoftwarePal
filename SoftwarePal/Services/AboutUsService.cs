@@ -1,4 +1,5 @@
-﻿using SoftwarePal.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using SoftwarePal.Models;
 using SoftwarePal.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,10 +9,12 @@ namespace SoftwarePal.Services
     public class AboutUsService : IAboutUsService
     {
         private readonly IAboutUsRepository _aboutUsRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AboutUsService(IAboutUsRepository aboutUsRepository)
+        public AboutUsService(IAboutUsRepository aboutUsRepository, IHttpContextAccessor httpContextAccessor)
         {
             _aboutUsRepository = aboutUsRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<AboutUs> Add(AboutUs aboutUs)
@@ -56,12 +59,13 @@ namespace SoftwarePal.Services
                     {
                         Directory.CreateDirectory(path);
                     }
-                    var fullPath = Path.Combine(path, "AboutUs-" + Guid.NewGuid());
+                    var fullPath = Path.Combine(path, "AboutUs-" + Guid.NewGuid() + "." + image.ContentType.Split('/').Last());
                     using (var fileStream = new FileStream(fullPath, FileMode.Create))
                     {
                         await image.CopyToAsync(fileStream);
                     }
-                    return fullPath;
+                    var appOrigin = GetAppOrigin();
+                    return appOrigin + "/" + fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
                 }
                 else
                 {
@@ -72,6 +76,21 @@ namespace SoftwarePal.Services
             {
                 throw new Exception("File Copy Failed", ex);
             }
+        }
+        public string GetAppOrigin()
+        {
+            var request = _httpContextAccessor.HttpContext.Request;
+
+            var origin = $"{request.Scheme}://{request.Host}";
+
+            return origin;
+        }
+        public async Task<byte[]> GetImage(string imageName)
+        {
+
+            Byte[] b;
+            b = await File.ReadAllBytesAsync(Path.Combine(Environment.CurrentDirectory, "Images\\AboutUs", $"{imageName}"));
+            return b;
         }
     }
 
@@ -84,5 +103,7 @@ namespace SoftwarePal.Services
         void Delete(AboutUs aboutUs);
         Task SaveChanges();
         Task<string> SaveImage(IFormFile image);
+        Task<byte[]> GetImage(string imageName);
+        string GetAppOrigin();
     }
 }
