@@ -10,27 +10,33 @@ namespace SoftwarePal.Services
     public class SubItemService : ISubItemService
     {
         private readonly ISubItemRepository _subItemRepository;
-        public SubItemService(ISubItemRepository subItemRepository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public SubItemService(ISubItemRepository subItemRepository, IHttpContextAccessor httpContextAccessor)
         {
             _subItemRepository = subItemRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<SubItem> Add(SubItem subItem)
         {
             var savedSubItem = await _subItemRepository.Add(subItem);
-
+            string path;
             if (subItem.Image.Length > 0)
             {
-                // C:\\Users\\aedris\\source\\repos\\SoftwarePal\\SoftwarePal
-                var filePath = Path.Combine("G:\\SP", "Images", "SubItem", subItem.ImageName);
-                subItem.ImageName = filePath;
-                using (var stream = File.Create(filePath))
+                path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "Images\\SubItem"));
+                if (!Directory.Exists(path))
                 {
-                    subItem.Image.CopyTo(stream);
+                    Directory.CreateDirectory(path);
                 }
+                var fullPath = Path.Combine(path, "SubItem-" + Guid.NewGuid() + "." + subItem.Image.ContentType.Split('/').Last());
+                using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await subItem.Image.CopyToAsync(fileStream);
+                }
+                subItem.ImageName = fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
                 _subItemRepository.SaveImage(subItem);
             }
-            
+
             return savedSubItem;
         }
 
@@ -39,14 +45,17 @@ namespace SoftwarePal.Services
             _subItemRepository.Delete(subItem);
         }
 
-        public Task<IEnumerable<SubItem>> GetAll()
+        public async Task<IEnumerable<SubItem>> GetAll()
         {
-            return _subItemRepository.GetAll();
+            return await _subItemRepository.GetAll();
         }
 
-        public Task<SubItem> GetById(int id)
+        public async Task<SubItem> GetById(int id)
         {
-            return _subItemRepository.GetById(id);
+            var subItem = await _subItemRepository.GetById(id);
+            string origin = GetAppOrigin();
+            subItem.ImageName = origin + "/" + subItem.ImageName;
+            return subItem;
         }
 
         public Task SaveChanges()
@@ -58,15 +67,25 @@ namespace SoftwarePal.Services
         {
             return await _subItemRepository.Update(subItem);
         }
-    }
+        public string GetAppOrigin()
+        {
+            var request = _httpContextAccessor.HttpContext?.Request;
 
-    public interface ISubItemService
-    {
-        Task<SubItem> Add(SubItem subItem);
-        Task<IEnumerable<SubItem>> GetAll();
-        Task<SubItem> GetById(int id);
-        Task<SubItem> Update(SubItem subItem);
-        void Delete(SubItem subItem);
-        Task SaveChanges();
+            var origin = $"{request?.Scheme}://{request?.Host}";
+
+            return origin;
+        }
     }
+        public interface ISubItemService
+        {
+            Task<SubItem> Add(SubItem subItem);
+            Task<IEnumerable<SubItem>> GetAll();
+            Task<SubItem> GetById(int id);
+            Task<SubItem> Update(SubItem subItem);
+            void Delete(SubItem subItem);
+            Task SaveChanges();
+            string GetAppOrigin();
+
+        }
+
 }

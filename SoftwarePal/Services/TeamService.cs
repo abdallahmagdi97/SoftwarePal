@@ -31,9 +31,12 @@ namespace SoftwarePal.Services
             return _teamRepository.GetAll();
         }
 
-        public Task<Team> GetById(int id)
+        public async Task<Team> GetById(int id)
         {
-            return _teamRepository.GetById(id);
+            var team = await _teamRepository.GetById(id);
+            string origin = GetAppOrigin();
+            team.ImageName = origin + "/" + team.ImageName;
+            return team;
         }
 
         public Task SaveChanges()
@@ -62,8 +65,7 @@ namespace SoftwarePal.Services
                     {
                         await image.CopyToAsync(fileStream);
                     }
-                    var appOrigin = GetAppOrigin();
-                    return appOrigin + "/" + fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
+                    return fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
                 }
                 else
                 {

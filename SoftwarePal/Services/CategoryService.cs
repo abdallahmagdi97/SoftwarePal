@@ -36,8 +36,7 @@ namespace SoftwarePal.Services
                 {
                     category.Image.CopyTo(stream);
                 }
-                var appOrigin = GetAppOrigin();
-                category.ImageName = appOrigin + "/" + fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
+                category.ImageName = fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
                 await _categoryRepository.SaveImage(category);
             }
             savedCategory.Image = null;
@@ -56,14 +55,17 @@ namespace SoftwarePal.Services
             _categoryRepository.Delete(category);
         }
 
-        public Task<IEnumerable<Category>> GetAll()
+        public async Task<IEnumerable<Category>> GetAll()
         {
-            return _categoryRepository.GetAll();
+            return await _categoryRepository.GetAll();
         }
 
-        public Task<Category> GetById(int id)
+        public async Task<Category> GetById(int id)
         {
-            return _categoryRepository.GetById(id);
+            var category = await _categoryRepository.GetById(id);
+            string origin = GetAppOrigin();
+            category.ImageName = origin + "/" + category.ImageName;
+            return category;
         }
 
         public Task SaveChanges()

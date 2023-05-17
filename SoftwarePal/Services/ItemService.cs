@@ -46,9 +46,12 @@ namespace SoftwarePal.Services
             return _itemRepository.GetAll();
         }
 
-        public Task<Item> GetById(int id)
+        public async Task<Item> GetById(int id)
         {
-            return _itemRepository.GetById(id);
+            var item = await _itemRepository.GetById(id);
+            string origin = GetAppOrigin();
+            item = await GetItemImages(origin, item);
+            return item;
         }
 
         public Task SaveChanges()
@@ -60,6 +63,24 @@ namespace SoftwarePal.Services
         {
             return await _itemRepository.Update(item);
         }
+        public string GetAppOrigin()
+        {
+            var request = _httpContextAccessor.HttpContext?.Request;
+
+            var origin = $"{request?.Scheme}://{request?.Host}";
+
+            return origin;
+        }
+
+        public async Task<Item> GetItemImages(string origin, Item item)
+        {
+            item.ItemImages = await _itemRepository.GetItemImages(item.Id);
+            for(int i = 0; i < item.ItemImages.Count; i++)
+            {
+                item.ItemImages[i].ImageName = origin + "/" + item.ItemImages[i].ImageName;
+            }
+            return item;
+        }
     }
 
     public interface IItemService
@@ -70,5 +91,8 @@ namespace SoftwarePal.Services
         Task<Item> Update(Item item);
         void Delete(Item item);
         Task SaveChanges();
+        string GetAppOrigin();
+        Task<Item> GetItemImages(string origin, Item item);
+        Task<decimal> GetPricefromPriceRole();
     }
 }

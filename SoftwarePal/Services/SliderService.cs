@@ -26,14 +26,17 @@ namespace SoftwarePal.Services
             _sliderRepository.Delete(slider);
         }
 
-        public Task<IEnumerable<Slider>> GetAll()
+        public async Task<IEnumerable<Slider>> GetAll()
         {
-            return _sliderRepository.GetAll();
+            return await _sliderRepository.GetAll();
         }
 
-        public Task<Slider> GetById(int id)
+        public async Task<Slider> GetById(int id)
         {
-            return _sliderRepository.GetById(id);
+            var slider = await _sliderRepository.GetById(id);
+            string origin = GetAppOrigin();
+            slider.ImageName = origin + "/" + slider.ImageName;
+            return slider;
         }
 
         public Task SaveChanges()
@@ -62,8 +65,7 @@ namespace SoftwarePal.Services
                     {
                         await image.CopyToAsync(fileStream);
                     }
-                    var appOrigin = GetAppOrigin();
-                    return appOrigin + "/" + fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
+                    return fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
                 }
                 else
                 {

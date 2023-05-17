@@ -65,8 +65,7 @@ namespace SoftwarePal.Helpers
                     {
                         Directory.CreateDirectory(filePath);
                     }
-                    var appOrigin = GetAppOrigin();
-                    item.ItemImages[i].ImageName = appOrigin + "/" + filePath.Substring(filePath.IndexOf("Images")).Replace("\\", "/");
+                    item.ItemImages[i].ImageName = filePath.Substring(filePath.IndexOf("Images")).Replace("\\", "/");
                     images.Add(filePath);
                     using (var stream = System.IO.File.Create(filePath))
                     {

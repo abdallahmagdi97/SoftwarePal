@@ -43,6 +43,11 @@ namespace SoftwarePal.Services
         {
             return await _cartItemRepository.Update(cartItem);
         }
+
+        public async Task<IEnumerable<CartItem>> GetCartItemsByCartId(int id)
+        {
+            return await _cartItemRepository.GetCartItemsByCartId(id);
+        }
     }
 
     public interface ICartItemService
@@ -53,5 +58,6 @@ namespace SoftwarePal.Services
         Task<CartItem> Update(CartItem cartItem);
         void Delete(CartItem cartItem);
         Task SaveChanges();
+        Task<IEnumerable<CartItem>> GetCartItemsByCartId(int id);
     }
 }

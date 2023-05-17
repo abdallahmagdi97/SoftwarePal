@@ -55,6 +55,11 @@ namespace SoftwarePal.Repositories
             _context.ItemImages.Add(itemImage);
             _context.SaveChanges();
         }
+
+        public async Task<List<ItemImage>> GetItemImages(int id)
+        {
+            return await _context.ItemImages.Where(x => x.ItemId == id).ToListAsync();
+        }
     }
 
     public interface IItemRepository
@@ -66,5 +71,6 @@ namespace SoftwarePal.Repositories
         void Delete(Item item);
         Task SaveChanges();
         void SaveImage(ItemImage itemImage);
+        Task<List<ItemImage>> GetItemImages(int id);
     }
 }

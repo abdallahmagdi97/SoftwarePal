@@ -27,14 +27,17 @@ namespace SoftwarePal.Services
             _aboutUsRepository.Delete(aboutUs);
         }
 
-        public Task<IEnumerable<AboutUs>> GetAll()
+        public async Task<IEnumerable<AboutUs>> GetAll()
         {
-            return _aboutUsRepository.GetAll();
+            return await _aboutUsRepository.GetAll();
         }
 
-        public Task<AboutUs> GetById(int id)
+        public async Task<AboutUs> GetById(int id)
         {
-            return _aboutUsRepository.GetById(id);
+            var aboutUs = await _aboutUsRepository.GetById(id);
+            string origin = GetAppOrigin();
+            aboutUs.ImageName = origin + "/" + aboutUs.ImageName;
+            return aboutUs;
         }
 
         public Task SaveChanges()
@@ -64,8 +67,7 @@ namespace SoftwarePal.Services
                     {
                         await image.CopyToAsync(fileStream);
                     }
-                    var appOrigin = GetAppOrigin();
-                    return appOrigin + "/" + fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
+                    return fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
                 }
                 else
                 {
