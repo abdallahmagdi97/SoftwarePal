@@ -8,10 +8,12 @@ namespace SoftwarePal.Services
     public class BlogService : IBlogService
     {
         private readonly IBlogRepository _blogRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public BlogService(IBlogRepository blogRepository)
+        public BlogService(IBlogRepository blogRepository, IHttpContextAccessor httpContextAccessor)
         {
             _blogRepository = blogRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Blog> Add(Blog blog)
@@ -56,12 +58,13 @@ namespace SoftwarePal.Services
                     {
                         Directory.CreateDirectory(path);
                     }
-                    var fullPath = Path.Combine(path, "Blog-" + Guid.NewGuid());
+                    var fullPath = Path.Combine(path, "Blog-" + Guid.NewGuid() + "." + image.ContentType.Split('/').Last());
                     using (var fileStream = new FileStream(fullPath, FileMode.Create))
                     {
                         await image.CopyToAsync(fileStream);
                     }
-                    return fullPath;
+                    var appOrigin = GetAppOrigin();
+                    return appOrigin + "/" + fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
                 }
                 else
                 {
@@ -73,7 +76,15 @@ namespace SoftwarePal.Services
                 throw new Exception("File Copy Failed", ex);
             }
         }
-    
+        public string GetAppOrigin()
+        {
+            var request = _httpContextAccessor.HttpContext.Request;
+
+            var origin = $"{request.Scheme}://{request.Host}";
+
+            return origin;
+        }
+
     }
 
     public interface IBlogService
@@ -85,5 +96,6 @@ namespace SoftwarePal.Services
         void Delete(Blog blog);
         Task SaveChanges();
         Task<string> SaveImage(IFormFile image);
+        string GetAppOrigin();
     }
 }

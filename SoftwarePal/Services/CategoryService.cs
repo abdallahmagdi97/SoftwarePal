@@ -10,10 +10,12 @@ namespace SoftwarePal.Services
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(ICategoryRepository categoryRepository, IHttpContextAccessor httpContextAccessor)
         {
             _categoryRepository = categoryRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Category> Add(Category category)
@@ -34,13 +36,21 @@ namespace SoftwarePal.Services
                 {
                     category.Image.CopyTo(stream);
                 }
-                category.ImageName = fullPath;
+                var appOrigin = GetAppOrigin();
+                category.ImageName = appOrigin + "/" + fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
                 await _categoryRepository.SaveImage(category);
             }
             savedCategory.Image = null;
             return savedCategory;
         }
+        public string GetAppOrigin()
+        {
+            var request = _httpContextAccessor.HttpContext.Request;
 
+            var origin = $"{request.Scheme}://{request.Host}";
+
+            return origin;
+        }
         public void Delete(Category category)
         {
             _categoryRepository.Delete(category);
@@ -75,5 +85,6 @@ namespace SoftwarePal.Services
         Task<Category> Update(Category category);
         void Delete(Category category);
         Task SaveChanges();
+        string GetAppOrigin();
     }
 }

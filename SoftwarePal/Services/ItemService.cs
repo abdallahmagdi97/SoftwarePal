@@ -14,19 +14,22 @@ namespace SoftwarePal.Services
         private readonly IIncludedSubItemRepository _includedSubItemRepository;
         private readonly IItemPriceRuleRepository _itemPriceRuleRepository;
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ItemService(IItemRepository itemRepository, IIncludedSubItemRepository includedSubItemRepository, IItemPriceRuleRepository itemPriceRuleRepository, IWebHostEnvironment hostingEnvironment)
+        public ItemService(IItemRepository itemRepository, IIncludedSubItemRepository includedSubItemRepository, 
+            IItemPriceRuleRepository itemPriceRuleRepository, IWebHostEnvironment hostingEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _itemRepository = itemRepository;
             _includedSubItemRepository = includedSubItemRepository;
             _itemPriceRuleRepository = itemPriceRuleRepository;
             _hostingEnvironment = hostingEnvironment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Item> Add(Item item)
         {
             Item savedItem = await _itemRepository.Add(item);
-            ItemsHelper itemsHelper = new ItemsHelper(_includedSubItemRepository, _itemPriceRuleRepository, _itemRepository, _hostingEnvironment);
+            ItemsHelper itemsHelper = new ItemsHelper(_includedSubItemRepository, _itemPriceRuleRepository, _itemRepository, _hostingEnvironment, _httpContextAccessor);
             itemsHelper.SaveImages(item, savedItem.Id);
             itemsHelper.AddItemPriceRules(item, savedItem.Id);
             itemsHelper.AddIncludedSubItems(item, savedItem.Id);

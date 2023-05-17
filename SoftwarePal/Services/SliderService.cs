@@ -8,10 +8,12 @@ namespace SoftwarePal.Services
     public class SliderService : ISliderService
     {
         private readonly ISliderRepository _sliderRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SliderService(ISliderRepository sliderRepository)
+        public SliderService(ISliderRepository sliderRepository, IHttpContextAccessor httpContextAccessor)
         {
             _sliderRepository = sliderRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Slider> Add(Slider slider)
@@ -55,12 +57,13 @@ namespace SoftwarePal.Services
                     {
                         Directory.CreateDirectory(path);
                     }
-                    var fullPath = Path.Combine(path, "Slider-" + Guid.NewGuid());
+                    var fullPath = Path.Combine(path, "Slider-" + Guid.NewGuid() + "." + image.ContentType.Split('/').Last());
                     using (var fileStream = new FileStream(fullPath, FileMode.Create))
                     {
                         await image.CopyToAsync(fileStream);
                     }
-                    return fullPath;
+                    var appOrigin = GetAppOrigin();
+                    return appOrigin + "/" + fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
                 }
                 else
                 {
@@ -71,6 +74,14 @@ namespace SoftwarePal.Services
             {
                 throw new Exception("File Copy Failed", ex);
             }
+        }
+        public string GetAppOrigin()
+        {
+            var request = _httpContextAccessor.HttpContext.Request;
+
+            var origin = $"{request.Scheme}://{request.Host}";
+
+            return origin;
         }
     }
 
@@ -83,5 +94,6 @@ namespace SoftwarePal.Services
         void Delete(Slider slider);
         Task SaveChanges();
         Task<string> SaveImage(IFormFile image);
+        string GetAppOrigin();
     }
 }

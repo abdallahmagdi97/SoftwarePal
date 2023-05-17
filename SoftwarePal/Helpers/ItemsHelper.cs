@@ -15,13 +15,15 @@ namespace SoftwarePal.Helpers
         private readonly IItemPriceRuleRepository _itemPriceRuleRepository;
         private readonly IItemRepository _itemRepository;
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ItemsHelper(IIncludedSubItemRepository includedSubItemRepository, IItemPriceRuleRepository itemPriceRuleRepository, IItemRepository itemRepository, IWebHostEnvironment hostingEnvironment)
+        public ItemsHelper(IIncludedSubItemRepository includedSubItemRepository, IItemPriceRuleRepository itemPriceRuleRepository, IItemRepository itemRepository, IWebHostEnvironment hostingEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _includedSubItemRepository = includedSubItemRepository;
             _itemPriceRuleRepository = itemPriceRuleRepository;
             _itemRepository = itemRepository;
             _hostingEnvironment = hostingEnvironment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         internal async void AddIncludedSubItems(Item item, int id)
@@ -41,7 +43,14 @@ namespace SoftwarePal.Helpers
                 await _itemPriceRuleRepository.Add(priceRule);
             }
         }
+        public string GetAppOrigin()
+        {
+            var request = _httpContextAccessor.HttpContext.Request;
 
+            var origin = $"{request.Scheme}://{request.Host}";
+
+            return origin;
+        }
         internal void SaveImages(Item item, int id)
         {
             long size = item.ItemImages.Count;
@@ -51,12 +60,13 @@ namespace SoftwarePal.Helpers
                 if (item.ItemImages[i].Image.Length > 0)
                 {
                     // C:\\Users\\aedris\\source\\repos\\SoftwarePal\\SoftwarePal
-                    var filePath = Path.Combine(Environment.CurrentDirectory, "Images", "Item", (item.ItemImages[i].ImageName ?? "item") + Guid.NewGuid());
+                    var filePath = Path.Combine(Environment.CurrentDirectory, "Images", "Item", (item.ItemImages[i].ImageName ?? "item-") + Guid.NewGuid());
                     if (!Directory.Exists(filePath))
                     {
                         Directory.CreateDirectory(filePath);
                     }
-                    item.ItemImages[i].ImageName = filePath;
+                    var appOrigin = GetAppOrigin();
+                    item.ItemImages[i].ImageName = appOrigin + "/" + filePath.Substring(filePath.IndexOf("Images")).Replace("\\", "/");
                     images.Add(filePath);
                     using (var stream = System.IO.File.Create(filePath))
                     {
