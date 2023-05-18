@@ -81,6 +81,11 @@ namespace SoftwarePal.Services
             }
             return item;
         }
+
+        public Task<decimal> GetPricefromPriceRole()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public interface IItemService
