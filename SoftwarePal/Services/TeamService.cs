@@ -79,9 +79,9 @@ namespace SoftwarePal.Services
         }
         public string GetAppOrigin()
         {
-            var request = _httpContextAccessor.HttpContext.Request;
+            var request = _httpContextAccessor.HttpContext?.Request;
 
-            var origin = $"{request.Scheme}://{request.Host}";
+            var origin = $"{request?.Scheme}://{request?.Host}";
 
             return origin;
         }

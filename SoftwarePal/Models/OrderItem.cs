@@ -1,7 +1,10 @@
-﻿namespace SoftwarePal.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SoftwarePal.Models
 {
     public class OrderItem
     {
+        [Key]
         public int Id { get; set; }
         public int OrderId { get; set; }
         public int ItemId { get; set; }

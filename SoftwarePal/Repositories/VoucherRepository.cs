@@ -33,8 +33,12 @@ namespace SoftwarePal.Repositories
 
         public async Task<Voucher> GetById(int id)
         {
-            var subItem = await _context.Vouchers.FindAsync(id);
-            return subItem;
+            var voucher = await _context.Vouchers.FindAsync(id);
+            if (voucher == null)
+            {
+                throw new InvalidOperationException($"Voucher with ID {id} not found.");
+            }
+            return voucher;
 
         }
 

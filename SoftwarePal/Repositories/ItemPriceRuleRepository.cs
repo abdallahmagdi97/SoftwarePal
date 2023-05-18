@@ -33,8 +33,12 @@ namespace SoftwarePal.Repositories
 
         public async Task<ItemPriceRule> GetById(int id)
         {
-            var subItemPriceRule = await _context.ItemPriceRules.FindAsync(id);
-            return subItemPriceRule;
+            var itemPriceRule = await _context.ItemPriceRules.FindAsync(id);
+            if (itemPriceRule == null)
+            {
+                throw new InvalidOperationException($"ItemPriceRule with ID {id} not found.");
+            }
+            return itemPriceRule;
 
         }
 

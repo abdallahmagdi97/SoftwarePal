@@ -34,8 +34,12 @@ namespace SoftwarePal.Repositories
 
         public async Task<Slider> GetById(int id)
         {
-            var subItem = await _context.Sliders.FindAsync(id);
-            return subItem;
+            var slider = await _context.Sliders.FindAsync(id);
+            if (slider == null)
+            {
+                throw new InvalidOperationException($"Slider with ID {id} not found.");
+            }
+            return slider;
 
         }
 

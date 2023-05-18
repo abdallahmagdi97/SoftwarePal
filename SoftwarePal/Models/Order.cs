@@ -1,7 +1,10 @@
-﻿namespace SoftwarePal.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SoftwarePal.Models
 {
     public class Order
     {
+        [Key]
         public int Id { get; set; }
         public string? UserId { get; set; }
         public decimal SubTotal { get; set; }

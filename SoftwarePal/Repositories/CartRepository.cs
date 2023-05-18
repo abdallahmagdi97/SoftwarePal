@@ -34,8 +34,12 @@ namespace SoftwarePal.Repositories
 
         public async Task<Cart> GetById(int id)
         {
-            var subItem = await _context.Carts.FindAsync(id);
-            return subItem;
+            var cart = await _context.Carts.FindAsync(id);
+            if (cart == null)
+            {
+                throw new ArgumentNullException($"Cart with ID {id} not found.");
+            }
+            return cart;
 
         }
 
@@ -53,7 +57,12 @@ namespace SoftwarePal.Repositories
 
         public async Task<Cart> GetCartByUserId(string id)
         {
-            return await _context.Carts.FirstOrDefaultAsync(c => c.UserId == id);
+            var cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == id);
+            if (cart == null)
+            {
+                throw new ArgumentNullException($"Cart with user ID {id} not found.");
+            }
+            return cart;
         }
     }
 

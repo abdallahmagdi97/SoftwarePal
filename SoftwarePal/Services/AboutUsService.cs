@@ -47,6 +47,7 @@ namespace SoftwarePal.Services
 
         public async Task<AboutUs> Update(AboutUs aboutUs)
         {
+
             return await _aboutUsRepository.Update(aboutUs);
         }
 
@@ -81,9 +82,9 @@ namespace SoftwarePal.Services
         }
         public string GetAppOrigin()
         {
-            var request = _httpContextAccessor.HttpContext.Request;
+            var request = _httpContextAccessor.HttpContext?.Request;
 
-            var origin = $"{request.Scheme}://{request.Host}";
+            var origin = $"{request?.Scheme}://{request?.Host}";
 
             return origin;
         }

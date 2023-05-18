@@ -39,7 +39,7 @@ namespace SoftwarePal.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
-            var user = _userService.GetUserByEmail(loginRequest.Email);
+            var user = await _userService.GetUserByEmail(loginRequest.Email);
 
             if (user == null)
             {
@@ -57,7 +57,7 @@ namespace SoftwarePal.Controllers
 
             return Ok(new { token });
         }
-
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetById(string id)
         {
@@ -69,7 +69,7 @@ namespace SoftwarePal.Controllers
 
             return Ok(user);
         }
-
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Update(string id, User user)
         {
@@ -92,7 +92,7 @@ namespace SoftwarePal.Controllers
 
             return Ok(updatedUser);
         }
-
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {

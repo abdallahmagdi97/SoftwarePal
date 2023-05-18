@@ -34,8 +34,12 @@ namespace SoftwarePal.Repositories
 
         public async Task<License> GetById(int id)
         {
-            var subItem = await _context.Licenses.FindAsync(id);
-            return subItem;
+            var license = await _context.Licenses.FindAsync(id);
+            if (license == null)
+            {
+                throw new ArgumentNullException($"License with ID {id} not found.");
+            }
+            return license;
 
         }
 

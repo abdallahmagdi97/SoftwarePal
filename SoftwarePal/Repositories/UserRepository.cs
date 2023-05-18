@@ -23,40 +23,54 @@ namespace SoftwarePal.Repositories
             _config = config;
         }
 
-        public User Add(User user)
+        public async Task<User> Add(User user)
         {
             user.Id = Guid.NewGuid().ToString();
-            _context.Users.Add(user);
+            await _context.Users.AddAsync(user);
             _context.SaveChanges();
             return user;
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<IEnumerable<User>> GetAll()
         {
-            return _context.Users.ToList();
+            return await _context.Users.ToListAsync();
         }
 
         public async Task<User> GetById(string id)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                throw new InvalidOperationException($"User with ID {id} not found.");
+            }
+            return user;
         }
 
-        public User Update(User user)
+        public async Task<User> Update(User user)
         {
             _context.Entry(user).State = EntityState.Modified;
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return user;
         }
 
         public void Delete(User user)
         {
-            _context.Users.Remove(user);
+            var dbUser = _context.Users.Find(user.Id);
+            if (dbUser == null)
+                throw new ArgumentNullException("User not found");
+            dbUser.Status = false;
+            _context.Entry(dbUser).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
-        public User GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            return _context.Users.FirstOrDefault(u => u.Email == email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null)
+            {
+                throw new ArgumentNullException($"User with Email: {email} not found.");
+            }
+            return user;
         }
         public async Task<bool> VerifyPassword(User user, string password)
         {
@@ -109,12 +123,12 @@ namespace SoftwarePal.Repositories
 
     public interface IUserRepository
     {
-        User Add(User user);
-        IEnumerable<User> GetAll();
+        Task<User> Add(User user);
+        Task<IEnumerable<User>> GetAll();
         Task<User> GetById(string id);
-        User Update(User user);
+        Task<User> Update(User user);
         void Delete(User user);
-        User GetUserByEmail(string email);
+        Task<User> GetUserByEmail(string email);
         Task<bool> VerifyPassword(User user, string password);
         string GenerateToken(User user);
         Task<User> GetCurrentUser(ClaimsPrincipal user);

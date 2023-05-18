@@ -16,14 +16,14 @@ namespace SoftwarePal.Services
             _userRepository = userRepository;
         }
 
-        public  User AddUser(User user)
+        public async Task<User> AddUser(User user)
         {
-            return  _userRepository.Add(user);
+            return await _userRepository.Add(user);
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public async Task<IEnumerable<User>> GetAllUsers()
         {
-            return  _userRepository.GetAll();
+            return await _userRepository.GetAll();
         }
 
         public async Task<User> GetUserById(string id)
@@ -31,9 +31,9 @@ namespace SoftwarePal.Services
             return await _userRepository.GetById(id);
         }
 
-        public  User UpdateUser(User user)
+        public async Task<User> UpdateUser(User user)
         {
-            return  _userRepository.Update(user);
+            return await _userRepository.Update(user);
         }
 
         public void DeleteUser(User user)
@@ -41,9 +41,9 @@ namespace SoftwarePal.Services
             _userRepository.Delete(user);
         }
 
-        public User GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            return _userRepository.GetUserByEmail(email);
+            return await _userRepository.GetUserByEmail(email);
         }
 
         public async Task<bool> VerifyPassword(User user, string password)
@@ -69,12 +69,12 @@ namespace SoftwarePal.Services
 
     public interface IUserService
     {
-        User AddUser(User user);
-        IEnumerable<User> GetAllUsers();
+        Task<User> AddUser(User user);
+        Task<IEnumerable<User>> GetAllUsers();
         Task<User> GetUserById(string id);
-        User UpdateUser(User user);
+        Task<User> UpdateUser(User user);
         void DeleteUser(User user);
-        User GetUserByEmail(string email);
+        Task<User> GetUserByEmail(string email);
         Task<bool> VerifyPassword(User user, string password);
         string GenerateToken(User user);
         Task<User> GetCurrentUser(ClaimsPrincipal user);

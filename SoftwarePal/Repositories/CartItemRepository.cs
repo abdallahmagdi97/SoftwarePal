@@ -33,8 +33,12 @@ namespace SoftwarePal.Repositories
 
         public async Task<CartItem> GetById(int id)
         {
-            var subItem = await _context.CartItems.FindAsync(id);
-            return subItem;
+            var cartItem = await _context.CartItems.FindAsync(id);
+            if (cartItem == null)
+            {
+                throw new ArgumentNullException($"CartItem with ID {id} not found.");
+            }
+            return cartItem;
 
         }
 

@@ -36,6 +36,10 @@ namespace SoftwarePal.Repositories
         public async Task<SubItem> GetById(int id)
         {
             var subItem = await _context.SubItems.FindAsync(id);
+            if (subItem == null)
+            {
+                throw new InvalidOperationException($"SubItem with ID {id} not found.");
+            }
             return subItem;
 
         }

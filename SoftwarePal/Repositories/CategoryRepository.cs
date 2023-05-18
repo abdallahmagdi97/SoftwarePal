@@ -34,6 +34,10 @@ namespace SoftwarePal.Repositories
         public async Task<Category> GetById(int id)
         {
             var Category = await _context.Categories.FindAsync(id);
+            if (Category == null)
+            {
+                throw new ArgumentNullException($"Category with ID {id} not found.");
+            }
             return Category;
 
         }

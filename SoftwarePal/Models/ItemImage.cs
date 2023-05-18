@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SoftwarePal.Models
 {
     public class ItemImage
     {
+        [Key]
         public int Id { get; set; }
         public int ItemId { get; set; }
         public string? ImageName { get; set; }

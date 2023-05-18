@@ -33,8 +33,12 @@ namespace SoftwarePal.Repositories
 
         public async Task<Blog> GetById(int id)
         {
-            var subItem = await _context.Blogs.FindAsync(id);
-            return subItem;
+            var blog = await _context.Blogs.FindAsync(id);
+            if (blog == null)
+            {
+                throw new InvalidOperationException($"Blog with ID {id} not found.");
+            }
+            return blog;
 
         }
 

@@ -33,8 +33,12 @@ namespace SoftwarePal.Repositories
 
         public async Task<Team> GetById(int id)
         {
-            var subItem = await _context.Teams.FindAsync(id);
-            return subItem;
+            var team = await _context.Teams.FindAsync(id);
+            if (team == null)
+            {
+                throw new InvalidOperationException($"Team with ID {id} not found.");
+            }
+            return team;
 
         }
 
