@@ -41,7 +41,7 @@ namespace SoftwarePal.Services
         public void DeleteUser(User user)
         {
             if (!_userRepository.Exists(user.Id))
-                throw new InvalidOperationException($"User with ID {user.Id} not found.")
+                throw new InvalidOperationException($"User with ID {user.Id} not found.");
             _userRepository.Delete(user);
         }
 
