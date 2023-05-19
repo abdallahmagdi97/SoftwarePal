@@ -64,6 +64,10 @@ namespace SoftwarePal.Repositories
         {
             return await _context.ItemImages.Where(x => x.ItemId == id).ToListAsync();
         }
+        public bool Exists(int id)
+        {
+            return _context.Items.Any(e => e.Id == id);
+        }
     }
 
     public interface IItemRepository
@@ -76,5 +80,6 @@ namespace SoftwarePal.Repositories
         Task SaveChanges();
         void SaveImage(ItemImage itemImage);
         Task<List<ItemImage>> GetItemImages(int id);
+        bool Exists(int id);
     }
 }

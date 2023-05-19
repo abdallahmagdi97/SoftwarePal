@@ -119,6 +119,10 @@ namespace SoftwarePal.Repositories
         {
             await _context.SaveChangesAsync();
         }
+        public bool Exists(string id)
+        {
+            return _context.Users.Any(e => e.Id == id);
+        }
     }
 
     public interface IUserRepository
@@ -133,5 +137,6 @@ namespace SoftwarePal.Repositories
         string GenerateToken(User user);
         Task<User> GetCurrentUser(ClaimsPrincipal user);
         Task SaveChanges();
+        bool Exists(string userId);
     }
 }

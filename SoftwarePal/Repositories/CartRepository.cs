@@ -64,6 +64,10 @@ namespace SoftwarePal.Repositories
             }
             return cart;
         }
+        public bool Exists(int id)
+        {
+            return _context.Carts.Any(e => e.Id == id);
+        }
     }
 
     public interface ICartRepository
@@ -75,5 +79,6 @@ namespace SoftwarePal.Repositories
         void Delete(Cart cart);
         Task SaveChanges();
         Task<Cart> GetCartByUserId(string id);
+        bool Exists(int id);
     }
 }

@@ -59,6 +59,10 @@ namespace SoftwarePal.Repositories
             await _context.SaveChangesAsync();
             return slider;
         }
+        public bool Exists(int id)
+        {
+            return _context.Sliders.Any(e => e.Id == id);
+        }
     }
 
     public interface ISliderRepository
@@ -69,6 +73,7 @@ namespace SoftwarePal.Repositories
         Task<Slider> Update(Slider slider);
         void Delete(Slider slider);
         Task SaveChanges();
+        bool Exists(int id);
     }
 
 }

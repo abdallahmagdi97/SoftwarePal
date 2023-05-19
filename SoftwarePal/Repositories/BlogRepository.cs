@@ -57,6 +57,10 @@ namespace SoftwarePal.Repositories
             await _context.SaveChangesAsync();
             return blog;
         }
+        public bool Exists(int id)
+        {
+            return _context.Blogs.Any(e => e.Id == id);
+        }
     }
 
     public interface IBlogRepository
@@ -67,5 +71,6 @@ namespace SoftwarePal.Repositories
         Task<Blog> Update(Blog blog);
         void Delete(Blog blog);
         Task SaveChanges();
+        bool Exists(int id);
     }
 }

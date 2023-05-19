@@ -21,6 +21,8 @@ namespace SoftwarePal.Services
 
         public void Delete(License license)
         {
+            if (!_licenseRepository.Exists(license.Id))
+                throw new InvalidOperationException($"License with ID {license.Id} not found.");
             _licenseRepository.Delete(license);
         }
 
@@ -41,6 +43,8 @@ namespace SoftwarePal.Services
 
         public async Task<License> Update(License license)
         {
+            if (!_licenseRepository.Exists(license.Id))
+                throw new InvalidOperationException($"License with ID {license.Id} not found.");
             return await _licenseRepository.Update(license);
         }
     }

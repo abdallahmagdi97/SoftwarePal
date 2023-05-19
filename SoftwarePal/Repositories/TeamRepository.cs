@@ -58,6 +58,10 @@ namespace SoftwarePal.Repositories
             await _context.SaveChangesAsync();
             return team;
         }
+        public bool Exists(int id)
+        {
+            return _context.Teams.Any(e => e.Id == id);
+        }
     }
 
     public interface ITeamRepository
@@ -68,5 +72,6 @@ namespace SoftwarePal.Repositories
         Task<Team> Update(Team team);
         void Delete(Team team);
         Task SaveChanges();
+        bool Exists(int id);
     }
 }

@@ -21,6 +21,10 @@ namespace SoftwarePal.Services
 
         public void Delete(CartItem cartItem)
         {
+            if (!_cartItemRepository.Exists(cartItem.Id))
+            {
+                throw new Exception("Not Found");
+            }
             _cartItemRepository.Delete(cartItem);
         }
 
@@ -41,6 +45,11 @@ namespace SoftwarePal.Services
 
         public async Task<CartItem> Update(CartItem cartItem)
         {
+            if (!_cartItemRepository.Exists(cartItem.Id))
+            {
+                throw new Exception("Not Found");
+            }
+
             return await _cartItemRepository.Update(cartItem);
         }
 

@@ -35,6 +35,11 @@ namespace SoftwarePal.Services
         }
         public void Delete(Category category)
         {
+            if (!_categoryRepository.Exists(category.Id))
+            {
+                throw new Exception("Not Found");
+            }
+
             _categoryRepository.Delete(category);
         }
 
@@ -65,6 +70,10 @@ namespace SoftwarePal.Services
 
         public async Task<Category> Update(Category category)
         {
+            if (!_categoryRepository.Exists(category.Id))
+            {
+                throw new Exception("Not Found");
+            }
             return await _categoryRepository.Update(category);
         }
         public async Task<string> SaveImage(IFormFile image)

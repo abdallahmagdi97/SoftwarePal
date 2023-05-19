@@ -21,6 +21,10 @@ namespace SoftwarePal.Services
 
         public void Delete(IncludedSubItem includedSubItem)
         {
+            if (!_includedSubItemRepository.Exists(includedSubItem.Id))
+            {
+                throw new Exception("Not Found");
+            }
             _includedSubItemRepository.Delete(includedSubItem);
         }
 
@@ -41,6 +45,10 @@ namespace SoftwarePal.Services
 
         public async Task<IncludedSubItem> Update(IncludedSubItem includedSubItem)
         {
+            if (_includedSubItemRepository.Exists(includedSubItem.Id))
+            {
+                throw new Exception("Not Found");
+            }
             return await _includedSubItemRepository.Update(includedSubItem);
         }
     }

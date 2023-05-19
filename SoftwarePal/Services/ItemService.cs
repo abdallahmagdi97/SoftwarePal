@@ -68,8 +68,11 @@ namespace SoftwarePal.Services
 
         public async Task<Item> Update(Item item)
         {
-            if (await _itemRepository.GetById(item.Id) == null)
+            if (!_itemRepository.Exists(item.Id))
+            {
                 throw new InvalidOperationException($"Item with ID {item.Id} not found.");
+            }
+            
             return await _itemRepository.Update(item);
         }
         public string GetAppOrigin()

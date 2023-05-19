@@ -21,6 +21,9 @@ namespace SoftwarePal.Services
 
         public void Delete(Voucher voucher)
         {
+            if (!_voucherRepository.Exists(voucher.Id))
+                throw new InvalidOperationException($"Voucher with ID {voucher.Id} not found.");
+
             _voucherRepository.Delete(voucher);
         }
 
@@ -41,6 +44,8 @@ namespace SoftwarePal.Services
 
         public async Task<Voucher> Update(Voucher voucher)
         {
+            if (!_voucherRepository.Exists(voucher.Id))
+                throw new InvalidOperationException($"User with ID {voucher.Id} not found.");
             return await _voucherRepository.Update(voucher);
         }
     }

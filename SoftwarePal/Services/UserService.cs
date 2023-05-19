@@ -33,11 +33,15 @@ namespace SoftwarePal.Services
 
         public async Task<User> UpdateUser(User user)
         {
+            if (!_userRepository.Exists(user.Id))
+                throw new InvalidOperationException($"User with ID {user.Id} not found.");
             return await _userRepository.Update(user);
         }
 
         public void DeleteUser(User user)
         {
+            if (!_userRepository.Exists(user.Id))
+                throw new InvalidOperationException($"User with ID {user.Id} not found.")
             _userRepository.Delete(user);
         }
 

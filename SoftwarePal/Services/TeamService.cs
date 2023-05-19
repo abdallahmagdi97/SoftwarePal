@@ -24,6 +24,8 @@ namespace SoftwarePal.Services
 
         public void Delete(Team team)
         {
+            if (!_teamRepository.Exists(team.Id))
+                throw new InvalidOperationException($"Team with ID {team.Id} not found.");
             _teamRepository.Delete(team);
         }
 
@@ -48,6 +50,8 @@ namespace SoftwarePal.Services
 
         public async Task<Team> Update(Team team)
         {
+            if (!_teamRepository.Exists(team.Id))
+                throw new InvalidOperationException($"Team with ID {team.Id} not found.");
             return await _teamRepository.Update(team);
         }
         public async Task<string> SaveImage(IFormFile image)

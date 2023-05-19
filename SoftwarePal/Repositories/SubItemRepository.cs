@@ -59,6 +59,10 @@ namespace SoftwarePal.Repositories
         {
             await Update(subItem);
         }
+        public bool Exists(int id)
+        {
+            return _context.SubItems.Any(e => e.Id == id);
+        }
     }
 
     public interface ISubItemRepository
@@ -70,5 +74,6 @@ namespace SoftwarePal.Repositories
         void Delete(SubItem subItem);
         Task SaveChanges();
         void SaveImage(SubItem subItem);
+        bool Exists(int id);
     }
 }

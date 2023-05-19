@@ -24,6 +24,10 @@ namespace SoftwarePal.Services
 
         public void Delete(AboutUs aboutUs)
         {
+            if (!_aboutUsRepository.Exists(aboutUs.Id))
+            {
+                throw new Exception("Not Found");
+            }
             _aboutUsRepository.Delete(aboutUs);
         }
 
@@ -56,6 +60,10 @@ namespace SoftwarePal.Services
 
         public async Task<AboutUs> Update(AboutUs aboutUs)
         {
+            if (!_aboutUsRepository.Exists(aboutUs.Id))
+            {
+                throw new Exception("Not Found");
+            }
             return await _aboutUsRepository.Update(aboutUs);
         }
 

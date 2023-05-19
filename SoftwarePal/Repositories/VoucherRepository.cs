@@ -53,6 +53,10 @@ namespace SoftwarePal.Repositories
             await _context.SaveChangesAsync();
             return voucher;
         }
+        public bool Exists(int id)
+        {
+            return _context.Vouchers.Any(e => e.Id == id);
+        }
     }
 
     public interface IVoucherRepository
@@ -63,5 +67,6 @@ namespace SoftwarePal.Repositories
         Task<Voucher> Update(Voucher voucher);
         void Delete(Voucher voucher);
         Task SaveChanges();
+        bool Exists(int id);
     }
 }

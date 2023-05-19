@@ -54,6 +54,10 @@ namespace SoftwarePal.Repositories
             await _context.SaveChangesAsync();
             return license;
         }
+        public bool Exists(int id)
+        {
+            return _context.Licenses.Any(e => e.Id == id);
+        }
     }
 
     public interface ILicenseRepository
@@ -64,6 +68,7 @@ namespace SoftwarePal.Repositories
         Task<License> Update(License license);
         void Delete(License license);
         Task SaveChanges();
+        bool Exists(int id);
     }
 
 }

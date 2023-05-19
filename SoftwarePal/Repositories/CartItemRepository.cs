@@ -58,6 +58,10 @@ namespace SoftwarePal.Repositories
         {
             return await _context.CartItems.Where(i => i.CartId == id).ToListAsync();
         }
+        public bool Exists(int id)
+        {
+            return _context.CartItems.Any(e => e.Id == id);
+        }
     }
 
     public interface ICartItemRepository
@@ -69,5 +73,6 @@ namespace SoftwarePal.Repositories
         void Delete(CartItem cartItem);
         Task SaveChanges();
         Task<IEnumerable<CartItem>> GetCartItemsByCartId(int id);
+        bool Exists(int id);
     }
 }

@@ -23,6 +23,10 @@ namespace SoftwarePal.Services
 
         public void Delete(Blog blog)
         {
+            if (!_blogRepository.Exists(blog.Id))
+            {
+                throw new Exception("Not Found");
+            }
             _blogRepository.Delete(blog);
         }
 
@@ -55,6 +59,10 @@ namespace SoftwarePal.Services
 
         public async Task<Blog> Update(Blog blog)
         {
+            if (!_blogRepository.Exists(blog.Id))
+            {
+                throw new Exception("Not Found");
+            }
             return await _blogRepository.Update(blog);
         }
 

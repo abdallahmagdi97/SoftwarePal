@@ -58,6 +58,10 @@ namespace SoftwarePal.Repositories
             await _context.SaveChangesAsync();
             return category;
         }
+        public bool Exists(int id)
+        {
+            return _context.Categories.Any(e => e.Id == id);
+        }
     }
 
     public interface ICategoryRepository
@@ -68,5 +72,6 @@ namespace SoftwarePal.Repositories
         Task<Category> Update(Category category);
         void Delete(Category category);
         Task SaveChanges();
+        bool Exists(int id);
     }
 }

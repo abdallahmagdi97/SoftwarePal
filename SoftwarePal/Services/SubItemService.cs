@@ -42,6 +42,8 @@ namespace SoftwarePal.Services
 
         public void Delete(SubItem subItem)
         {
+            if (!_subItemRepository.Exists(subItem.Id))
+                throw new InvalidOperationException($"SubItem with ID {subItem.Id} not found.");
             _subItemRepository.Delete(subItem);
         }
 
@@ -65,6 +67,8 @@ namespace SoftwarePal.Services
 
         public async Task<SubItem> Update(SubItem subItem)
         {
+            if (!_subItemRepository.Exists(subItem.Id))
+                throw new InvalidOperationException($"SubItem with ID {subItem.Id} not found.");
             return await _subItemRepository.Update(subItem);
         }
         public string GetAppOrigin()

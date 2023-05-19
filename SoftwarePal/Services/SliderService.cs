@@ -1,6 +1,7 @@
 ﻿using SoftwarePal.Models;
 using SoftwarePal.Repositories;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
@@ -24,6 +25,8 @@ namespace SoftwarePal.Services
 
         public void Delete(Slider slider)
         {
+            if (!_sliderRepository.Exists(slider.Id))
+                throw new InvalidOperationException($"Slider with ID {slider.Id} not found.");
             _sliderRepository.Delete(slider);
         }
 
@@ -48,6 +51,8 @@ namespace SoftwarePal.Services
 
         public async Task<Slider> Update(Slider slider)
         {
+            if (!_sliderRepository.Exists(slider.Id))
+                throw new InvalidOperationException($"Slider with ID {slider.Id} not found.");
             return await _sliderRepository.Update(slider);
         }
         public async Task<string> SaveImage(IFormFile image)
