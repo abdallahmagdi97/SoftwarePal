@@ -56,8 +56,7 @@ namespace SoftwarePal.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAboutUs(int id, [FromForm] AboutUs aboutUs)
         {
-            var existingAboutUs = await _aboutUsService.GetById(id);
-            if (existingAboutUs == null)
+            if (id != aboutUs.Id)
             {
                 return NotFound();
             }

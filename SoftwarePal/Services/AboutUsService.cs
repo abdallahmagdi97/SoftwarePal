@@ -29,7 +29,13 @@ namespace SoftwarePal.Services
 
         public async Task<IEnumerable<AboutUs>> GetAll()
         {
-            return await _aboutUsRepository.GetAll();
+            var aboutUsList = await _aboutUsRepository.GetAll();
+            foreach(var aboutUs in aboutUsList)
+            {
+                string origin = GetAppOrigin();
+                aboutUs.ImageName = origin + "/" + aboutUs.ImageName;
+            }
+            return aboutUsList;
         }
 
         public async Task<AboutUs> GetById(int id)
