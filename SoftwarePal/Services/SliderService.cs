@@ -1,6 +1,7 @@
 ﻿using SoftwarePal.Models;
 using SoftwarePal.Repositories;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace SoftwarePal.Services
@@ -35,7 +36,8 @@ namespace SoftwarePal.Services
         {
             var slider = await _sliderRepository.GetById(id);
             string origin = GetAppOrigin();
-            slider.ImageName = origin + "/" + slider.ImageName;
+            if (slider.ImageName != null)
+                slider.ImageName = origin + "/" + slider.ImageName;
             return slider;
         }
 

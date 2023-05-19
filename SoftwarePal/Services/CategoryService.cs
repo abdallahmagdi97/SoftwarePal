@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using System.Reflection.Metadata;
 
 namespace SoftwarePal.Services
 {
@@ -52,7 +53,8 @@ namespace SoftwarePal.Services
         {
             var category = await _categoryRepository.GetById(id);
             string origin = GetAppOrigin();
-            category.ImageName = origin + "/" + category.ImageName;
+            if (category.ImageName != null)
+                category.ImageName = origin + "/" + category.ImageName;
             return category;
         }
 

@@ -28,14 +28,23 @@ namespace SoftwarePal.Services
 
         public async Task<IEnumerable<Blog>> GetAll()
         {
-            return await _blogRepository.GetAll();
+            var blogList = await _blogRepository.GetAll();
+            foreach (var blog in blogList)
+            {
+                string origin = GetAppOrigin();
+                if (blog.ImageName != null)
+                    if (!blog.ImageName.Contains("http"))
+                        blog.ImageName = origin + "/" + blog.ImageName;
+            }
+            return blogList;
         }
 
         public async Task<Blog> GetById(int id)
         {
             var blog = await _blogRepository.GetById(id);
             string origin = GetAppOrigin();
-            blog.ImageName = origin + "/" + blog.ImageName;
+            if (blog.ImageName != null)
+                blog.ImageName = origin + "/" + blog.ImageName;
             return blog;
         }
 

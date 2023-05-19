@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Reflection.Metadata;
 
 namespace SoftwarePal.Services
 {
@@ -85,7 +86,8 @@ namespace SoftwarePal.Services
             item.ItemImages = await _itemRepository.GetItemImages(item.Id);
             for(int i = 0; i < item.ItemImages.Count; i++)
             {
-                item.ItemImages[i].ImageName = origin + "/" + item.ItemImages[i].ImageName;
+                if (item.ItemImages[i].ImageName != null)
+                    item.ItemImages[i].ImageName = origin + "/" + item.ItemImages[i].ImageName;
             }
             return item;
         }

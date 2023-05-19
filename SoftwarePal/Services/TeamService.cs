@@ -1,6 +1,7 @@
 ﻿using SoftwarePal.Models;
 using SoftwarePal.Repositories;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace SoftwarePal.Services
@@ -35,7 +36,8 @@ namespace SoftwarePal.Services
         {
             var team = await _teamRepository.GetById(id);
             string origin = GetAppOrigin();
-            team.ImageName = origin + "/" + team.ImageName;
+            if (team.ImageName != null)
+                team.ImageName = origin + "/" + team.ImageName;
             return team;
         }
 
