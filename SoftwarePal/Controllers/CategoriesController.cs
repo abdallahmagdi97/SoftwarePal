@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Reflection.Metadata;
 
 namespace SoftwarePal.Controllers
 {
@@ -46,6 +47,9 @@ namespace SoftwarePal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCategory([FromForm] Category category)
         {
+            if (category.Image != null)
+                category.ImageName = await _categoryService.SaveImage(category.Image);
+
             await _categoryService.Add(category);
             return Ok(category);
         }

@@ -3,6 +3,7 @@ using SoftwarePal.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Reflection.Metadata;
 
 namespace SoftwarePal.Repositories
 {
@@ -50,6 +51,10 @@ namespace SoftwarePal.Repositories
         public async Task<Team> Update(Team team)
         {
             _context.Entry(team).State = EntityState.Modified;
+            if (team.ImageName == null)
+            {
+                _context.Entry(team).Property(nameof(team.ImageName)).IsModified = false;
+            }
             await _context.SaveChangesAsync();
             return team;
         }

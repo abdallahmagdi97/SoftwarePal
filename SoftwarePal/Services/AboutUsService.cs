@@ -33,7 +33,9 @@ namespace SoftwarePal.Services
             foreach(var aboutUs in aboutUsList)
             {
                 string origin = GetAppOrigin();
-                aboutUs.ImageName = origin + "/" + aboutUs.ImageName;
+                if (aboutUs.ImageName != null)
+                    if (!aboutUs.ImageName.Contains("http"))
+                        aboutUs.ImageName = origin + "/" + aboutUs.ImageName;
             }
             return aboutUsList;
         }
@@ -42,7 +44,8 @@ namespace SoftwarePal.Services
         {
             var aboutUs = await _aboutUsRepository.GetById(id);
             string origin = GetAppOrigin();
-            aboutUs.ImageName = origin + "/" + aboutUs.ImageName;
+            if (aboutUs.ImageName != null)
+                aboutUs.ImageName = origin + "/" + aboutUs.ImageName;
             return aboutUs;
         }
 
@@ -53,7 +56,6 @@ namespace SoftwarePal.Services
 
         public async Task<AboutUs> Update(AboutUs aboutUs)
         {
-
             return await _aboutUsRepository.Update(aboutUs);
         }
 

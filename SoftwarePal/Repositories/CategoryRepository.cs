@@ -3,6 +3,7 @@ using SoftwarePal.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Reflection.Metadata;
 
 namespace SoftwarePal.Repositories
 {
@@ -50,12 +51,12 @@ namespace SoftwarePal.Repositories
         public async Task<Category> Update(Category category)
         {
             _context.Entry(category).State = EntityState.Modified;
+            if (category.ImageName == null)
+            {
+                _context.Entry(category).Property(nameof(category.ImageName)).IsModified = false;
+            }
             await _context.SaveChangesAsync();
             return category;
-        }
-        public async Task<Category> SaveImage(Category category)
-        {
-            return await Update(category);
         }
     }
 
@@ -67,6 +68,5 @@ namespace SoftwarePal.Repositories
         Task<Category> Update(Category category);
         void Delete(Category category);
         Task SaveChanges();
-        Task<Category> SaveImage(Category category);
     }
 }

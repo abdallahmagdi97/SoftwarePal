@@ -51,6 +51,10 @@ namespace SoftwarePal.Repositories
         public async Task<AboutUs> Update(AboutUs aboutUs)
         {
             _context.Entry(aboutUs).State = EntityState.Modified;
+            if (aboutUs.ImageName == null)
+            {
+                _context.Entry(aboutUs).Property(nameof(aboutUs.ImageName)).IsModified = false;
+            }
             await _context.SaveChangesAsync();
             return aboutUs;
         }

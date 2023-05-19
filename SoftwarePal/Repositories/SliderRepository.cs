@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Reflection.Metadata;
 
 namespace SoftwarePal.Repositories
 {
@@ -51,6 +52,10 @@ namespace SoftwarePal.Repositories
         public async Task<Slider> Update(Slider slider)
         {
             _context.Entry(slider).State = EntityState.Modified;
+            if (slider.ImageName == null)
+            {
+                _context.Entry(slider).Property(nameof(slider.ImageName)).IsModified = false;
+            }
             await _context.SaveChangesAsync();
             return slider;
         }

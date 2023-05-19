@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SoftwarePal.Helpers
 {
@@ -60,7 +61,7 @@ namespace SoftwarePal.Helpers
                 if (item.ItemImages[i].Image.Length > 0)
                 {
                     // C:\\Users\\aedris\\source\\repos\\SoftwarePal\\SoftwarePal
-                    var filePath = Path.Combine(Environment.CurrentDirectory, "Images", "Item", (item.ItemImages[i].ImageName ?? "item-") + Guid.NewGuid());
+                    var filePath = Path.Combine(Environment.CurrentDirectory, "Images", "Item", (item.ItemImages[i].ImageName ?? "item-") + Guid.NewGuid() + "." + item.ItemImages[i].Image.ContentType.Split('/').Last());
                     if (!Directory.Exists(filePath))
                     {
                         Directory.CreateDirectory(filePath);

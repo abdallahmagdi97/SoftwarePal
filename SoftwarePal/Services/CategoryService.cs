@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SoftwarePal.Services
 {
@@ -20,27 +21,8 @@ namespace SoftwarePal.Services
 
         public async Task<Category> Add(Category category)
         {
-            var savedCategory = await _categoryRepository.Add(category);
-            string path = "";
-            if (category.Image.Length > 0)
-            {
-                // C:\\Users\\aedris\\source\\repos\\SoftwarePal\\SoftwarePal
-                // _hostingEnvironment?.WebRootPath
-                path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "Images\\Category"));
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                var fullPath = Path.Combine(path, "Category-" + Guid.NewGuid());
-                using (var stream = File.Create(fullPath))
-                {
-                    category.Image.CopyTo(stream);
-                }
-                category.ImageName = fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
-                await _categoryRepository.SaveImage(category);
-            }
-            savedCategory.Image = null;
-            return savedCategory;
+            return await _categoryRepository.Add(category);
+            
         }
         public string GetAppOrigin()
         {
@@ -83,6 +65,35 @@ namespace SoftwarePal.Services
         {
             return await _categoryRepository.Update(category);
         }
+        public async Task<string> SaveImage(IFormFile image)
+        {
+            string path = "";
+            try
+            {
+                if (image.Length > 0)
+                {
+                    path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "Images\\Category"));
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    var fullPath = Path.Combine(path, "Category-" + Guid.NewGuid() + "." + image.ContentType.Split('/').Last());
+                    using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        await image.CopyToAsync(fileStream);
+                    }
+                    return fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
+                }
+                else
+                {
+                    throw new Exception("File empty");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("File Copy Failed", ex);
+            }
+        }
     }
 
     public interface ICategoryService
@@ -94,5 +105,6 @@ namespace SoftwarePal.Services
         void Delete(Category category);
         Task SaveChanges();
         string GetAppOrigin();
+        Task<string> SaveImage(IFormFile image);
     }
 }

@@ -50,6 +50,10 @@ namespace SoftwarePal.Repositories
         public async Task<Blog> Update(Blog blog)
         {
             _context.Entry(blog).State = EntityState.Modified;
+            if (blog.ImageName == null)
+            {
+                _context.Entry(blog).Property(nameof(blog.ImageName)).IsModified = false;
+            }
             await _context.SaveChangesAsync();
             return blog;
         }
