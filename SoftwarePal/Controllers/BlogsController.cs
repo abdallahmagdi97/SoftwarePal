@@ -58,11 +58,6 @@ namespace SoftwarePal.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBlog(int id, [FromForm] Models.Blog blog)
         {
-            var existingBlog = await _blogService.GetById(id);
-            if (existingBlog == null)
-            {
-                return NotFound();
-            }
             if (blog.Id != id)
             {
                 return BadRequest();

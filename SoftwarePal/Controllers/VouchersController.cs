@@ -57,11 +57,6 @@ namespace SoftwarePal.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateVoucher(int id, [FromBody] Models.Voucher voucher)
         {
-            var existingVoucher = await _voucherService.GetById(id);
-            if (existingVoucher == null)
-            {
-                return NotFound();
-            }
             if (voucher.Id != id)
             {
                 return BadRequest();

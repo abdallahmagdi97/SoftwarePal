@@ -68,11 +68,6 @@ namespace SoftwarePal.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCart(int id, [FromBody] Models.Cart cart)
         {
-            var existingCart = await _cartService.GetById(id);
-            if (existingCart == null)
-            {
-                return NotFound();
-            }
             if (cart.Id != id)
             {
                 return BadRequest();

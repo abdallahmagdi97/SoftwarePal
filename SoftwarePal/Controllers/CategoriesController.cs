@@ -58,12 +58,6 @@ namespace SoftwarePal.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, [FromForm] Models.Category category)
         {
-            var existingCategory = _categoryService.GetById(id);
-            if (existingCategory == null)
-            {
-                return NotFound();
-            }
-
             await _categoryService.Update(category);
             return Ok(category);
         }

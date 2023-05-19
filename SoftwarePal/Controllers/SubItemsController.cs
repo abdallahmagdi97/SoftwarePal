@@ -53,11 +53,6 @@ namespace SoftwarePal.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSubItem(int id, [FromBody] SubItem subItem)
         {
-            var existingSubItem = await _subItemService.GetById(id);
-            if (existingSubItem == null)
-            {
-                return NotFound();
-            }
             if (subItem.Id != id)
             {
                 return BadRequest();

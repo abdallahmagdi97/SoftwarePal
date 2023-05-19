@@ -59,11 +59,6 @@ namespace SoftwarePal.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTeam(int id, [FromForm] Team team)
         {
-            var existingTeam = await _teamService.GetById(id);
-            if (existingTeam == null)
-            {
-                return NotFound();
-            }
             if (team.Id != id)
             {
                 return BadRequest();

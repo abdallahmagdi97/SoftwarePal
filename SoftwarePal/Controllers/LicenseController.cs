@@ -67,11 +67,6 @@ namespace SoftwarePal.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateLicense(int id, [FromBody] Models.License license)
         {
-            var existingLicense = await _licenseService.GetById(id);
-            if (existingLicense == null)
-            {
-                return NotFound();
-            }
             if (license.Id != id)
             {
                 return BadRequest();

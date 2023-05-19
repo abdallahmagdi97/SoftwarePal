@@ -71,7 +71,7 @@ namespace SoftwarePal.Controllers
         }
         [Authorize]
         [HttpPut("{id}")]
-        public IActionResult Update(string id, User user)
+        public async Task<IActionResult> Update(string id, User user)
         {
             if (id != user.Id)
             {
@@ -83,14 +83,9 @@ namespace SoftwarePal.Controllers
                 return BadRequest(ModelState);
             }
 
-            var updatedUser = _userService.UpdateUser(user);
+            await _userService.UpdateUser(user);
 
-            if (updatedUser == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(updatedUser);
+            return Ok(user);
         }
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpDelete("{id}")]

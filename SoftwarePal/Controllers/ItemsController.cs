@@ -57,11 +57,6 @@ namespace SoftwarePal.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateItem(int id, [FromForm] Item item)
         {
-            var existingItem = await _itemService.GetById(id);
-            if (existingItem == null)
-            {
-                return NotFound();
-            }
             if (item.Id != id)
             {
                 return BadRequest();

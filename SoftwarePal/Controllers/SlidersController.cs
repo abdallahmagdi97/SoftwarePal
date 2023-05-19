@@ -58,11 +58,6 @@ namespace SoftwarePal.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSlider(int id, [FromForm] Slider slider)
         {
-            var existingSlider = await _sliderService.GetById(id);
-            if (existingSlider == null)
-            {
-                return NotFound();
-            }
             if (slider.Id != id)
             {
                 return BadRequest();
