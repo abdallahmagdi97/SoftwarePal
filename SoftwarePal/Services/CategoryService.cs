@@ -57,7 +57,13 @@ namespace SoftwarePal.Services
 
         public async Task<IEnumerable<Category>> GetAll()
         {
-            return await _categoryRepository.GetAll();
+            var categoryList = await _categoryRepository.GetAll();
+            foreach (var category in categoryList)
+            {
+                string origin = GetAppOrigin();
+                category.ImageName = origin + "/" + category.ImageName;
+            }
+            return categoryList;
         }
 
         public async Task<Category> GetById(int id)

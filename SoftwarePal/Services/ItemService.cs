@@ -41,9 +41,15 @@ namespace SoftwarePal.Services
             _itemRepository.Delete(item);
         }
 
-        public Task<IEnumerable<Item>> GetAll()
+        public async Task<IEnumerable<Item>> GetAll()
         {
-            return _itemRepository.GetAll();
+            var items = await _itemRepository.GetAll();
+            string origin = GetAppOrigin();
+            for(int i = 0; i < items.Count(); i++)
+            {
+                items[i] = await GetItemImages(origin, items[i]);
+            }
+            return items;
         }
 
         public async Task<Item> GetById(int id)

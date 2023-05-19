@@ -3,6 +3,7 @@ using SoftwarePal.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace SoftwarePal.Repositories
 {
