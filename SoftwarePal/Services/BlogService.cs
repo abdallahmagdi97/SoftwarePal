@@ -18,6 +18,7 @@ namespace SoftwarePal.Services
 
         public async Task<Blog> Add(Blog blog)
         {
+            blog.CreatedAt = DateTime.Now;
             return await _blogRepository.Add(blog);
         }
 

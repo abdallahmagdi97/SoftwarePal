@@ -17,5 +17,6 @@ namespace SoftwarePal.Models
         public string? Author { get; set; }
         public string? Url { get; set; }
         public bool Status { get; set; } = true;
+        public DateTime CreatedAt { get; set; }
     }
 }

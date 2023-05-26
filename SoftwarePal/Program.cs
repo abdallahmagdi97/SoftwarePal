@@ -119,7 +119,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
-string[] origins = { "http://localhost:5030" };
+string[] origins = { "http://localhost:5030", "http://localhost:5020" };
 app.UseCors(
     options => options.WithOrigins(origins).AllowAnyMethod().AllowAnyHeader()
 );

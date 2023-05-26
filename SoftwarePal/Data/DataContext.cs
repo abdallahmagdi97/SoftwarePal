@@ -1,5 +1,6 @@
 ﻿using SoftwarePal.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace SoftwarePal.Data
 {
@@ -27,12 +28,15 @@ namespace SoftwarePal.Data
             : base(options)
         {
         }
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies(); // Enables lazy loading
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasKey(u => u.Id);
             modelBuilder.Entity<License>().HasKey(l => l.Id);
-
+            
         }
     }
 }
