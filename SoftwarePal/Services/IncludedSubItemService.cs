@@ -16,6 +16,7 @@ namespace SoftwarePal.Services
 
         public async Task<IncludedSubItem> Add(IncludedSubItem includedSubItem)
         {
+            includedSubItem.CreatedAt = DateTime.Now;
             return await _includedSubItemRepository.Add(includedSubItem);
         }
 

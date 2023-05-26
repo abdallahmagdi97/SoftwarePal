@@ -8,5 +8,6 @@ namespace SoftwarePal.Models
         public int Id { get; set; }
         public int ItemId { get; set; }
         public int SubItemId { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace SoftwarePal.Services
 
         public async Task<Slider> Add(Slider slider)
         {
+            slider.CreatedAt = DateTime.Now;
             return await _sliderRepository.Add(slider);
         }
 

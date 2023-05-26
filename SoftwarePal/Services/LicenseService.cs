@@ -16,6 +16,7 @@ namespace SoftwarePal.Services
 
         public async Task<License> Add(License license)
         {
+            license.CreatedAt = DateTime.Now;
             return await _licenseRepository.Add(license);
         }
 

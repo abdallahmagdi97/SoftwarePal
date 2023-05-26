@@ -19,6 +19,7 @@ namespace SoftwarePal.Services
 
         public async Task<Team> Add(Team team)
         {
+            team.CreatedAt = DateTime.Now;
             return await _teamRepository.Add(team);
         }
 

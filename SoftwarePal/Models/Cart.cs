@@ -8,5 +8,6 @@ namespace SoftwarePal.Models
         public int Id { get; set; }
         [Required]
         public string? UserId { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }

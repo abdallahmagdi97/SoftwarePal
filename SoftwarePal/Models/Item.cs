@@ -19,6 +19,7 @@ namespace SoftwarePal.Models
         public int NumberOfUsers { get; set; } = 1;
         public string? Specs { get; set; }
         public bool Status { get; set; } = true;
+        public DateTime? CreatedAt { get; set; }
         [NotMapped]
         public List<ItemImage> ItemImages { get; set; }
         [NotMapped]

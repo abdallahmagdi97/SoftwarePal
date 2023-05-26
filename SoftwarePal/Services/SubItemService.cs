@@ -19,7 +19,8 @@ namespace SoftwarePal.Services
 
         public async Task<SubItem> Add(SubItem subItem)
         {
-            var savedSubItem = await _subItemRepository.Add(subItem);
+            subItem.CreatedAt = DateTime.Now;
+            await _subItemRepository.Add(subItem);
             string path;
             if (subItem.Image.Length > 0)
             {
@@ -37,7 +38,7 @@ namespace SoftwarePal.Services
                 _subItemRepository.SaveImage(subItem);
             }
 
-            return savedSubItem;
+            return subItem;
         }
 
         public void Delete(SubItem subItem)

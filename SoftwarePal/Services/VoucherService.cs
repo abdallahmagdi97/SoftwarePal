@@ -16,6 +16,7 @@ namespace SoftwarePal.Services
 
         public async Task<Voucher> Add(Voucher voucher)
         {
+            voucher.CreatedAt = DateTime.Now;
             return await _voucherRepository.Add(voucher);
         }
 

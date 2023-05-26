@@ -11,6 +11,7 @@ namespace SoftwarePal.Models
         public decimal Discount { get; set; }
         public decimal Total { get; set; }
         public OrderStatus Status { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
     public enum OrderStatus
     {

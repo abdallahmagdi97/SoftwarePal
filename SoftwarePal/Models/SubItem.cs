@@ -15,5 +15,6 @@ namespace SoftwarePal.Models
         public IFormFile? Image { get; set; }
         public bool Status { get; set; } = true;
         public string? ImageName { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }

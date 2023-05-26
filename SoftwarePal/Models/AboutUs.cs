@@ -14,5 +14,6 @@ namespace SoftwarePal.Models
         [NotMapped]
         public IFormFile? Image { get; set; }
         public string? ImageName { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }

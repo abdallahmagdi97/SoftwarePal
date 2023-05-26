@@ -19,6 +19,7 @@ namespace SoftwarePal.Services
 
         public async Task<AboutUs> Add(AboutUs aboutUs)
         {
+            aboutUs.CreatedAt = DateTime.Now;
             return await _aboutUsRepository.Add(aboutUs);
         }
 

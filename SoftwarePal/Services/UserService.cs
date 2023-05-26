@@ -18,6 +18,7 @@ namespace SoftwarePal.Services
 
         public async Task<User> AddUser(User user)
         {
+            user.CreatedAt = DateTime.Now;
             return await _userRepository.Add(user);
         }
 

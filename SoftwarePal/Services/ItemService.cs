@@ -29,12 +29,13 @@ namespace SoftwarePal.Services
 
         public async Task<Item> Add(Item item)
         {
-            Item savedItem = await _itemRepository.Add(item);
+            item.CreatedAt = DateTime.Now;
+            await _itemRepository.Add(item);
             ItemsHelper itemsHelper = new ItemsHelper(_includedSubItemRepository, _itemPriceRuleRepository, _itemRepository, _hostingEnvironment, _httpContextAccessor);
-            itemsHelper.SaveImages(item, savedItem.Id);
-            itemsHelper.AddItemPriceRules(item, savedItem.Id);
-            itemsHelper.AddIncludedSubItems(item, savedItem.Id);
-            return savedItem;
+            itemsHelper.SaveImages(item, item.Id);
+            itemsHelper.AddItemPriceRules(item, item.Id);
+            itemsHelper.AddIncludedSubItems(item, item.Id);
+            return item;
         }
 
         public void Delete(Item item)

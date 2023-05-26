@@ -16,6 +16,7 @@ namespace SoftwarePal.Services
 
         public async Task<Cart> Add(Cart cart)
         {
+            cart.CreatedAt = DateTime.Now;
             return await _cartRepository.Add(cart);
         }
 

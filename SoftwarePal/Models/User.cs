@@ -26,6 +26,7 @@ namespace SoftwarePal.Models
         public string FullName { get; set; }
         public UserRole UserRole { get; set; }
         public bool Status { get; set; } = true;
+        public DateTime? CreatedAt { get; set; }
     }
 
     public enum UserRole

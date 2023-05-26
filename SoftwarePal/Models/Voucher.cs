@@ -15,5 +15,6 @@ namespace SoftwarePal.Models
         public bool IsUsed { get; set; }
         public DateTime ExpiryDate { get; set; }
         public bool Status { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }

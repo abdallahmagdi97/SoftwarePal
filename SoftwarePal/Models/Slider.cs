@@ -18,5 +18,6 @@ namespace SoftwarePal.Models
         public int Order { get; set; }
         public bool Status { get; set; } = true;
         public string? ImageName { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }

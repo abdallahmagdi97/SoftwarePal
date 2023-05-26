@@ -9,5 +9,6 @@ namespace SoftwarePal.Models
         public int CartId { get; set; }
         public int ItemId { get; set; }
         public int Qty { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }

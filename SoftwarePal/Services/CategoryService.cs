@@ -22,6 +22,7 @@ namespace SoftwarePal.Services
 
         public async Task<Category> Add(Category category)
         {
+            category.CreatedAt = DateTime.Now;
             return await _categoryRepository.Add(category);
             
         }

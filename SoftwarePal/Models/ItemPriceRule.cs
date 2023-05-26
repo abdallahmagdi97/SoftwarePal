@@ -10,5 +10,6 @@ namespace SoftwarePal.Models
         public int MinQty { get; set; } = 1;
         public int? MaxQty { get; set; }
         public decimal Price { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }
