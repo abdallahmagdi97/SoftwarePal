@@ -35,6 +35,10 @@ namespace SoftwarePal.Services
 
         public Task<Voucher> GetById(int id)
         {
+            if (!_voucherRepository.Exists(id))
+            {
+                throw new Exception("Not Found");
+            }
             return _voucherRepository.GetById(id);
         }
 

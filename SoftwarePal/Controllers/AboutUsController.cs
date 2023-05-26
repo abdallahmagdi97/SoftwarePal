@@ -21,10 +21,11 @@ namespace SoftwarePal.Controllers
     public class AboutUsController : ControllerBase
     {
         private readonly IAboutUsService _aboutUsService;
-
-        public AboutUsController(IAboutUsService aboutUsService)
+        private readonly IUserService _userService;
+        public AboutUsController(IAboutUsService aboutUsService, IUserService userService)
         {
             _aboutUsService = aboutUsService;
+            _userService = userService;
         }
 
         [AllowAnonymous]
@@ -48,6 +49,10 @@ namespace SoftwarePal.Controllers
         {
             if (aboutUs.Image != null)
                 aboutUs.ImageName = await _aboutUsService.SaveImage(aboutUs.Image);
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            aboutUs.UserCreated = user?.Id;
             await _aboutUsService.Add(aboutUs);
             return Ok(aboutUs);
         }
@@ -62,6 +67,10 @@ namespace SoftwarePal.Controllers
             }
             if (aboutUs.Image != null)
                 aboutUs.ImageName = await _aboutUsService.SaveImage(aboutUs.Image);
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            aboutUs.UserUpdated = user?.Id;
             await _aboutUsService.Update(aboutUs);
             return Ok(aboutUs);
         }

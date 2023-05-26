@@ -30,7 +30,7 @@ namespace SoftwarePal.Repositories
 
         public async Task<IEnumerable<Slider>> GetAll()
         {
-            return await _context.Sliders.ToListAsync();
+            return await _context.Sliders.OrderBy(c => c.Order).ToListAsync();
         }
 
         public async Task<Slider> GetById(int id)

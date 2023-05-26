@@ -36,6 +36,10 @@ namespace SoftwarePal.Services
 
         public Task<CartItem> GetById(int id)
         {
+            if (!_cartItemRepository.Exists(id))
+            {
+                throw new Exception("Not Found");
+            }
             return _cartItemRepository.GetById(id);
         }
 
@@ -50,7 +54,7 @@ namespace SoftwarePal.Services
             {
                 throw new Exception("Not Found");
             }
-
+            cartItem.UpdatedAt = DateTime.Now;
             return await _cartItemRepository.Update(cartItem);
         }
 

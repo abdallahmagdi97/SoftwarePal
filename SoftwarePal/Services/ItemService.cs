@@ -56,6 +56,10 @@ namespace SoftwarePal.Services
 
         public async Task<Item> GetById(int id)
         {
+            if (!_itemRepository.Exists(id))
+            {
+                throw new Exception("Not Found");
+            }
             var item = await _itemRepository.GetById(id);
             string origin = GetAppOrigin();
             item = await GetItemImages(origin, item);

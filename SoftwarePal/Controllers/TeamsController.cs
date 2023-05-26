@@ -51,6 +51,10 @@ namespace SoftwarePal.Controllers
         {
             if (team.Image != null)
                 team.ImageName = await _teamService.SaveImage(team.Image);
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            team.UserCreated = user?.Id;
             await _teamService.Add(team);
             return Ok(team);
         }
@@ -65,6 +69,10 @@ namespace SoftwarePal.Controllers
             }
             if (team.Image != null)
                 team.ImageName = await _teamService.SaveImage(team.Image);
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            team.UserUpdated = user?.Id;
             await _teamService.Update(team);
             return Ok(team);
         }

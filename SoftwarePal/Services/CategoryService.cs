@@ -57,6 +57,10 @@ namespace SoftwarePal.Services
 
         public async Task<Category> GetById(int id)
         {
+            if (!_categoryRepository.Exists(id))
+            {
+                throw new Exception("Not Found");
+            }
             var category = await _categoryRepository.GetById(id);
             string origin = GetAppOrigin();
             if (category.ImageName != null)

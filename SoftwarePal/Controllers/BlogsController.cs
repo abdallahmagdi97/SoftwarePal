@@ -50,6 +50,10 @@ namespace SoftwarePal.Controllers
         {
             if (blog.Image != null)
                 blog.ImageName = await _blogService.SaveImage(blog.Image);
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            blog.UserCreated = user?.Id;
             await _blogService.Add(blog);
             return Ok(blog);
         }
@@ -64,6 +68,10 @@ namespace SoftwarePal.Controllers
             }
             if (blog.Image != null)
                 blog.ImageName = await _blogService.SaveImage(blog.Image);
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            blog.UserUpdated = user?.Id;
             await _blogService.Update(blog);
             return Ok(blog);
         }

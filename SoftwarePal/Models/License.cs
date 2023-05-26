@@ -11,10 +11,10 @@ namespace SoftwarePal.Models
         [Required]
         public string? Key { get; set; }
         public bool IsPurchased { get; set; } = false;
-        public bool Status { get; set; } = true; 
-        public DateTime? CreatedAt
-        {
-            get; set;
-        }
+        public bool Status { get; set; } = true;
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string? UserCreated { get; set; }
+        public string? UserUpdated { get; set; }
     }
 }

@@ -38,6 +38,10 @@ namespace SoftwarePal.Services
 
         public async Task<Slider> GetById(int id)
         {
+            if (!_sliderRepository.Exists(id))
+            {
+                throw new Exception("Not Found");
+            }
             var slider = await _sliderRepository.GetById(id);
             string origin = GetAppOrigin();
             if (slider.ImageName != null)

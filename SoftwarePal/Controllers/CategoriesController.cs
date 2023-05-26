@@ -21,10 +21,12 @@ namespace SoftwarePal.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
+        private readonly IUserService _userService;
 
-        public CategoriesController(ICategoryService categoryService)
+        public CategoriesController(ICategoryService categoryService, IUserService userService)
         {
             _categoryService = categoryService;
+            _userService = userService;
         }
 
         [AllowAnonymous]
@@ -49,7 +51,10 @@ namespace SoftwarePal.Controllers
         {
             if (category.Image != null)
                 category.ImageName = await _categoryService.SaveImage(category.Image);
-
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            category.UserCreated = user?.Id;
             await _categoryService.Add(category);
             return Ok(category);
         }
@@ -58,6 +63,10 @@ namespace SoftwarePal.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, [FromForm] Models.Category category)
         {
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            category.UserUpdated = user?.Id;
             await _categoryService.Update(category);
             return Ok(category);
         }

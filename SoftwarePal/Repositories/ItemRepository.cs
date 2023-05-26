@@ -62,7 +62,7 @@ namespace SoftwarePal.Repositories
 
         public async Task<List<ItemImage>> GetItemImages(int id)
         {
-            return await _context.ItemImages.Where(x => x.ItemId == id).ToListAsync();
+            return await _context.ItemImages.Where(x => x.ItemId == id).OrderBy(c => c.ImageOrder).ToListAsync();
         }
         public bool Exists(int id)
         {

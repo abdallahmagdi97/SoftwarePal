@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Reflection.Metadata;
 
 namespace SoftwarePal.Controllers
 {
@@ -59,6 +60,10 @@ namespace SoftwarePal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddLicense([FromBody] Models.License license)
         {
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            license.UserCreated = user?.Id;
             await _licenseService.Add(license);
             return Ok(license);
         }
@@ -71,7 +76,10 @@ namespace SoftwarePal.Controllers
             {
                 return BadRequest();
             }
-
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            license.UserUpdated = user?.Id;
             await _licenseService.Update(license);
             return Ok(license);
         }

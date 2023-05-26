@@ -7,7 +7,7 @@ namespace SoftwarePal.Models
     {
         public int Id { get; set; }
         public int? ParentId { get; set; }
-        public virtual Category? ParentCategory { get; set; }
+        public string? ParentCategoryName { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         [NotMapped]
@@ -17,5 +17,8 @@ namespace SoftwarePal.Models
         public bool Status { get; set; } = true;
         public string? ImageName { get; set; }
         public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string? UserCreated { get; set; }
+        public string? UserUpdated { get; set; }
     }
 }

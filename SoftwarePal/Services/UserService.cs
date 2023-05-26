@@ -29,6 +29,10 @@ namespace SoftwarePal.Services
 
         public async Task<User> GetUserById(string id)
         {
+            if (!_userRepository.Exists(id))
+            {
+                throw new Exception("Not Found");
+            }
             return await _userRepository.GetById(id);
         }
 

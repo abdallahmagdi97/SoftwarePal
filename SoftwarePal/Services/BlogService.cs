@@ -46,6 +46,10 @@ namespace SoftwarePal.Services
 
         public async Task<Blog> GetById(int id)
         {
+            if (!_blogRepository.Exists(id))
+            {
+                throw new Exception("Not Found");
+            }
             var blog = await _blogRepository.GetById(id);
             string origin = GetAppOrigin();
             if (blog.ImageName != null)

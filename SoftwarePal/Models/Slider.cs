@@ -8,16 +8,18 @@ namespace SoftwarePal.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
         public string? Name { get; set; }
-        [Required]
         public string? Url { get; set; }
-        [Required]
         [NotMapped]
         public IFormFile? Image { get; set; }
         public int Order { get; set; }
         public bool Status { get; set; } = true;
         public string? ImageName { get; set; }
+        public string? SubTitle { get; set; }
+        public string? ButtonText { get; set; }
         public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string? UserCreated { get; set; }
+        public string? UserUpdated { get; set; }
     }
 }

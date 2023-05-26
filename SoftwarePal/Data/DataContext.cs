@@ -30,7 +30,7 @@ namespace SoftwarePal.Data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLazyLoadingProxies(); // Enables lazy loading
+            //optionsBuilder.UseLazyLoadingProxies(); // Enables lazy loading
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

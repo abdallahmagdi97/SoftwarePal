@@ -49,6 +49,10 @@ namespace SoftwarePal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddItem([FromForm] Item item)
         {
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            item.UserCreated = user?.Id;
             await _itemService.Add(item);
             return Ok(item);
         }
@@ -61,6 +65,10 @@ namespace SoftwarePal.Controllers
             {
                 return BadRequest();
             }
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            item.UserUpdated = user?.Id;
             await _itemService.Update(item);
             return Ok(item);
         }

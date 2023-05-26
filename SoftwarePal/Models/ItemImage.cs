@@ -11,8 +11,11 @@ namespace SoftwarePal.Models
         public int ItemId { get; set; }
         public string? ImageName { get; set; }
         [NotMapped]
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
         public int ImageOrder { get; set; }
         public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string? UserCreated { get; set; }
+        public string? UserUpdated { get; set; }
     }
 }

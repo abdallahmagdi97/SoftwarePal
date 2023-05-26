@@ -58,20 +58,28 @@ namespace SoftwarePal.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCart([FromBody] Models.Cart cart)
+        public async Task<IActionResult> AddCart([FromBody] Cart cart)
         {
             await _cartService.Add(cart);
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            cart.UserCreated = user?.Id;
             await _cartService.SaveChanges();
             return Ok(cart);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCart(int id, [FromBody] Models.Cart cart)
+        public async Task<IActionResult> UpdateCart(int id, [FromBody] Cart cart)
         {
             if (cart.Id != id)
             {
                 return BadRequest();
             }
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            cart.UserUpdated = user?.Id;
             await _cartService.Update(cart);
             return Ok(cart);
         }

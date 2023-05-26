@@ -21,10 +21,11 @@ namespace SoftwarePal.Controllers
     public class SubItemsController : ControllerBase
     {
         private readonly ISubItemService _subItemService;
-
-        public SubItemsController(ISubItemService subItemService)
+        private readonly IUserService _userService;
+        public SubItemsController(ISubItemService subItemService, IUserService userService)
         {
             _subItemService = subItemService;
+            _userService = userService;
         }
 
         [AllowAnonymous]
@@ -46,17 +47,25 @@ namespace SoftwarePal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddSubItem([FromForm] SubItem subItem)
         {
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            subItem.UserCreated = user?.Id;
             await _subItemService.Add(subItem);
             return Ok(subItem);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSubItem(int id, [FromBody] SubItem subItem)
+        public async Task<IActionResult> UpdateSubItem(int id, [FromForm] SubItem subItem)
         {
             if (subItem.Id != id)
             {
                 return BadRequest();
             }
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            subItem.UserUpdated = user?.Id;
             await _subItemService.Update(subItem);
             return Ok(subItem);
         }

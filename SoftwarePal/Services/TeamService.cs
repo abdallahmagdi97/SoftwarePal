@@ -37,6 +37,10 @@ namespace SoftwarePal.Services
 
         public async Task<Team> GetById(int id)
         {
+            if (!_teamRepository.Exists(id))
+            {
+                throw new Exception("Not Found");
+            }
             var team = await _teamRepository.GetById(id);
             string origin = GetAppOrigin();
             if (team.ImageName != null)

@@ -49,6 +49,10 @@ namespace SoftwarePal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddVoucher([FromBody] Models.Voucher voucher)
         {
+            var currentUser = await _userService.GetCurrentUser(HttpContext.User);
+            if (currentUser == null)
+                return NotFound("User not found");
+            voucher.UserCreated = currentUser?.Id;
             await _voucherService.Add(voucher);
             return Ok(voucher);
         }
@@ -61,6 +65,10 @@ namespace SoftwarePal.Controllers
             {
                 return BadRequest();
             }
+            var currentUser = await _userService.GetCurrentUser(HttpContext.User);
+            if (currentUser == null)
+                return NotFound("User not found");
+            voucher.UserUpdated = currentUser?.Id;
             await _voucherService.Update(voucher);
             return Ok(voucher);
         }

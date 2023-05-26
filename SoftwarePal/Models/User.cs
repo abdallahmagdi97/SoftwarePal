@@ -23,10 +23,13 @@ namespace SoftwarePal.Models
         public string Email { get; set; }
 
         [StringLength(50)]
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
         public UserRole UserRole { get; set; }
         public bool Status { get; set; } = true;
         public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string? UserCreated { get; set; }
+        public string? UserUpdated { get; set; }
     }
 
     public enum UserRole

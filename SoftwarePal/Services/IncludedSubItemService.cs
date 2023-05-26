@@ -36,6 +36,10 @@ namespace SoftwarePal.Services
 
         public Task<IncludedSubItem> GetById(int id)
         {
+            if (!_includedSubItemRepository.Exists(id))
+            {
+                throw new Exception("Not Found");
+            }
             return _includedSubItemRepository.GetById(id);
         }
 

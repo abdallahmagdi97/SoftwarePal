@@ -34,6 +34,10 @@ namespace SoftwarePal.Services
 
         public Task<License> GetById(int id)
         {
+            if (!_licenseRepository.Exists(id))
+            {
+                throw new Exception("Not Found");
+            }
             return _licenseRepository.GetById(id);
         }
 

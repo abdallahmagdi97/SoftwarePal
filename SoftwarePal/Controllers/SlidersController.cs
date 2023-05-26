@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Reflection.Metadata;
 
 namespace SoftwarePal.Controllers
 {
@@ -50,6 +51,10 @@ namespace SoftwarePal.Controllers
         {
             if (slider.Image != null)
                 slider.ImageName = await _sliderService.SaveImage(slider.Image);
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            slider.UserCreated = user?.Id;
             await _sliderService.Add(slider);
             return Ok(slider);
         }
@@ -64,6 +69,10 @@ namespace SoftwarePal.Controllers
             }
             if (slider.Image != null)
                 slider.ImageName = await _sliderService.SaveImage(slider.Image);
+            var user = await _userService.GetCurrentUser(HttpContext.User);
+            if (user == null)
+                return NotFound("User not found");
+            slider.UserUpdated = user?.Id;
             await _sliderService.Update(slider);
             return Ok(slider);
         }

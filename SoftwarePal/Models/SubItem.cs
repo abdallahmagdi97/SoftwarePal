@@ -16,5 +16,8 @@ namespace SoftwarePal.Models
         public bool Status { get; set; } = true;
         public string? ImageName { get; set; }
         public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string? UserCreated { get; set; }
+        public string? UserUpdated { get; set; }
     }
 }

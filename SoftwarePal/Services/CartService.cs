@@ -36,6 +36,10 @@ namespace SoftwarePal.Services
 
         public Task<Cart> GetById(int id)
         {
+            if (!_cartRepository.Exists(id))
+            {
+                throw new Exception("Not Found");
+            }
             return _cartRepository.GetById(id);
         }
 

@@ -31,9 +31,9 @@ namespace SoftwarePal.Controllers
                 return BadRequest(ModelState);
             }
 
-            var createdUser = _userService.AddUser(user);
+            _userService.AddUser(user);
 
-            return CreatedAtAction(nameof(GetById), new { id = createdUser.Id }, createdUser);
+            return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
         }
         [AllowAnonymous]
         [HttpPost("login")]
@@ -82,7 +82,10 @@ namespace SoftwarePal.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            var currentUser = await _userService.GetCurrentUser(HttpContext.User);
+            if (currentUser == null)
+                return NotFound("User not found");
+            user.UserUpdated = currentUser?.Id;
             await _userService.UpdateUser(user);
 
             return Ok(user);
