@@ -52,7 +52,7 @@ namespace SoftwarePal.Controllers
                 blog.ImageName = await _blogService.SaveImage(blog.Image);
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             blog.UserCreated = user?.Id;
             await _blogService.Add(blog);
             return Ok(blog);
@@ -70,7 +70,7 @@ namespace SoftwarePal.Controllers
                 blog.ImageName = await _blogService.SaveImage(blog.Image);
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             blog.UserUpdated = user?.Id;
             await _blogService.Update(blog);
             return Ok(blog);
@@ -83,7 +83,7 @@ namespace SoftwarePal.Controllers
             var blog = await _blogService.GetById(id);
             if (blog == null)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Not Found" });
             }
             _blogService.Delete(blog);
             return Ok();

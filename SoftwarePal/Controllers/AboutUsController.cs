@@ -51,7 +51,7 @@ namespace SoftwarePal.Controllers
                 aboutUs.ImageName = await _aboutUsService.SaveImage(aboutUs.Image);
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             aboutUs.UserCreated = user?.Id;
             await _aboutUsService.Add(aboutUs);
             return Ok(aboutUs);
@@ -63,13 +63,13 @@ namespace SoftwarePal.Controllers
         {
             if (id != aboutUs.Id)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Not Found" });
             }
             if (aboutUs.Image != null)
                 aboutUs.ImageName = await _aboutUsService.SaveImage(aboutUs.Image);
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             aboutUs.UserUpdated = user?.Id;
             await _aboutUsService.Update(aboutUs);
             return Ok(aboutUs);
@@ -82,7 +82,7 @@ namespace SoftwarePal.Controllers
             var aboutUs = await _aboutUsService.GetById(id);
             if (aboutUs == null)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Not Found" });
             }
             _aboutUsService.Delete(aboutUs);
             return Ok();

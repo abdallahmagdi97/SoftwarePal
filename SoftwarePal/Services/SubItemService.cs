@@ -22,7 +22,7 @@ namespace SoftwarePal.Services
             subItem.CreatedAt = DateTime.Now;
             await _subItemRepository.Add(subItem);
             string path;
-            if (subItem.Image.Length > 0)
+            if (subItem?.Image?.Length > 0)
             {
                 path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "Images\\SubItem"));
                 if (!Directory.Exists(path))

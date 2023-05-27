@@ -35,7 +35,7 @@ namespace SoftwarePal.Controllers
             // Get the current user from the authentication token
             User user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found!");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found!" });
             Cart cart = await _cartService.GetCartByUserId(user.Id);
             // Return the licenses to the client
             return Ok(cart);
@@ -46,7 +46,7 @@ namespace SoftwarePal.Controllers
         {
             var cart = await _cartService.GetById(id);
             if (cart == null)
-                return NotFound("Cart not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Cart not found" });
             return Ok(cart);
         }
 
@@ -63,7 +63,7 @@ namespace SoftwarePal.Controllers
             await _cartService.Add(cart);
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             cart.UserCreated = user?.Id;
             await _cartService.SaveChanges();
             return Ok(cart);
@@ -78,7 +78,7 @@ namespace SoftwarePal.Controllers
             }
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             cart.UserUpdated = user?.Id;
             await _cartService.Update(cart);
             return Ok(cart);
@@ -90,7 +90,7 @@ namespace SoftwarePal.Controllers
             var cart = await _cartService.GetById(id);
             if (cart == null)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Not Found" });
             }
             _cartService.Delete(cart);
             await _cartService.SaveChanges();

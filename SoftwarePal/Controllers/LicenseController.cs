@@ -62,7 +62,7 @@ namespace SoftwarePal.Controllers
         {
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             license.UserCreated = user?.Id;
             await _licenseService.Add(license);
             return Ok(license);
@@ -78,7 +78,7 @@ namespace SoftwarePal.Controllers
             }
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             license.UserUpdated = user?.Id;
             await _licenseService.Update(license);
             return Ok(license);
@@ -91,7 +91,7 @@ namespace SoftwarePal.Controllers
             var license = await _licenseService.GetById(id);
             if (license == null)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Not Found" });
             }
             _licenseService.Delete(license);
             return Ok();

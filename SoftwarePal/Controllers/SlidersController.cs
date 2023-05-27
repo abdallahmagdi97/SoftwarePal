@@ -53,7 +53,7 @@ namespace SoftwarePal.Controllers
                 slider.ImageName = await _sliderService.SaveImage(slider.Image);
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" } );
             slider.UserCreated = user?.Id;
             await _sliderService.Add(slider);
             return Ok(slider);
@@ -71,7 +71,7 @@ namespace SoftwarePal.Controllers
                 slider.ImageName = await _sliderService.SaveImage(slider.Image);
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             slider.UserUpdated = user?.Id;
             await _sliderService.Update(slider);
             return Ok(slider);
@@ -84,7 +84,7 @@ namespace SoftwarePal.Controllers
             var slider = await _sliderService.GetById(id);
             if (slider == null)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Not Found" });
             }
             _sliderService.Delete(slider);
             return Ok();

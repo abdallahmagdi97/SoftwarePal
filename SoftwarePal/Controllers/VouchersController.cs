@@ -51,7 +51,7 @@ namespace SoftwarePal.Controllers
         {
             var currentUser = await _userService.GetCurrentUser(HttpContext.User);
             if (currentUser == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             voucher.UserCreated = currentUser?.Id;
             await _voucherService.Add(voucher);
             return Ok(voucher);
@@ -67,7 +67,7 @@ namespace SoftwarePal.Controllers
             }
             var currentUser = await _userService.GetCurrentUser(HttpContext.User);
             if (currentUser == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             voucher.UserUpdated = currentUser?.Id;
             await _voucherService.Update(voucher);
             return Ok(voucher);
@@ -80,7 +80,7 @@ namespace SoftwarePal.Controllers
             var voucher = await _voucherService.GetById(id);
             if (voucher == null)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Not Found" });
             }
             _voucherService.Delete(voucher);
             return Ok();

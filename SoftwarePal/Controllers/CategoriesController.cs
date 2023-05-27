@@ -53,7 +53,7 @@ namespace SoftwarePal.Controllers
                 category.ImageName = await _categoryService.SaveImage(category.Image);
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             category.UserCreated = user?.Id;
             await _categoryService.Add(category);
             return Ok(category);
@@ -65,7 +65,7 @@ namespace SoftwarePal.Controllers
         {
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             category.UserUpdated = user?.Id;
             await _categoryService.Update(category);
             return Ok(category);
@@ -78,7 +78,7 @@ namespace SoftwarePal.Controllers
             var category = await _categoryService.GetById(id);
             if (category == null)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Not Found" });
             }
             _categoryService.Delete(category);
             return Ok();

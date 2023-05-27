@@ -49,7 +49,7 @@ namespace SoftwarePal.Controllers
         {
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             subItem.UserCreated = user?.Id;
             await _subItemService.Add(subItem);
             return Ok(subItem);
@@ -64,7 +64,7 @@ namespace SoftwarePal.Controllers
             }
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
-                return NotFound("User not found");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             subItem.UserUpdated = user?.Id;
             await _subItemService.Update(subItem);
             return Ok(subItem);
@@ -76,7 +76,7 @@ namespace SoftwarePal.Controllers
             var subItem = await _subItemService.GetById(id);
             if (subItem == null)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Not Found" });
             }
             _subItemService.Delete(subItem);
             return Ok();
