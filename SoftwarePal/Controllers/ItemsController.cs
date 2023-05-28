@@ -33,8 +33,14 @@ namespace SoftwarePal.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetItem(int id)
         {
-            var item = await _itemService.GetById(id);
-            return Ok(item);
+            try
+            {
+                var item = await _itemService.GetById(id);
+                return Ok(item);
+            } catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = e.Message });
+            }
         }
 
         [AllowAnonymous]

@@ -60,9 +60,9 @@ namespace SoftwarePal.Repositories
             _context.SaveChanges();
         }
 
-        public async Task<List<ItemImage>> GetItemImages(int id)
+        public async Task<List<ItemImage>> GetItemImages(int itemId)
         {
-            return await _context.ItemImages.Where(x => x.ItemId == id).OrderBy(c => c.ImageOrder).ToListAsync();
+            return await _context.ItemImages.Where(x => x.ItemId == itemId).OrderBy(c => c.ImageOrder).ToListAsync();
         }
         public bool Exists(int id)
         {
@@ -72,6 +72,15 @@ namespace SoftwarePal.Repositories
         public async Task<IEnumerable<Item>> GetItemsByCategory(int categoryId)
         {
             return await _context.Items.Where(x => x.CategoryId == categoryId).ToListAsync();
+        }
+        public async Task<List<ItemPriceRule>> GetItemPriceRules(int itemId)
+        {
+            return await _context.ItemPriceRules.Where(x => x.ItemId == itemId).OrderBy(p => p.Price).ToListAsync();
+        }
+
+        public async Task<List<IncludedSubItem>> GetIncludedSubItems(int itemId)
+        {
+            return await _context.IncludedSubItems.Where(x => x.ItemId == itemId).ToListAsync();
         }
     }
 
@@ -84,8 +93,11 @@ namespace SoftwarePal.Repositories
         void Delete(Item item);
         Task SaveChanges();
         void SaveImage(ItemImage itemImage);
-        Task<List<ItemImage>> GetItemImages(int id);
+        Task<List<ItemImage>> GetItemImages(int itemId);
+        Task<List<ItemPriceRule>> GetItemPriceRules(int itemId);
+        Task<List<IncludedSubItem>> GetIncludedSubItems(int itemId);
         bool Exists(int id);
         Task<IEnumerable<Item>> GetItemsByCategory(int categoryId);
+        
     }
 }

@@ -32,16 +32,40 @@ namespace SoftwarePal.Helpers
             foreach(var includedItem in item.IncludedSubItems)
             {
                 includedItem.ItemId = id;
+                includedItem.CreatedAt = DateTime.Now;
+                includedItem.UserCreated = item.UserCreated;
                 await _includedSubItemRepository.Add(includedItem);
             }
         }
-
         internal async void AddItemPriceRules(Item item, int id)
         {
             foreach (var priceRule in item.ItemPriceRules)
             {
                 priceRule.ItemId = id;
+                priceRule.CreatedAt = DateTime.Now;
+                priceRule.UserCreated = item.UserCreated;
                 await _itemPriceRuleRepository.Add(priceRule);
+            }
+        }
+        internal async Task UpdateIncludedSubItems(Item item, int id)
+        {
+            foreach (var includedItem in item.IncludedSubItems)
+            {
+                includedItem.ItemId = id;
+                includedItem.UpdatedAt = DateTime.Now;
+                includedItem.UserUpdated = item.UserUpdated;
+                await _includedSubItemRepository.Update(includedItem);
+            }
+        }
+
+        internal async Task UpdateItemPriceRules(Item item, int id)
+        {
+            foreach (var priceRule in item.ItemPriceRules)
+            {
+                priceRule.ItemId = id;
+                priceRule.UpdatedAt = DateTime.Now;
+                priceRule.UserUpdated = item.UserUpdated;
+                await _itemPriceRuleRepository.Update(priceRule);
             }
         }
         public string GetAppOrigin()

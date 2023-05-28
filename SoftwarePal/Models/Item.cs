@@ -24,10 +24,10 @@ namespace SoftwarePal.Models
         public string? UserCreated { get; set; }
         public string? UserUpdated { get; set; }
         [NotMapped]
-        public List<ItemImage> ItemImages { get; set; }
+        public List<ItemImage>? ItemImages { get; set; }
         [NotMapped]
-        public List<ItemPriceRule> ItemPriceRules { get; set; }
+        public List<ItemPriceRule>? ItemPriceRules { get; set; }
         [NotMapped]
-        public List<IncludedSubItem> IncludedSubItems { get; set; }
+        public List<IncludedSubItem>? IncludedSubItems { get; set; }
     }
 }

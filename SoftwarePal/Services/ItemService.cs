@@ -63,6 +63,8 @@ namespace SoftwarePal.Services
             var item = await _itemRepository.GetById(id);
             string origin = GetAppOrigin();
             item = await GetItemImages(origin, item);
+            item.ItemPriceRules = await _itemRepository.GetItemPriceRules(id);
+            item.IncludedSubItems = await _itemRepository.GetIncludedSubItems(id);
             return item;
         }
 
@@ -77,8 +79,11 @@ namespace SoftwarePal.Services
             {
                 throw new InvalidOperationException($"Item with ID {item.Id} not found.");
             }
-            
-            return await _itemRepository.Update(item);
+            await _itemRepository.Update(item);
+            ItemsHelper itemsHelper = new ItemsHelper(_includedSubItemRepository, _itemPriceRuleRepository, _itemRepository, _hostingEnvironment, _httpContextAccessor);
+            await itemsHelper.UpdateItemPriceRules(item, item.Id);
+            await itemsHelper.UpdateIncludedSubItems(item, item.Id);
+            return item;
         }
         public string GetAppOrigin()
         {
