@@ -68,6 +68,11 @@ namespace SoftwarePal.Repositories
         {
             return _context.Items.Any(e => e.Id == id);
         }
+
+        public async Task<IEnumerable<Item>> GetItemsByCategory(int categoryId)
+        {
+            return await _context.Items.Where(x => x.CategoryId == categoryId).ToListAsync();
+        }
     }
 
     public interface IItemRepository
@@ -81,5 +86,6 @@ namespace SoftwarePal.Repositories
         void SaveImage(ItemImage itemImage);
         Task<List<ItemImage>> GetItemImages(int id);
         bool Exists(int id);
+        Task<IEnumerable<Item>> GetItemsByCategory(int categoryId);
     }
 }

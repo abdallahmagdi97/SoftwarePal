@@ -104,6 +104,11 @@ namespace SoftwarePal.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<Item>> GetItemsByCategory(int categoryId)
+        {
+            return await _itemRepository.GetItemsByCategory(categoryId);
+        }
     }
 
     public interface IItemService
@@ -117,5 +122,6 @@ namespace SoftwarePal.Services
         string GetAppOrigin();
         Task<Item> GetItemImages(string origin, Item item);
         Task<decimal> GetPricefromPriceRole();
+        Task<IEnumerable<Item>> GetItemsByCategory(int categoryId);
     }
 }

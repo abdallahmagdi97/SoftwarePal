@@ -37,14 +37,20 @@ namespace SoftwarePal.Controllers
             return Ok(item);
         }
 
-        [Authorize(Roles = nameof(UserRole.Admin))]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetItems()
         {
             var items = await _itemService.GetAll();
             return Ok(items);
         }
-
+        [AllowAnonymous]
+        [HttpGet("GetItemsByCategory")]
+        public async Task<IActionResult> GetItemsByCategory([FromQuery] int categoryId)
+        {
+            var items = await _itemService.GetItemsByCategory(categoryId);
+            return Ok(items);
+        }
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
         public async Task<IActionResult> AddItem([FromForm] Item item)
