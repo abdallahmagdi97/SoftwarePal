@@ -29,5 +29,6 @@ namespace SoftwarePal.Models
         public List<ItemPriceRule>? ItemPriceRules { get; set; }
         [NotMapped]
         public List<IncludedSubItem>? IncludedSubItems { get; set; }
+        public string? Slug { get; set; }
     }
 }

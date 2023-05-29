@@ -44,6 +44,21 @@ namespace SoftwarePal.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("{slug}")]
+        public async Task<IActionResult> GetItemBySlug(string slug)
+        {
+            try
+            {
+                var item = await _itemService.GetBySlug(slug);
+                return Ok(item);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = e.Message });
+            }
+        }
+
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetItems()
         {

@@ -6,6 +6,9 @@ using Microsoft.Extensions.Hosting.Internal;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Reflection.Metadata;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace SoftwarePal.Services
 {
@@ -30,6 +33,8 @@ namespace SoftwarePal.Services
         public async Task<Item> Add(Item item)
         {
             item.CreatedAt = DateTime.Now;
+            if (item.Name != null)
+                item.Slug = GenerateSlug(item.Name);
             await _itemRepository.Add(item);
             ItemsHelper itemsHelper = new ItemsHelper(_includedSubItemRepository, _itemPriceRuleRepository, _itemRepository, _hostingEnvironment, _httpContextAccessor);
             itemsHelper.SaveImages(item, item.Id);
@@ -114,6 +119,33 @@ namespace SoftwarePal.Services
         {
             return await _itemRepository.GetItemsByCategory(categoryId);
         }
+
+        public string GenerateSlug(string input)
+        {
+            string normalizedString = input.ToLowerInvariant().Normalize(NormalizationForm.FormD);
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (char c in normalizedString)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark &&
+                    (c == '-' || c == '_' || char.IsLetterOrDigit(c)))
+                {
+                    stringBuilder.Append(c);
+                }
+                else if (c == ' ')
+                {
+                    stringBuilder.Append('-');
+                }
+            }
+
+            return Regex.Replace(stringBuilder.ToString(), @"-{2,}", "-"); // Remove consecutive hyphens
+        }
+
+        public async Task<Item> GetBySlug(string slug)
+        {
+            return await _itemRepository.GetBySlug(slug);
+        }
     }
 
     public interface IItemService
@@ -121,6 +153,7 @@ namespace SoftwarePal.Services
         Task<Item> Add(Item item);
         Task<IEnumerable<Item>> GetAll();
         Task<Item> GetById(int id);
+        Task<Item> GetBySlug(string slug);
         Task<Item> Update(Item item);
         void Delete(Item item);
         Task SaveChanges();
@@ -128,5 +161,6 @@ namespace SoftwarePal.Services
         Task<Item> GetItemImages(string origin, Item item);
         Task<decimal> GetPricefromPriceRole();
         Task<IEnumerable<Item>> GetItemsByCategory(int categoryId);
+        string GenerateSlug(string input);
     }
 }

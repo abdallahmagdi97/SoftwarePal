@@ -26,7 +26,6 @@ namespace SoftwarePal.Helpers
             _hostingEnvironment = hostingEnvironment;
             _httpContextAccessor = httpContextAccessor;
         }
-
         internal async void AddIncludedSubItems(Item item, int id)
         {
             foreach(var includedItem in item.IncludedSubItems)
@@ -57,7 +56,6 @@ namespace SoftwarePal.Helpers
                 await _includedSubItemRepository.Update(includedItem);
             }
         }
-
         internal async Task UpdateItemPriceRules(Item item, int id)
         {
             foreach (var priceRule in item.ItemPriceRules)

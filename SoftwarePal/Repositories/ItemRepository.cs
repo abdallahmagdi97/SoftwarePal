@@ -82,6 +82,11 @@ namespace SoftwarePal.Repositories
         {
             return await _context.IncludedSubItems.Where(x => x.ItemId == itemId).ToListAsync();
         }
+
+        public async Task<Item> GetBySlug(string slug)
+        {
+            return await _context.Items.FirstOrDefaultAsync(i => i.Slug == slug);
+        }
     }
 
     public interface IItemRepository
@@ -98,6 +103,6 @@ namespace SoftwarePal.Repositories
         Task<List<IncludedSubItem>> GetIncludedSubItems(int itemId);
         bool Exists(int id);
         Task<IEnumerable<Item>> GetItemsByCategory(int categoryId);
-        
+        Task<Item> GetBySlug(string slug);
     }
 }
