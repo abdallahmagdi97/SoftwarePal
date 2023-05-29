@@ -32,12 +32,11 @@ namespace SoftwarePal.Controllers
         [HttpGet("GetCartByUserId")]
         public async Task<IActionResult> GetCartByUserId()
         {
-            // Get the current user from the authentication token
             User user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found!" });
             Cart cart = await _cartService.GetCartByUserId(user.Id);
-            // Return the licenses to the client
+            
             return Ok(cart);
         }
 

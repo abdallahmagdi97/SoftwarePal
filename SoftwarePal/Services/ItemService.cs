@@ -37,10 +37,13 @@ namespace SoftwarePal.Services
                 item.Slug = GenerateSlug(item.Name);
             await _itemRepository.Add(item);
             ItemsHelper itemsHelper = new ItemsHelper(_includedSubItemRepository, _itemPriceRuleRepository, _itemRepository, _hostingEnvironment, _httpContextAccessor);
-            itemsHelper.SaveImages(item, item.Id);
-            itemsHelper.AddItemPriceRules(item, item.Id);
-            itemsHelper.AddIncludedSubItems(item, item.Id);
-            await _itemRepository.SaveChanges();
+            if (item.ItemImages != null)
+                itemsHelper.SaveImages(item, item.Id);
+            if (item.ItemPriceRules != null)
+                await itemsHelper.AddItemPriceRules(item, item.Id);
+            if (item.IncludedSubItems != null)
+                await itemsHelper.AddIncludedSubItems(item, item.Id);
+            
             return item;
         }
 

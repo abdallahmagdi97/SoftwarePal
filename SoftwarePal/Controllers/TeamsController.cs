@@ -37,7 +37,7 @@ namespace SoftwarePal.Controllers
             return Ok(team);
         }
 
-        [Authorize(Roles = nameof(UserRole.Admin))]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetTeams()
         {

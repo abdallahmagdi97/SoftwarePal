@@ -26,7 +26,7 @@ namespace SoftwarePal.Helpers
             _hostingEnvironment = hostingEnvironment;
             _httpContextAccessor = httpContextAccessor;
         }
-        internal async void AddIncludedSubItems(Item item, int id)
+        internal async Task AddIncludedSubItems(Item item, int id)
         {
             foreach(var includedItem in item.IncludedSubItems)
             {
@@ -36,7 +36,7 @@ namespace SoftwarePal.Helpers
                 await _includedSubItemRepository.Add(includedItem);
             }
         }
-        internal async void AddItemPriceRules(Item item, int id)
+        internal async Task AddItemPriceRules(Item item, int id)
         {
             foreach (var priceRule in item.ItemPriceRules)
             {
@@ -50,20 +50,34 @@ namespace SoftwarePal.Helpers
         {
             foreach (var includedItem in item.IncludedSubItems)
             {
-                includedItem.ItemId = id;
-                includedItem.UpdatedAt = DateTime.Now;
-                includedItem.UserUpdated = item.UserUpdated;
-                await _includedSubItemRepository.Update(includedItem);
+                if (includedItem.Id == 0)
+                {
+                    await AddIncludedSubItems(item, id);
+                }
+                else
+                {
+                    includedItem.ItemId = id;
+                    includedItem.UpdatedAt = DateTime.Now;
+                    includedItem.UserUpdated = item.UserUpdated;
+                    await _includedSubItemRepository.Update(includedItem);
+                }
             }
         }
         internal async Task UpdateItemPriceRules(Item item, int id)
         {
             foreach (var priceRule in item.ItemPriceRules)
             {
-                priceRule.ItemId = id;
-                priceRule.UpdatedAt = DateTime.Now;
-                priceRule.UserUpdated = item.UserUpdated;
-                await _itemPriceRuleRepository.Update(priceRule);
+                if (priceRule.Id == 0)
+                {
+                    await AddItemPriceRules(item, id);
+                }
+                else
+                {
+                    priceRule.ItemId = id;
+                    priceRule.UpdatedAt = DateTime.Now;
+                    priceRule.UserUpdated = item.UserUpdated;
+                    await _itemPriceRuleRepository.Update(priceRule);
+                }
             }
         }
         public string GetAppOrigin()
