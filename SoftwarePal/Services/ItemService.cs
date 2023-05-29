@@ -58,7 +58,7 @@ namespace SoftwarePal.Services
             string origin = GetAppOrigin();
             for(int i = 0; i < items.Count(); i++)
             {
-                items[i] = await GetItemImages(origin, items[i]);
+                items[i].ItemImages = await GetItemImages(origin, items[i]);
                 items[i].ItemPriceRules = await _itemRepository.GetItemPriceRules(items[i].Id);
                 items[i].IncludedSubItems = await _itemRepository.GetIncludedSubItems(items[i].Id);
             }
@@ -73,7 +73,7 @@ namespace SoftwarePal.Services
             }
             var item = await _itemRepository.GetById(id);
             string origin = GetAppOrigin();
-            item = await GetItemImages(origin, item);
+            item.ItemImages  = await GetItemImages(origin, item);
             item.ItemPriceRules = await _itemRepository.GetItemPriceRules(id);
             item.IncludedSubItems = await _itemRepository.GetIncludedSubItems(id);
             return item;
@@ -106,7 +106,7 @@ namespace SoftwarePal.Services
             return origin;
         }
 
-        public async Task<Item> GetItemImages(string origin, Item item)
+        public async Task<List<ItemImage>> GetItemImages(string origin, Item item)
         {
             item.ItemImages = await _itemRepository.GetItemImages(item.Id);
             for(int i = 0; i < item.ItemImages.Count; i++)
@@ -114,7 +114,7 @@ namespace SoftwarePal.Services
                 if (item.ItemImages[i].ImageName != null)
                     item.ItemImages[i].ImageName = origin + "/" + item.ItemImages[i].ImageName;
             }
-            return item;
+            return item.ItemImages;
         }
 
         public Task<decimal> GetPricefromPriceRole()
@@ -128,7 +128,7 @@ namespace SoftwarePal.Services
             foreach(var item in items)
             {
                 string origin = GetAppOrigin();
-                await GetItemImages(origin, item);
+                item.ItemImages = await GetItemImages(origin, item);
                 item.ItemPriceRules = await _itemRepository.GetItemPriceRules(item.Id);
                 item.IncludedSubItems = await _itemRepository.GetIncludedSubItems(item.Id);
             }
@@ -161,7 +161,7 @@ namespace SoftwarePal.Services
         {
             var item = await _itemRepository.GetBySlug(slug);
             string origin = GetAppOrigin();
-            item = await GetItemImages(origin, item);
+            item.ItemImages = await GetItemImages(origin, item);
             item.ItemPriceRules = await _itemRepository.GetItemPriceRules(item.Id);
             item.IncludedSubItems = await _itemRepository.GetIncludedSubItems(item.Id);
             return item;
@@ -173,7 +173,7 @@ namespace SoftwarePal.Services
             string origin = GetAppOrigin();
             for (int i = 0; i < items.Count(); i++)
             {
-                items[i] = await GetItemImages(origin, items[i]);
+                items[i].ItemImages = await GetItemImages(origin, items[i]);
                 items[i].ItemPriceRules = await _itemRepository.GetItemPriceRules(items[i].Id);
                 items[i].IncludedSubItems = await _itemRepository.GetIncludedSubItems(items[i].Id);
             }
@@ -191,7 +191,7 @@ namespace SoftwarePal.Services
         void Delete(Item item);
         Task SaveChanges();
         string GetAppOrigin();
-        Task<Item> GetItemImages(string origin, Item item);
+        Task<List<ItemImage>> GetItemImages(string origin, Item item);
         Task<decimal> GetPricefromPriceRole();
         Task<IEnumerable<Item>> GetItemsByCategory(int categoryId);
         string GenerateSlug(string input);
