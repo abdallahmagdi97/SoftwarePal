@@ -27,7 +27,7 @@ namespace SoftwarePal.Repositories
             _context.SaveChanges();
         }
 
-        public async Task<IEnumerable<Team>> GetAll()
+        public async Task<List<Team>> GetAll()
         {
             return await _context.Teams.ToListAsync();
         }
@@ -67,7 +67,7 @@ namespace SoftwarePal.Repositories
     public interface ITeamRepository
     {
         Task<Team> Add(Team team);
-        Task<IEnumerable<Team>> GetAll();
+        Task<List<Team>> GetAll();
         Task<Team> GetById(int id);
         Task<Team> Update(Team team);
         void Delete(Team team);

@@ -33,7 +33,14 @@ namespace SoftwarePal.Services
 
         public async Task<IEnumerable<Slider>> GetAll()
         {
-            return await _sliderRepository.GetAll();
+            var sliders = await _sliderRepository.GetAll();
+            foreach (var slider in sliders)
+            {
+                string origin = GetAppOrigin();
+                if (slider.ImageName != null)
+                    slider.ImageName = origin + "/" + slider.ImageName;
+            }
+            return sliders;
         }
 
         public async Task<Slider> GetById(int id)

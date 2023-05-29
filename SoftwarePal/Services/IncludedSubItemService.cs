@@ -29,9 +29,9 @@ namespace SoftwarePal.Services
             _includedSubItemRepository.Delete(includedSubItem);
         }
 
-        public Task<IEnumerable<IncludedSubItem>> GetAll()
+        public async Task<IEnumerable<IncludedSubItem>> GetAll()
         {
-            return _includedSubItemRepository.GetAll();
+            return await _includedSubItemRepository.GetAll();
         }
 
         public Task<IncludedSubItem> GetById(int id)

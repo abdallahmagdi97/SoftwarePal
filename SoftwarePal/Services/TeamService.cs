@@ -30,9 +30,16 @@ namespace SoftwarePal.Services
             _teamRepository.Delete(team);
         }
 
-        public Task<IEnumerable<Team>> GetAll()
+        public async Task<IEnumerable<Team>> GetAll()
         {
-            return _teamRepository.GetAll();
+            var teams = await _teamRepository.GetAll();
+            foreach(var team in teams)
+            {
+                string origin = GetAppOrigin();
+                if (team.ImageName != null)
+                    team.ImageName = origin + "/" + team.ImageName;
+            }
+            return teams;
         }
 
         public async Task<Team> GetById(int id)
