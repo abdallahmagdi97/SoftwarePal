@@ -40,6 +40,7 @@ namespace SoftwarePal.Services
             itemsHelper.SaveImages(item, item.Id);
             itemsHelper.AddItemPriceRules(item, item.Id);
             itemsHelper.AddIncludedSubItems(item, item.Id);
+            await _itemRepository.SaveChanges();
             return item;
         }
 
@@ -90,6 +91,7 @@ namespace SoftwarePal.Services
             ItemsHelper itemsHelper = new ItemsHelper(_includedSubItemRepository, _itemPriceRuleRepository, _itemRepository, _hostingEnvironment, _httpContextAccessor);
             await itemsHelper.UpdateItemPriceRules(item, item.Id);
             await itemsHelper.UpdateIncludedSubItems(item, item.Id);
+            await _itemRepository.SaveChanges();
             return item;
         }
         public string GetAppOrigin()
