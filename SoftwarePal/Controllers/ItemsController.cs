@@ -44,7 +44,7 @@ namespace SoftwarePal.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("{slug}")]
+        [HttpGet("GetItemBySlug/{slug}")]
         public async Task<IActionResult> GetItemBySlug(string slug)
         {
             try
