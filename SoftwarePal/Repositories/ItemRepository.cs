@@ -80,7 +80,8 @@ namespace SoftwarePal.Repositories
 
         public async Task<List<IncludedSubItem>> GetIncludedSubItems(int itemId)
         {
-            return await _context.IncludedSubItems.Where(x => x.ItemId == itemId).ToListAsync();
+            var itemsSubItems = await _context.ItemSubItems.Where(s => s.ItemId == itemId).Select(s => s.SubItemId).ToListAsync();
+            return await _context.IncludedSubItems.Where(x => itemsSubItems.Contains(x.Id)).ToListAsync();
         }
 
         public async Task<Item> GetBySlug(string slug)
