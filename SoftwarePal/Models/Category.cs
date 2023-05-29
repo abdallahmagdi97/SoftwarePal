@@ -20,5 +20,6 @@ namespace SoftwarePal.Models
         public DateTime? UpdatedAt { get; set; }
         public string? UserCreated { get; set; }
         public string? UserUpdated { get; set; }
+        public string? Slug { get; set; }
     }
 }

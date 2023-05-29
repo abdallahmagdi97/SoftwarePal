@@ -48,13 +48,15 @@ namespace SoftwarePal.Services
             _itemRepository.Delete(item);
         }
 
-        public async Task<IEnumerable<Item>> GetAll()
+        public async Task<List<Item>> GetAll()
         {
             var items = await _itemRepository.GetAll();
             string origin = GetAppOrigin();
             for(int i = 0; i < items.Count(); i++)
             {
                 items[i] = await GetItemImages(origin, items[i]);
+                items[i].ItemPriceRules = await _itemRepository.GetItemPriceRules(items[i].Id);
+                items[i].IncludedSubItems = await _itemRepository.GetIncludedSubItems(items[i].Id);
             }
             return items;
         }
@@ -117,7 +119,15 @@ namespace SoftwarePal.Services
 
         public async Task<IEnumerable<Item>> GetItemsByCategory(int categoryId)
         {
-            return await _itemRepository.GetItemsByCategory(categoryId);
+            var items = await _itemRepository.GetItemsByCategory(categoryId);
+            foreach(var item in items)
+            {
+                string origin = GetAppOrigin();
+                await GetItemImages(origin, item);
+                item.ItemPriceRules = await _itemRepository.GetItemPriceRules(item.Id);
+                item.IncludedSubItems = await _itemRepository.GetIncludedSubItems(item.Id);
+            }
+            return items;
         }
 
         public string GenerateSlug(string input)
@@ -144,14 +154,32 @@ namespace SoftwarePal.Services
 
         public async Task<Item> GetBySlug(string slug)
         {
-            return await _itemRepository.GetBySlug(slug);
+            var item = await _itemRepository.GetBySlug(slug);
+            string origin = GetAppOrigin();
+            item = await GetItemImages(origin, item);
+            item.ItemPriceRules = await _itemRepository.GetItemPriceRules(item.Id);
+            item.IncludedSubItems = await _itemRepository.GetIncludedSubItems(item.Id);
+            return item;
+        }
+
+        public async Task<List<Item>> GetFeaturedItems()
+        {
+            var items = await _itemRepository.GetFeaturedItems();
+            string origin = GetAppOrigin();
+            for (int i = 0; i < items.Count(); i++)
+            {
+                items[i] = await GetItemImages(origin, items[i]);
+                items[i].ItemPriceRules = await _itemRepository.GetItemPriceRules(items[i].Id);
+                items[i].IncludedSubItems = await _itemRepository.GetIncludedSubItems(items[i].Id);
+            }
+            return items;
         }
     }
 
     public interface IItemService
     {
         Task<Item> Add(Item item);
-        Task<IEnumerable<Item>> GetAll();
+        Task<List<Item>> GetAll();
         Task<Item> GetById(int id);
         Task<Item> GetBySlug(string slug);
         Task<Item> Update(Item item);
@@ -162,5 +190,6 @@ namespace SoftwarePal.Services
         Task<decimal> GetPricefromPriceRole();
         Task<IEnumerable<Item>> GetItemsByCategory(int categoryId);
         string GenerateSlug(string input);
+        Task<List<Item>> GetFeaturedItems();
     }
 }

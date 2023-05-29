@@ -65,6 +65,15 @@ namespace SoftwarePal.Controllers
             var items = await _itemService.GetAll();
             return Ok(items);
         }
+
+        [AllowAnonymous]
+        [HttpGet("GetFeaturedItems")]
+        public async Task<IActionResult> GetFeaturedItems()
+        {
+            var items = await _itemService.GetFeaturedItems();
+            return Ok(items);
+        }
+
         [AllowAnonymous]
         [HttpGet("GetItemsByCategory")]
         public async Task<IActionResult> GetItemsByCategory([FromQuery] int categoryId)

@@ -62,6 +62,11 @@ namespace SoftwarePal.Repositories
         {
             return _context.Categories.Any(e => e.Id == id);
         }
+
+        public async Task<Category> GetBySlug(string slug)
+        {
+            return await _context.Categories.FirstOrDefaultAsync(c => c.Slug == slug);
+        }
     }
 
     public interface ICategoryRepository
@@ -73,5 +78,6 @@ namespace SoftwarePal.Repositories
         void Delete(Category category);
         Task SaveChanges();
         bool Exists(int id);
+        Task<Category> GetBySlug(string slug);
     }
 }

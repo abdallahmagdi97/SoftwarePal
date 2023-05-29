@@ -6,6 +6,9 @@ using System.IO;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 using System.Reflection.Metadata;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace SoftwarePal.Services
 {
@@ -23,6 +26,7 @@ namespace SoftwarePal.Services
         public async Task<Category> Add(Category category)
         {
             category.CreatedAt = DateTime.Now;
+            category.Slug = GenerateSlug(category.Name);
             return await _categoryRepository.Add(category);
             
         }
@@ -110,6 +114,33 @@ namespace SoftwarePal.Services
                 throw new Exception("File Copy Failed", ex);
             }
         }
+
+        public async Task<Category> GetBySlug(string slug)
+        {
+            return await _categoryRepository.GetBySlug(slug);
+        }
+
+        public string GenerateSlug(string input)
+        {
+            string normalizedString = input.ToLowerInvariant().Normalize(NormalizationForm.FormD);
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (char c in normalizedString)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark &&
+                    (c == '-' || c == '_' || char.IsLetterOrDigit(c)))
+                {
+                    stringBuilder.Append(c);
+                }
+                else if (c == ' ')
+                {
+                    stringBuilder.Append('-');
+                }
+            }
+
+            return Regex.Replace(stringBuilder.ToString(), @"-{2,}", "-"); // Remove consecutive hyphens
+        }
     }
 
     public interface ICategoryService
@@ -122,5 +153,6 @@ namespace SoftwarePal.Services
         Task SaveChanges();
         string GetAppOrigin();
         Task<string> SaveImage(IFormFile image);
+        Task<Category> GetBySlug(string slug);
     }
 }

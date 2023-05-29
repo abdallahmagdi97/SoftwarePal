@@ -87,6 +87,11 @@ namespace SoftwarePal.Repositories
         {
             return await _context.Items.FirstOrDefaultAsync(i => i.Slug == slug);
         }
+
+        public async Task<List<Item>> GetFeaturedItems()
+        {
+            return await _context.Items.Where(i => i.IsFeatured == true).ToListAsync();
+        }
     }
 
     public interface IItemRepository
@@ -104,5 +109,6 @@ namespace SoftwarePal.Repositories
         bool Exists(int id);
         Task<IEnumerable<Item>> GetItemsByCategory(int categoryId);
         Task<Item> GetBySlug(string slug);
+        Task<List<Item>> GetFeaturedItems();
     }
 }

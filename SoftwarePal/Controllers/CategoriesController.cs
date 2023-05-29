@@ -38,6 +38,21 @@ namespace SoftwarePal.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("GetCategoryBySlug/{slug}")]
+        public async Task<IActionResult> GetCategoryBySlug(string slug)
+        {
+            try
+            {
+                var category = await _categoryService.GetBySlug(slug);
+                return Ok(category);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = e.Message });
+            }
+        }
+
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
