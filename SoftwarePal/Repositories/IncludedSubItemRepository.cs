@@ -57,6 +57,11 @@ namespace SoftwarePal.Repositories
         {
             return _context.IncludedSubItems.Any(e => e.Id == id);
         }
+
+        public async Task AddItemSubItem(ItemSubItems itemSubItems)
+        {
+            await _context.ItemSubItems.AddAsync(itemSubItems);
+        }
     }
 
     public interface IIncludedSubItemRepository
@@ -68,5 +73,6 @@ namespace SoftwarePal.Repositories
         void Delete(IncludedSubItem includedSubItem);
         Task SaveChanges();
         bool Exists(int id);
+        Task AddItemSubItem(ItemSubItems itemSubItems);
     }
 }

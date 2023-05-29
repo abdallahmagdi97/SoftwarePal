@@ -28,15 +28,9 @@ namespace SoftwarePal.Helpers
         }
         internal async Task AddIncludedSubItems(Item item, int id)
         {
-            foreach(var includedItem in item.IncludedSubItems)
+            foreach(var includedItem in item.SubItemsIds)
             {
-                if (includedItem.Id == 0)
-                {
-                    includedItem.ItemId = id;
-                    includedItem.CreatedAt = DateTime.Now;
-                    includedItem.UserCreated = item.UserCreated;
-                    await _includedSubItemRepository.Add(includedItem);
-                }
+                    await _includedSubItemRepository.AddItemSubItem(new ItemSubItems() { ItemId = id, SubItemId = includedItem });
             }
         }
         internal async Task AddItemPriceRules(Item item, int id)
@@ -54,19 +48,10 @@ namespace SoftwarePal.Helpers
         }
         internal async Task UpdateIncludedSubItems(Item item, int id)
         {
-            foreach (var includedItem in item.IncludedSubItems)
+            foreach (var includedItem in item.SubItemsIds)
             {
-                if (includedItem.Id == 0)
-                {
-                    await AddIncludedSubItems(item, id);
-                }
-                else
-                {
-                    includedItem.ItemId = id;
-                    includedItem.UpdatedAt = DateTime.Now;
-                    includedItem.UserUpdated = item.UserUpdated;
-                    await _includedSubItemRepository.Update(includedItem);
-                }
+                _includedSubItemRepository.AddItemSubItem(new ItemSubItems()
+                { ItemId = id, SubItemId = includedItem });
             }
         }
         internal async Task UpdateItemPriceRules(Item item, int id)

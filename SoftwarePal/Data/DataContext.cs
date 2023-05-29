@@ -23,6 +23,7 @@ namespace SoftwarePal.Data
         public DbSet<Team> Teams { get;  set; }
         public DbSet<ItemImage> ItemImages { get;  set; }
         public DbSet<OrderItem> OrderItems { get;  set; }
+        public DbSet<ItemSubItems> ItemSubItems { get;  set; }
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
             : base(options)
