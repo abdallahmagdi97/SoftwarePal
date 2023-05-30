@@ -28,46 +28,58 @@ namespace SoftwarePal.Helpers
         }
         internal async Task AddIncludedSubItems(Item item, int id)
         {
-            foreach(var includedItem in item.SubItemsIds)
+            
+            if (item.SubItemsIds != null)
             {
+                foreach (var includedItem in item.SubItemsIds)
+                {
                     await _includedSubItemRepository.AddItemSubItem(new ItemSubItems() { ItemId = id, SubItemId = includedItem });
+                }
             }
         }
         internal async Task AddItemPriceRules(Item item, int id)
         {
-            foreach (var priceRule in item.ItemPriceRules)
+            if (item.ItemPriceRules != null)
             {
-                if (priceRule.Id == 0)
+                foreach (var priceRule in item.ItemPriceRules)
                 {
-                    priceRule.ItemId = id;
-                    priceRule.CreatedAt = DateTime.Now;
-                    priceRule.UserCreated = item.UserCreated;
-                    await _itemPriceRuleRepository.Add(priceRule);
+                    if (priceRule.Id == 0)
+                    {
+                        priceRule.ItemId = id;
+                        priceRule.CreatedAt = DateTime.Now;
+                        priceRule.UserCreated = item.UserCreated;
+                        await _itemPriceRuleRepository.Add(priceRule);
+                    }
                 }
             }
         }
         internal async Task UpdateIncludedSubItems(Item item, int id)
         {
-            foreach (var includedItem in item.SubItemsIds)
+            if (item.SubItemsIds != null)
             {
-                _includedSubItemRepository.AddItemSubItem(new ItemSubItems()
-                { ItemId = id, SubItemId = includedItem });
+                foreach (var includedItem in item.SubItemsIds)
+                {
+                    await _includedSubItemRepository.AddItemSubItem(new ItemSubItems() { ItemId = id, SubItemId = includedItem });
+                }
             }
         }
         internal async Task UpdateItemPriceRules(Item item, int id)
         {
-            foreach (var priceRule in item.ItemPriceRules)
+            if (item.ItemPriceRules != null)
             {
-                if (priceRule.Id == 0)
+                foreach (var priceRule in item.ItemPriceRules)
                 {
-                    await AddItemPriceRules(item, id);
-                }
-                else
-                {
-                    priceRule.ItemId = id;
-                    priceRule.UpdatedAt = DateTime.Now;
-                    priceRule.UserUpdated = item.UserUpdated;
-                    await _itemPriceRuleRepository.Update(priceRule);
+                    if (priceRule.Id == 0)
+                    {
+                        await AddItemPriceRules(item, id);
+                    }
+                    else
+                    {
+                        priceRule.ItemId = id;
+                        priceRule.UpdatedAt = DateTime.Now;
+                        priceRule.UserUpdated = item.UserUpdated;
+                        await _itemPriceRuleRepository.Update(priceRule);
+                    }
                 }
             }
         }
@@ -79,7 +91,7 @@ namespace SoftwarePal.Helpers
 
             return origin;
         }
-        internal void SaveImages(Item item, int id)
+        internal async Task SaveImages(Item item, int id)
         {
             long size = item.ItemImages.Count;
             List<string> images = new List<string>();
@@ -89,15 +101,12 @@ namespace SoftwarePal.Helpers
                 {
                     // C:\\Users\\aedris\\source\\repos\\SoftwarePal\\SoftwarePal
                     var filePath = Path.Combine(Environment.CurrentDirectory, "Images", "Item", (item.ItemImages[i].ImageName ?? "item-") + Guid.NewGuid() + "." + item.ItemImages[i].Image.ContentType.Split('/').Last());
-                    if (!Directory.Exists(filePath))
-                    {
-                        Directory.CreateDirectory(filePath);
-                    }
+                    var image = item.ItemImages[i].Image;
                     item.ItemImages[i].ImageName = filePath.Substring(filePath.IndexOf("Images")).Replace("\\", "/");
                     images.Add(filePath);
-                    using (var stream = System.IO.File.Create(filePath))
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
-                        item.ItemImages[i].Image.CopyTo(stream);
+                        await image.CopyToAsync(fileStream);
                     }
                 }
                 item.ItemImages[i].ItemId = id;

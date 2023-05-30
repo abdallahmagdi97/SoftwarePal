@@ -137,7 +137,7 @@ namespace SoftwarePal.Services
 
         public string GenerateSlug(string input)
         {
-            string normalizedString = input.ToLowerInvariant().Normalize(NormalizationForm.FormD);
+            string normalizedString = input.ToLowerInvariant().Normalize(NormalizationForm.FormD).Trim();
 
             StringBuilder stringBuilder = new StringBuilder();
 
