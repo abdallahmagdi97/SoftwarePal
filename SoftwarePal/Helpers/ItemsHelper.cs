@@ -33,7 +33,7 @@ namespace SoftwarePal.Helpers
             {
                 foreach (var includedItem in item.SubItemsIds)
                 {
-                    await _includedSubItemRepository.AddItemSubItem(new ItemSubItems() { ItemId = id, SubItemId = includedItem });
+                    await _includedSubItemRepository.Add(new IncludedSubItem() { ItemId = id, SubItemId = includedItem, CreatedAt = DateTime.Now, UserCreated = item.UserCreated });
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace SoftwarePal.Helpers
             {
                 foreach (var includedItem in item.SubItemsIds)
                 {
-                    await _includedSubItemRepository.AddItemSubItem(new ItemSubItems() { ItemId = id, SubItemId = includedItem });
+                    await _includedSubItemRepository.Add(new IncludedSubItem() { ItemId = id, SubItemId = includedItem });
                 }
             }
         }

@@ -8,6 +8,7 @@ namespace SoftwarePal.Models
     {
         [Key]
         public int Id { get; set; }
+        [ForeignKey("Item")]
         public int ItemId { get; set; }
         public string? ImageName { get; set; }
         [NotMapped]

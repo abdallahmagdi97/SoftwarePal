@@ -55,7 +55,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AboutUs");
+                    b.ToTable("AboutUs", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.Blog", b =>
@@ -100,7 +100,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Blogs");
+                    b.ToTable("Blogs", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.Cart", b =>
@@ -129,7 +129,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.CartItem", b =>
@@ -163,7 +163,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.Category", b =>
@@ -215,7 +215,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.IncludedSubItem", b =>
@@ -246,7 +246,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IncludedSubItems");
+                    b.ToTable("IncludedSubItems", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.Item", b =>
@@ -302,7 +302,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Items");
+                    b.ToTable("Items", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.ItemImage", b =>
@@ -336,7 +336,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ItemImages");
+                    b.ToTable("ItemImages", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.ItemPriceRule", b =>
@@ -373,7 +373,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ItemPriceRules");
+                    b.ToTable("ItemPriceRules", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.ItemSubItems", b =>
@@ -392,7 +392,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ItemSubItems");
+                    b.ToTable("ItemSubItems", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.License", b =>
@@ -430,7 +430,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Licenses");
+                    b.ToTable("Licenses", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.Order", b =>
@@ -470,7 +470,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.OrderItem", b =>
@@ -507,7 +507,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.Slider", b =>
@@ -553,7 +553,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sliders");
+                    b.ToTable("Sliders", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.SubItem", b =>
@@ -588,7 +588,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SubItems");
+                    b.ToTable("SubItems", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.Team", b =>
@@ -627,7 +627,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.User", b =>
@@ -674,7 +674,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("SoftwarePal.Models.Voucher", b =>
@@ -718,7 +718,7 @@ namespace SoftwarePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vouchers");
+                    b.ToTable("Vouchers", (string)null);
                 });
 #pragma warning restore 612, 618
         }
