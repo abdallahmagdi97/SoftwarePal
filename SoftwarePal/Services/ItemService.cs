@@ -29,7 +29,6 @@ namespace SoftwarePal.Services
             _hostingEnvironment = hostingEnvironment;
             _httpContextAccessor = httpContextAccessor;
         }
-
         public async Task<Item> Add(Item item)
         {
             item.CreatedAt = DateTime.Now;
@@ -46,12 +45,10 @@ namespace SoftwarePal.Services
             
             return item;
         }
-
         public void Delete(Item item)
         {
             _itemRepository.Delete(item);
         }
-
         public async Task<List<Item>> GetAll()
         {
             var items = await _itemRepository.GetAll();
@@ -64,10 +61,9 @@ namespace SoftwarePal.Services
             }
             return items;
         }
-
         public async Task<Item> GetById(int id)
         {
-            if (!_itemRepository.Exists(id))
+            if (!await _itemRepository.Exists(id))
             {
                 throw new Exception("Not Found");
             }
@@ -78,15 +74,13 @@ namespace SoftwarePal.Services
             item.IncludedSubItems = await _itemRepository.GetIncludedSubItems(id);
             return item;
         }
-
         public Task SaveChanges()
         {
             return _itemRepository.SaveChanges();
         }
-
         public async Task<Item> Update(Item item)
         {
-            if (!_itemRepository.Exists(item.Id))
+            if (!await _itemRepository.Exists(item.Id))
             {
                 throw new InvalidOperationException($"Item with ID {item.Id} not found.");
             }
@@ -105,7 +99,6 @@ namespace SoftwarePal.Services
 
             return origin;
         }
-
         public async Task<List<ItemImage>> GetItemImages(string origin, Item item)
         {
             item.ItemImages = await _itemRepository.GetItemImages(item.Id);
@@ -116,12 +109,10 @@ namespace SoftwarePal.Services
             }
             return item.ItemImages;
         }
-
         public Task<decimal> GetPricefromPriceRole()
         {
             throw new NotImplementedException();
         }
-
         public async Task<IEnumerable<Item>> GetItemsByCategory(int categoryId)
         {
             var items = await _itemRepository.GetItemsByCategory(categoryId);
@@ -134,7 +125,6 @@ namespace SoftwarePal.Services
             }
             return items;
         }
-
         public string GenerateSlug(string input)
         {
             string normalizedString = input.ToLowerInvariant().Normalize(NormalizationForm.FormD).Trim();
@@ -156,7 +146,6 @@ namespace SoftwarePal.Services
 
             return Regex.Replace(stringBuilder.ToString(), @"-{2,}", "-"); // Remove consecutive hyphens
         }
-
         public async Task<Item> GetBySlug(string slug)
         {
             var item = await _itemRepository.GetBySlug(slug);
@@ -166,7 +155,6 @@ namespace SoftwarePal.Services
             item.IncludedSubItems = await _itemRepository.GetIncludedSubItems(item.Id);
             return item;
         }
-
         public async Task<List<Item>> GetFeaturedItems()
         {
             var items = await _itemRepository.GetFeaturedItems();
@@ -178,6 +166,11 @@ namespace SoftwarePal.Services
                 items[i].IncludedSubItems = await _itemRepository.GetIncludedSubItems(items[i].Id);
             }
             return items;
+        }
+
+        public async Task<bool> Exists(int itemId)
+        {
+            return await _itemRepository.Exists(itemId);
         }
     }
 
@@ -196,5 +189,6 @@ namespace SoftwarePal.Services
         Task<IEnumerable<Item>> GetItemsByCategory(int categoryId);
         string GenerateSlug(string input);
         Task<List<Item>> GetFeaturedItems();
+        Task<bool> Exists(int itemId);
     }
 }

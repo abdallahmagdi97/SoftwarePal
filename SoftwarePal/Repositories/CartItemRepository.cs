@@ -54,13 +54,31 @@ namespace SoftwarePal.Repositories
             return cartItem;
         }
 
-        public async Task<IEnumerable<CartItem>> GetCartItemsByCartId(int id)
+        public async Task<List<CartItem>> GetCartItemsByCartId(int id)
         {
             return await _context.CartItems.Where(i => i.CartId == id).ToListAsync();
         }
         public bool Exists(int id)
         {
             return _context.CartItems.Any(e => e.Id == id);
+        }
+
+        public async Task<CartItem> RemoveCartItem(int itemId, int qty, int cartId)
+        {
+            var cartItem = await _context.CartItems.FirstOrDefaultAsync(c => c.ItemId == itemId && c.CartId == cartId);
+            if (cartItem == null)
+                throw new Exception("Item dosen't exist in cart!");
+            if (qty == cartItem?.Qty)
+            {
+                Delete(cartItem);
+            } else
+            {
+                if (qty > cartItem?.Qty)
+                    throw new ArgumentException("Item quantity you are trying to remove is more than the items in your cart!");
+                cartItem.Qty -= qty;
+                await Update(cartItem);
+            }
+            return cartItem;
         }
     }
 
@@ -72,7 +90,8 @@ namespace SoftwarePal.Repositories
         Task<CartItem> Update(CartItem cartItem);
         void Delete(CartItem cartItem);
         Task SaveChanges();
-        Task<IEnumerable<CartItem>> GetCartItemsByCartId(int id);
+        Task<List<CartItem>> GetCartItemsByCartId(int id);
         bool Exists(int id);
+        Task<CartItem> RemoveCartItem(int itemId, int qty, int id);
     }
 }

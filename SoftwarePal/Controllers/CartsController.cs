@@ -29,71 +29,55 @@ namespace SoftwarePal.Controllers
             _userService = userService;
         }
 
-        [HttpGet("GetCartByUserId")]
+        [HttpGet("MyCart")]
         public async Task<IActionResult> GetCartByUserId()
         {
             User user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found!" });
-            Cart cart = await _cartService.GetCartByUserId(user.Id);
+            try
+            {
+                Cart cart = await _cartService.GetCartByUserId(user.Id);
+                return Ok(cart);
+            } catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = e.Message });
+            }
+        }
+
+        [HttpPost("AddToCart")]
+        public async Task<IActionResult> AddToCart([FromBody] CartRequest request)
+        {
             
-            return Ok(cart);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCart(int id)
-        {
-            var cart = await _cartService.GetById(id);
-            if (cart == null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Cart not found" });
-            return Ok(cart);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetCarts()
-        {
-            var carts = await _cartService.GetAll();
-            return Ok(carts);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddCart([FromBody] Cart cart)
-        {
-            await _cartService.Add(cart);
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
-            cart.UserCreated = user?.Id;
-            await _cartService.SaveChanges();
-            return Ok(cart);
+            try
+            {
+                var cart = await _cartService.AddToCart(request.ItemId, request.Qty, user.Id);
+                return Ok(cart);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = e.Message });
+            }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCart(int id, [FromBody] Cart cart)
+        [HttpDelete("RemoveFromCart")]
+        public async Task<IActionResult> RemoveFromCart([FromBody] CartRequest request)
         {
-            if (cart.Id != id)
-            {
-                return BadRequest();
-            }
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
-            cart.UserUpdated = user?.Id;
-            await _cartService.Update(cart);
-            return Ok(cart);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCart(int id)
-        {
-            var cart = await _cartService.GetById(id);
-            if (cart == null)
+            try
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Not Found" });
+                await _cartService.RemoveFromCart(request.ItemId, request.Qty, user.Id);
+                return Ok();
             }
-            _cartService.Delete(cart);
-            await _cartService.SaveChanges();
-            return Ok();
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = e.Message });
+            }
         }
 
     }

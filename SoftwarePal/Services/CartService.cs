@@ -8,25 +8,53 @@ namespace SoftwarePal.Services
     public class CartService : ICartService
     {
         private readonly ICartRepository _cartRepository;
+        private readonly ICartItemRepository _cartItemRepository;
+        private readonly IItemService _itemService;
 
-        public CartService(ICartRepository cartRepository)
+        public CartService(ICartRepository cartRepository, ICartItemRepository cartItemRepository, IItemService itemService)
         {
             _cartRepository = cartRepository;
+            _cartItemRepository = cartItemRepository;
+            _itemService = itemService;
         }
 
-        public async Task<Cart> Add(Cart cart)
+        public async Task<Cart> AddToCart(int itemId, int Qty, string userId)
         {
-            cart.CreatedAt = DateTime.Now;
-            return await _cartRepository.Add(cart);
-        }
-
-        public void Delete(Cart cart)
-        {
-            if (!_cartRepository.Exists(cart.Id))
+            var cart = await GetCartByUserId(userId);
+            if (await _itemService.Exists(itemId))
             {
-                throw new Exception("Not Found");
+                if (cart == null)
+                {
+
+                    cart = new Cart() { UserId = userId, CreatedAt = DateTime.Now };
+                    await _cartRepository.AddToCart(cart);
+                    var cartItem = new CartItem() { ItemId = itemId, Qty = Qty, CreatedAt = DateTime.Now, CartId = cart.Id, UserCreated = userId };
+                    await _cartItemRepository.Add(cartItem);
+                    cart.CartItems = new List<CartItem>();
+                    cart.CartItems.Add(cartItem);
+
+                }
+                else
+                {
+                    cart.UpdatedAt = DateTime.Now;
+                    var cartItem = new CartItem() { ItemId = itemId, Qty = Qty, CreatedAt = DateTime.Now, CartId = cart.Id, UserCreated = userId };
+                    await _cartItemRepository.Add(cartItem);
+                    cart.CartItems = await _cartItemRepository.GetCartItemsByCartId(cart.Id);
+                }
+            }else
+            {
+                throw new ArgumentException($"Item with Id {itemId} dosen't exist!");
             }
-            _cartRepository.Delete(cart);
+            return cart;
+        }
+
+        public async Task RemoveFromCart(int itemId, int Qty, string userId)
+        {
+            var cart = await GetCartByUserId(userId);
+            if (cart == null)
+                throw new ArgumentException("User has no cart to remove items from");
+            cart.CartItems = await _cartItemRepository.GetCartItemsByCartId(cart.Id);
+            await _cartItemRepository.RemoveCartItem(itemId, Qty, cart.Id);
         }
 
         public Task<IEnumerable<Cart>> GetAll()
@@ -59,17 +87,25 @@ namespace SoftwarePal.Services
 
         public async Task<Cart> GetCartByUserId(string id)
         {
-            return await _cartRepository.GetCartByUserId(id);
+            var cart = await _cartRepository.GetCartByUserId(id);
+            if (cart.CartItems != null)
+            {
+                foreach (var item in cart.CartItems)
+                {
+                    item.ItemDetails = await _itemService.GetById(item.ItemId);
+                }
+            }
+            return cart;
         }
     }
 
     public interface ICartService
     {
-        Task<Cart> Add(Cart cart);
+        Task<Cart> AddToCart(int itemId, int Qty, string userId);
         Task<IEnumerable<Cart>> GetAll();
         Task<Cart> GetById(int id);
         Task<Cart> Update(Cart cart);
-        void Delete(Cart cart);
+        Task RemoveFromCart(int itemId, int Qty, string userId);
         Task SaveChanges();
         Task<Cart> GetCartByUserId(string id);
     }

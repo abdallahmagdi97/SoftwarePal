@@ -64,9 +64,9 @@ namespace SoftwarePal.Repositories
         {
             return await _context.ItemImages.Where(x => x.ItemId == itemId).OrderBy(c => c.ImageOrder).ToListAsync();
         }
-        public bool Exists(int id)
+        public async Task<bool> Exists(int id)
         {
-            return _context.Items.Any(e => e.Id == id);
+            return await _context.Items.AnyAsync(e => e.Id == id);
         }
 
         public async Task<IEnumerable<Item>> GetItemsByCategory(int categoryId)
@@ -106,7 +106,7 @@ namespace SoftwarePal.Repositories
         Task<List<ItemImage>> GetItemImages(int itemId);
         Task<List<ItemPriceRule>> GetItemPriceRules(int itemId);
         Task<List<IncludedSubItem>> GetIncludedSubItems(int itemId);
-        bool Exists(int id);
+        Task<bool> Exists(int id);
         Task<IEnumerable<Item>> GetItemsByCategory(int categoryId);
         Task<Item> GetBySlug(string slug);
         Task<List<Item>> GetFeaturedItems();

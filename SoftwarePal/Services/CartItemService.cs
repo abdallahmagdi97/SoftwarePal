@@ -54,7 +54,6 @@ namespace SoftwarePal.Services
             {
                 throw new Exception("Not Found");
             }
-            cartItem.UpdatedAt = DateTime.Now;
             return await _cartItemRepository.Update(cartItem);
         }
 

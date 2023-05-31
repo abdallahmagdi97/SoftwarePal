@@ -14,7 +14,7 @@ namespace SoftwarePal.Repositories
         {
             _context = context;
         }
-        public async Task<Cart> Add(Cart cart)
+        public async Task<Cart> AddToCart(Cart cart)
         {
             await _context.Carts.AddAsync(cart);
             _context.SaveChanges();
@@ -58,9 +58,10 @@ namespace SoftwarePal.Repositories
         public async Task<Cart> GetCartByUserId(string id)
         {
             var cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == id);
-            if (cart == null)
+            if (cart != null)
             {
-                throw new ArgumentNullException($"Cart with user ID {id} not found.");
+                cart.CartItems = await _context.CartItems.Where(c => c.CartId == cart.Id).ToListAsync();
+                
             }
             return cart;
         }
@@ -68,15 +69,20 @@ namespace SoftwarePal.Repositories
         {
             return _context.Carts.Any(e => e.Id == id);
         }
+
+        Task ICartRepository.RemoveFromCart(Cart cart)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public interface ICartRepository
     {
-        Task<Cart> Add(Cart cart);
+        Task<Cart> AddToCart(Cart cart);
         Task<IEnumerable<Cart>> GetAll();
         Task<Cart> GetById(int id);
         Task<Cart> Update(Cart cart);
-        void Delete(Cart cart);
+        Task RemoveFromCart(Cart cart);
         Task SaveChanges();
         Task<Cart> GetCartByUserId(string id);
         bool Exists(int id);

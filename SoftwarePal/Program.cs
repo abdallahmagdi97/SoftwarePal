@@ -39,6 +39,8 @@ builder.Services.AddScoped<ISubItemService, SubItemService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVoucherService, VoucherService>();
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IWishListService, WishListService>();
 // Register Repositories
 builder.Services.AddScoped<IAboutUsRepository, AboutUsRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
@@ -54,6 +56,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 builder.Services.AddScoped<IItemPriceRuleRepository, ItemPriceRuleRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<IWishListRepository, WishListRepository>();
 // Adding Authentication  
 builder.Services.AddAuthentication(options =>
 {
