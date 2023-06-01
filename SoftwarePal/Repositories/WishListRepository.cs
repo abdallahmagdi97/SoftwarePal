@@ -22,13 +22,13 @@ namespace SoftwarePal.Repositories
 
         public async Task Delete(string userId, int itemId)
         {
-            WishList wishList = await _context.WishLists.FirstOrDefaultAsync(w => w.UserId == userId && w.ItemId == itemId);
+            var wishList = await _context.WishLists.FirstOrDefaultAsync(w => w.UserId == userId && w.ItemId == itemId);
             if (wishList == null)
             {
                 throw new InvalidOperationException($"WishList not found.");
             }
             _context.WishLists.Remove(wishList);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<WishList>> GetAll(string userId)
@@ -46,12 +46,6 @@ namespace SoftwarePal.Repositories
             return wishList;
 
         }
-
-        async Task IWishListRepository.SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<WishList> Update(WishList wishList)
         {
             _context.Entry(wishList).State = EntityState.Modified;
@@ -72,7 +66,6 @@ namespace SoftwarePal.Repositories
         Task<WishList> GetById(int id);
         Task<WishList> Update(WishList wishList);
         Task Delete(string userId, int itemId);
-        Task SaveChanges();
         bool Exists(int id);
     }
 }

@@ -42,12 +42,6 @@ namespace SoftwarePal.Repositories
             return subItem;
 
         }
-
-        async Task IAboutUsRepository.SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<AboutUs> Update(AboutUs aboutUs)
         {
             _context.Entry(aboutUs).State = EntityState.Modified;
@@ -71,7 +65,6 @@ namespace SoftwarePal.Repositories
         Task<AboutUs> GetById(int id);
         Task<AboutUs> Update(AboutUs aboutUs);
         void Delete(AboutUs aboutUs);
-        Task SaveChanges();
         bool Exists(int id);
     }
 }

@@ -43,11 +43,6 @@ namespace SoftwarePal.Services
             return _includedSubItemRepository.GetById(id);
         }
 
-        public Task SaveChanges()
-        {
-            return _includedSubItemRepository.SaveChanges();
-        }
-
         public async Task<IncludedSubItem> Update(IncludedSubItem includedSubItem)
         {
             if (_includedSubItemRepository.Exists(includedSubItem.Id))
@@ -65,6 +60,5 @@ namespace SoftwarePal.Services
         Task<IncludedSubItem> GetById(int id);
         Task<IncludedSubItem> Update(IncludedSubItem includedSubItem);
         void Delete(IncludedSubItem includedSubItem);
-        Task SaveChanges();
     }
 }

@@ -41,11 +41,6 @@ namespace SoftwarePal.Services
             return _licenseRepository.GetById(id);
         }
 
-        public Task SaveChanges()
-        {
-            return _licenseRepository.SaveChanges();
-        }
-
         public async Task<License> Update(License license)
         {
             if (!_licenseRepository.Exists(license.Id))
@@ -61,6 +56,5 @@ namespace SoftwarePal.Services
         Task<License> GetById(int id);
         Task<License> Update(License license);
         void Delete(License license);
-        Task SaveChanges();
     }
 }

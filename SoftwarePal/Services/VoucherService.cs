@@ -28,23 +28,18 @@ namespace SoftwarePal.Services
             _voucherRepository.Delete(voucher);
         }
 
-        public Task<IEnumerable<Voucher>> GetAll()
+        public async Task<IEnumerable<Voucher>> GetAll()
         {
-            return _voucherRepository.GetAll();
+            return await _voucherRepository.GetAll();
         }
 
-        public Task<Voucher> GetById(int id)
+        public async Task<Voucher> GetById(int id)
         {
             if (!_voucherRepository.Exists(id))
             {
                 throw new Exception("Not Found");
             }
-            return _voucherRepository.GetById(id);
-        }
-
-        public Task SaveChanges()
-        {
-            return _voucherRepository.SaveChanges();
+            return await _voucherRepository.GetById(id);
         }
 
         public async Task<Voucher> Update(Voucher voucher)
@@ -62,6 +57,5 @@ namespace SoftwarePal.Services
         Task<Voucher> GetById(int id);
         Task<Voucher> Update(Voucher voucher);
         void Delete(Voucher voucher);
-        Task SaveChanges();
     }
 }

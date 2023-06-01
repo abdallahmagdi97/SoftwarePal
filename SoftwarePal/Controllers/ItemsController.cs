@@ -12,6 +12,9 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Reflection.Metadata;
+using Microsoft.EntityFrameworkCore;
+using SoftwarePal.Models.Filter;
+using System.Diagnostics.Metrics;
 
 namespace SoftwarePal.Controllers
 {
@@ -60,10 +63,13 @@ namespace SoftwarePal.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetItems()
+        public async Task<IActionResult> GetItems([FromQuery] PaginationFilter filter)
         {
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
             var items = await _itemService.GetAll();
-            return Ok(items);
+            var itemsList = items.Skip((validFilter.PageNumber - 1) * validFilter.PageSize).Take(validFilter.PageSize).ToList();
+
+            return Ok(new PagedResponse<List<Item>>(itemsList, validFilter.PageNumber, validFilter.PageSize, items.Count()));
         }
 
         [AllowAnonymous]

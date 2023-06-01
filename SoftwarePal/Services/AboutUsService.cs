@@ -58,11 +58,6 @@ namespace SoftwarePal.Services
             return aboutUs;
         }
 
-        public Task SaveChanges()
-        {
-            return _aboutUsRepository.SaveChanges();
-        }
-
         public async Task<AboutUs> Update(AboutUs aboutUs)
         {
             if (!_aboutUsRepository.Exists(aboutUs.Id))
@@ -125,7 +120,6 @@ namespace SoftwarePal.Services
         Task<AboutUs> GetById(int id);
         Task<AboutUs> Update(AboutUs aboutUs);
         void Delete(AboutUs aboutUs);
-        Task SaveChanges();
         Task<string> SaveImage(IFormFile image);
         Task<byte[]> GetImage(string imageName);
         string GetAppOrigin();

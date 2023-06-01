@@ -64,12 +64,6 @@ namespace SoftwarePal.Services
             subItem.ImageName = origin + "/" + subItem.ImageName;
             return subItem;
         }
-
-        public Task SaveChanges()
-        {
-            return _subItemRepository.SaveChanges();
-        }
-
         public async Task<SubItem> Update(SubItem subItem)
         {
             if (!_subItemRepository.Exists(subItem.Id))
@@ -92,7 +86,6 @@ namespace SoftwarePal.Services
             Task<SubItem> GetById(int id);
             Task<SubItem> Update(SubItem subItem);
             void Delete(SubItem subItem);
-            Task SaveChanges();
             string GetAppOrigin();
 
         }

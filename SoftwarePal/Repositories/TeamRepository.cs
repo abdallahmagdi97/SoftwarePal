@@ -42,12 +42,6 @@ namespace SoftwarePal.Repositories
             return team;
 
         }
-
-        async Task ITeamRepository.SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<Team> Update(Team team)
         {
             _context.Entry(team).State = EntityState.Modified;
@@ -71,7 +65,6 @@ namespace SoftwarePal.Repositories
         Task<Team> GetById(int id);
         Task<Team> Update(Team team);
         void Delete(Team team);
-        Task SaveChanges();
         bool Exists(int id);
     }
 }

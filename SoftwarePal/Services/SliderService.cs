@@ -56,11 +56,6 @@ namespace SoftwarePal.Services
             return slider;
         }
 
-        public Task SaveChanges()
-        {
-            return _sliderRepository.SaveChanges();
-        }
-
         public async Task<Slider> Update(Slider slider)
         {
             if (!_sliderRepository.Exists(slider.Id))
@@ -113,7 +108,6 @@ namespace SoftwarePal.Services
         Task<Slider> GetById(int id);
         Task<Slider> Update(Slider slider);
         void Delete(Slider slider);
-        Task SaveChanges();
         Task<string> SaveImage(IFormFile image);
         string GetAppOrigin();
     }

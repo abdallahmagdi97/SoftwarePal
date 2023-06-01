@@ -57,23 +57,18 @@ namespace SoftwarePal.Services
             await _cartItemRepository.RemoveCartItem(itemId, Qty, cart.Id);
         }
 
-        public Task<IEnumerable<Cart>> GetAll()
+        public async Task<List<Cart>> GetAll()
         {
-            return _cartRepository.GetAll();
+            return await _cartRepository.GetAll();
         }
 
-        public Task<Cart> GetById(int id)
+        public async Task<Cart> GetById(int id)
         {
             if (!_cartRepository.Exists(id))
             {
                 throw new Exception("Not Found");
             }
-            return _cartRepository.GetById(id);
-        }
-
-        public Task SaveChanges()
-        {
-            return _cartRepository.SaveChanges();
+            return await _cartRepository.GetById(id);
         }
 
         public async Task<Cart> Update(Cart cart)
@@ -102,11 +97,10 @@ namespace SoftwarePal.Services
     public interface ICartService
     {
         Task<Cart> AddToCart(int itemId, int Qty, string userId);
-        Task<IEnumerable<Cart>> GetAll();
+        Task<List<Cart>> GetAll();
         Task<Cart> GetById(int id);
         Task<Cart> Update(Cart cart);
         Task RemoveFromCart(int itemId, int Qty, string userId);
-        Task SaveChanges();
         Task<Cart> GetCartByUserId(string id);
     }
 }

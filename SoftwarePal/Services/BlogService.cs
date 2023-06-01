@@ -57,11 +57,6 @@ namespace SoftwarePal.Services
             return blog;
         }
 
-        public Task SaveChanges()
-        {
-            return _blogRepository.SaveChanges();
-        }
-
         public async Task<Blog> Update(Blog blog)
         {
             if (!_blogRepository.Exists(blog.Id))
@@ -118,7 +113,6 @@ namespace SoftwarePal.Services
         Task<Blog> GetById(int id);
         Task<Blog> Update(Blog blog);
         void Delete(Blog blog);
-        Task SaveChanges();
         Task<string> SaveImage(IFormFile image);
         string GetAppOrigin();
     }

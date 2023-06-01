@@ -44,11 +44,6 @@ namespace SoftwarePal.Repositories
 
         }
 
-        async Task ISliderRepository.SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<Slider> Update(Slider slider)
         {
             _context.Entry(slider).State = EntityState.Modified;
@@ -72,7 +67,6 @@ namespace SoftwarePal.Repositories
         Task<Slider> GetById(int id);
         Task<Slider> Update(Slider slider);
         void Delete(Slider slider);
-        Task SaveChanges();
         bool Exists(int id);
     }
 

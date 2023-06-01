@@ -41,12 +41,6 @@ namespace SoftwarePal.Repositories
             return blog;
 
         }
-
-        async Task IBlogRepository.SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<Blog> Update(Blog blog)
         {
             _context.Entry(blog).State = EntityState.Modified;
@@ -70,7 +64,6 @@ namespace SoftwarePal.Repositories
         Task<Blog> GetById(int id);
         Task<Blog> Update(Blog blog);
         void Delete(Blog blog);
-        Task SaveChanges();
         bool Exists(int id);
     }
 }

@@ -72,11 +72,6 @@ namespace SoftwarePal.Services
             return category;
         }
 
-        public Task SaveChanges()
-        {
-            return _categoryRepository.SaveChanges();
-        }
-
         public async Task<Category> Update(Category category)
         {
             if (!_categoryRepository.Exists(category.Id))
@@ -150,7 +145,6 @@ namespace SoftwarePal.Services
         Task<Category> GetById(int id);
         Task<Category> Update(Category category);
         void Delete(Category category);
-        Task SaveChanges();
         string GetAppOrigin();
         Task<string> SaveImage(IFormFile image);
         Task<Category> GetBySlug(string slug);

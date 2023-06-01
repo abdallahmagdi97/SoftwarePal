@@ -54,12 +54,6 @@ namespace SoftwarePal.Services
                 team.ImageName = origin + "/" + team.ImageName;
             return team;
         }
-
-        public Task SaveChanges()
-        {
-            return _teamRepository.SaveChanges();
-        }
-
         public async Task<Team> Update(Team team)
         {
             if (!_teamRepository.Exists(team.Id))
@@ -112,7 +106,6 @@ namespace SoftwarePal.Services
         Task<Team> GetById(int id);
         Task<Team> Update(Team team);
         void Delete(Team team);
-        Task SaveChanges();
         Task<string> SaveImage(IFormFile image);
         string GetAppOrigin();
     }

@@ -41,12 +41,6 @@ namespace SoftwarePal.Repositories
             return voucher;
 
         }
-
-        async Task IVoucherRepository.SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<Voucher> Update(Voucher voucher)
         {
             _context.Entry(voucher).State = EntityState.Modified;
@@ -66,7 +60,6 @@ namespace SoftwarePal.Repositories
         Task<Voucher> GetById(int id);
         Task<Voucher> Update(Voucher voucher);
         void Delete(Voucher voucher);
-        Task SaveChanges();
         bool Exists(int id);
     }
 }

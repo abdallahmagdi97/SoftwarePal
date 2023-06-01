@@ -42,12 +42,6 @@ namespace SoftwarePal.Repositories
             return license;
 
         }
-
-        async Task ILicenseRepository.SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<License> Update(License license)
         {
             _context.Entry(license).State = EntityState.Modified;
@@ -67,7 +61,6 @@ namespace SoftwarePal.Repositories
         Task<License> GetById(int id);
         Task<License> Update(License license);
         void Delete(License license);
-        Task SaveChanges();
         bool Exists(int id);
     }
 

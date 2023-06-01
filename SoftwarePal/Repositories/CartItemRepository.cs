@@ -20,10 +20,10 @@ namespace SoftwarePal.Repositories
             return cartItem;
         }
 
-        public void Delete(CartItem cartItem)
+        public async Task Delete(CartItem cartItem)
         {
             _context.CartItems.Remove(cartItem);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<CartItem>> GetAll()
@@ -42,11 +42,6 @@ namespace SoftwarePal.Repositories
 
         }
 
-        async Task ICartItemRepository.SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<CartItem> Update(CartItem cartItem)
         {
             _context.Entry(cartItem).State = EntityState.Modified;
@@ -58,9 +53,9 @@ namespace SoftwarePal.Repositories
         {
             return await _context.CartItems.Where(i => i.CartId == id).ToListAsync();
         }
-        public bool Exists(int id)
+        public async Task<bool> Exists(int id)
         {
-            return _context.CartItems.Any(e => e.Id == id);
+            return await _context.CartItems.AnyAsync(e => e.Id == id);
         }
 
         public async Task<CartItem> RemoveCartItem(int itemId, int qty, int cartId)
@@ -70,7 +65,7 @@ namespace SoftwarePal.Repositories
                 throw new Exception("Item dosen't exist in cart!");
             if (qty == cartItem?.Qty)
             {
-                Delete(cartItem);
+                await Delete(cartItem);
             } else
             {
                 if (qty > cartItem?.Qty)
@@ -88,10 +83,9 @@ namespace SoftwarePal.Repositories
         Task<IEnumerable<CartItem>> GetAll();
         Task<CartItem> GetById(int id);
         Task<CartItem> Update(CartItem cartItem);
-        void Delete(CartItem cartItem);
-        Task SaveChanges();
+        Task Delete(CartItem cartItem);
         Task<List<CartItem>> GetCartItemsByCartId(int id);
-        bool Exists(int id);
+        Task<bool> Exists(int id);
         Task<CartItem> RemoveCartItem(int itemId, int qty, int id);
     }
 }

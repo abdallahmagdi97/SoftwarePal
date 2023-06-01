@@ -69,11 +69,6 @@ namespace SoftwarePal.Services
         {
             return await _userRepository.GetCurrentUser(user);
         }
-
-        async Task IUserService.SaveChanges()
-        {
-            await _userRepository.SaveChanges();
-        }
     }
 
     public interface IUserService
@@ -87,6 +82,5 @@ namespace SoftwarePal.Services
         Task<bool> VerifyPassword(User user, string password);
         string GenerateToken(User user);
         Task<User> GetCurrentUser(ClaimsPrincipal user);
-        Task SaveChanges();
     }
 }

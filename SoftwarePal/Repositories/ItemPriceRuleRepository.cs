@@ -16,7 +16,7 @@ namespace SoftwarePal.Repositories
         public async Task<ItemPriceRule> Add(ItemPriceRule item)
         {
             await _context.ItemPriceRules.AddAsync(item);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return item;
         }
 
@@ -41,12 +41,6 @@ namespace SoftwarePal.Repositories
             return itemPriceRule;
 
         }
-
-        async Task IItemPriceRuleRepository.SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<ItemPriceRule> Update(ItemPriceRule item)
         {
             _context.Entry(item).State = EntityState.Modified;
@@ -66,7 +60,6 @@ namespace SoftwarePal.Repositories
         Task<ItemPriceRule> GetById(int id);
         Task<ItemPriceRule> Update(ItemPriceRule item);
         void Delete(ItemPriceRule item);
-        Task SaveChanges();
         bool Exists(int id);
     }
 }

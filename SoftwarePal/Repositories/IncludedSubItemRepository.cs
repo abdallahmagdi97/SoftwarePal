@@ -16,7 +16,7 @@ namespace SoftwarePal.Repositories
         public async Task<IncludedSubItem> Add(IncludedSubItem includedSubItem)
         {
             await _context.IncludedSubItems.AddAsync(includedSubItem);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return includedSubItem;
         }
 
@@ -40,11 +40,6 @@ namespace SoftwarePal.Repositories
             }
             return subItem;
 
-        }
-
-        async Task IIncludedSubItemRepository.SaveChanges()
-        {
-            await _context.SaveChangesAsync();
         }
 
         public async Task<IncludedSubItem> Update(IncludedSubItem includedSubItem)
@@ -71,7 +66,6 @@ namespace SoftwarePal.Repositories
         Task<IncludedSubItem> GetById(int id);
         Task<IncludedSubItem> Update(IncludedSubItem includedSubItem);
         void Delete(IncludedSubItem includedSubItem);
-        Task SaveChanges();
         bool Exists(int id);
         Task AddItemSubItem(ItemSubItems itemSubItems);
     }

@@ -28,12 +28,10 @@ namespace SoftwarePal.Services
         {
             await _wishListRepository.Delete(userId, itemId);
         }
-
         public async Task<List<WishList>> GetAll(string userId)
         {
             return await _wishListRepository.GetAll(userId);
         }
-
         public async Task<WishList> GetById(int id)
         {
             if (!_wishListRepository.Exists(id))
@@ -43,12 +41,6 @@ namespace SoftwarePal.Services
             var wishList = await _wishListRepository.GetById(id);
             return wishList;
         }
-
-        public Task SaveChanges()
-        {
-            return _wishListRepository.SaveChanges();
-        }
-
         public async Task<WishList> Update(WishList wishList)
         {
             if (!_wishListRepository.Exists(wishList.Id))
@@ -67,6 +59,5 @@ namespace SoftwarePal.Services
         Task<WishList> GetById(int id);
         Task<WishList> Update(WishList wishList);
         Task Delete(string userId, int itemId);
-        Task SaveChanges();
     }
 }

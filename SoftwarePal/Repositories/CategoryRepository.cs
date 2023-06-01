@@ -43,11 +43,6 @@ namespace SoftwarePal.Repositories
 
         }
 
-        async Task ICategoryRepository.SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<Category> Update(Category category)
         {
             _context.Entry(category).State = EntityState.Modified;
@@ -76,7 +71,6 @@ namespace SoftwarePal.Repositories
         Task<Category> GetById(int id);
         Task<Category> Update(Category category);
         void Delete(Category category);
-        Task SaveChanges();
         bool Exists(int id);
         Task<Category> GetBySlug(string slug);
     }

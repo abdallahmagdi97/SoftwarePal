@@ -43,12 +43,6 @@ namespace SoftwarePal.Repositories
             return subItem;
 
         }
-
-        async Task ISubItemRepository.SaveChanges()
-        {
-             await _context.SaveChangesAsync();
-        }
-
         public async Task<SubItem> Update(SubItem subItem)
         {
             _context.Entry(subItem).State = EntityState.Modified;
@@ -72,7 +66,6 @@ namespace SoftwarePal.Repositories
         Task<SubItem> GetById(int id);
         Task<SubItem> Update(SubItem subItem);
         void Delete(SubItem subItem);
-        Task SaveChanges();
         void SaveImage(SubItem subItem);
         bool Exists(int id);
     }

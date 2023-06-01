@@ -20,37 +20,32 @@ namespace SoftwarePal.Services
             return await _cartItemRepository.Add(cartItem);
         }
 
-        public void Delete(CartItem cartItem)
+        public async Task Delete(CartItem cartItem)
         {
-            if (!_cartItemRepository.Exists(cartItem.Id))
+            if (!await _cartItemRepository.Exists(cartItem.Id))
             {
                 throw new Exception("Not Found");
             }
-            _cartItemRepository.Delete(cartItem);
+            await _cartItemRepository.Delete(cartItem);
         }
 
-        public Task<IEnumerable<CartItem>> GetAll()
+        public async Task<IEnumerable<CartItem>> GetAll()
         {
-            return _cartItemRepository.GetAll();
+            return await _cartItemRepository.GetAll();
         }
 
-        public Task<CartItem> GetById(int id)
+        public async Task<CartItem> GetById(int id)
         {
-            if (!_cartItemRepository.Exists(id))
+            if (!await _cartItemRepository.Exists(id))
             {
                 throw new Exception("Not Found");
             }
-            return _cartItemRepository.GetById(id);
-        }
-
-        public Task SaveChanges()
-        {
-            return _cartItemRepository.SaveChanges();
+            return await _cartItemRepository.GetById(id);
         }
 
         public async Task<CartItem> Update(CartItem cartItem)
         {
-            if (!_cartItemRepository.Exists(cartItem.Id))
+            if (!await _cartItemRepository.Exists(cartItem.Id))
             {
                 throw new Exception("Not Found");
             }
@@ -69,8 +64,7 @@ namespace SoftwarePal.Services
         Task<IEnumerable<CartItem>> GetAll();
         Task<CartItem> GetById(int id);
         Task<CartItem> Update(CartItem cartItem);
-        void Delete(CartItem cartItem);
-        Task SaveChanges();
+        Task Delete(CartItem cartItem);
         Task<IEnumerable<CartItem>> GetCartItemsByCartId(int id);
     }
 }

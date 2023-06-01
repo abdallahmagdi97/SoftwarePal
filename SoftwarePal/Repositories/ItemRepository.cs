@@ -42,11 +42,6 @@ namespace SoftwarePal.Repositories
 
         }
 
-        async Task IItemRepository.SaveChanges()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<Item> Update(Item item)
         {
             _context.Entry(item).State = EntityState.Modified;
@@ -101,7 +96,6 @@ namespace SoftwarePal.Repositories
         Task<Item> GetById(int id);
         Task<Item> Update(Item item);
         void Delete(Item item);
-        Task SaveChanges();
         void SaveImage(ItemImage itemImage);
         Task<List<ItemImage>> GetItemImages(int itemId);
         Task<List<ItemPriceRule>> GetItemPriceRules(int itemId);

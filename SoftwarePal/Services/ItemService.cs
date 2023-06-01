@@ -49,7 +49,7 @@ namespace SoftwarePal.Services
         {
             _itemRepository.Delete(item);
         }
-        public async Task<List<Item>> GetAll()
+        public async Task<IEnumerable<Item>> GetAll()
         {
             var items = await _itemRepository.GetAll();
             string origin = GetAppOrigin();
@@ -74,10 +74,6 @@ namespace SoftwarePal.Services
             item.IncludedSubItems = await _itemRepository.GetIncludedSubItems(id);
             return item;
         }
-        public Task SaveChanges()
-        {
-            return _itemRepository.SaveChanges();
-        }
         public async Task<Item> Update(Item item)
         {
             if (!await _itemRepository.Exists(item.Id))
@@ -88,7 +84,6 @@ namespace SoftwarePal.Services
             ItemsHelper itemsHelper = new ItemsHelper(_includedSubItemRepository, _itemPriceRuleRepository, _itemRepository, _hostingEnvironment, _httpContextAccessor);
             await itemsHelper.UpdateItemPriceRules(item, item.Id);
             await itemsHelper.UpdateIncludedSubItems(item, item.Id);
-            await _itemRepository.SaveChanges();
             return item;
         }
         public string GetAppOrigin()
@@ -177,12 +172,11 @@ namespace SoftwarePal.Services
     public interface IItemService
     {
         Task<Item> Add(Item item);
-        Task<List<Item>> GetAll();
+        Task<IEnumerable<Item>> GetAll();
         Task<Item> GetById(int id);
         Task<Item> GetBySlug(string slug);
         Task<Item> Update(Item item);
         void Delete(Item item);
-        Task SaveChanges();
         string GetAppOrigin();
         Task<List<ItemImage>> GetItemImages(string origin, Item item);
         Task<decimal> GetPricefromPriceRole();

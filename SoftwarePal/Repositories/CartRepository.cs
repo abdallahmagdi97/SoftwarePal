@@ -27,7 +27,7 @@ namespace SoftwarePal.Repositories
             _context.SaveChanges();
         }
 
-        public async Task<IEnumerable<Cart>> GetAll()
+        public async Task<List<Cart>> GetAll()
         {
             return await _context.Carts.ToListAsync();
         }
@@ -41,11 +41,6 @@ namespace SoftwarePal.Repositories
             }
             return cart;
 
-        }
-
-        async Task ICartRepository.SaveChanges()
-        {
-            await _context.SaveChangesAsync();
         }
 
         public async Task<Cart> Update(Cart cart)
@@ -79,11 +74,10 @@ namespace SoftwarePal.Repositories
     public interface ICartRepository
     {
         Task<Cart> AddToCart(Cart cart);
-        Task<IEnumerable<Cart>> GetAll();
+        Task<List<Cart>> GetAll();
         Task<Cart> GetById(int id);
         Task<Cart> Update(Cart cart);
         Task RemoveFromCart(Cart cart);
-        Task SaveChanges();
         Task<Cart> GetCartByUserId(string id);
         bool Exists(int id);
     }
