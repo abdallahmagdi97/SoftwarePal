@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.FileProviders;
+using SoftwarePal.Models.PayPal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,9 @@ builder.Services.AddScoped<IItemPriceRuleRepository, ItemPriceRuleRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IWishListRepository, WishListRepository>();
+builder.Services.AddTransient<ItemService>();
+builder.Services.Configure<PayPalOptions>(builder.Configuration.GetSection("PayPalSettings"));
+builder.Services.AddTransient<PayPalService>();
 // Adding Authentication  
 builder.Services.AddAuthentication(options =>
 {

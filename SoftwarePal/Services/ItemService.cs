@@ -1,11 +1,6 @@
 ﻿using SoftwarePal.Helpers;
 using SoftwarePal.Models;
 using SoftwarePal.Repositories;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting.Internal;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Reflection.Metadata;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Text;
@@ -58,6 +53,11 @@ namespace SoftwarePal.Services
                 items[i].ItemImages = await GetItemImages(origin, items[i]);
                 items[i].ItemPriceRules = await _itemRepository.GetItemPriceRules(items[i].Id);
                 items[i].IncludedSubItems = await _itemRepository.GetIncludedSubItems(items[i].Id);
+                foreach (var subItem in items[i].IncludedSubItems)
+                {
+                    if (subItem.ImageName != null)
+                        subItem.ImageName = origin + "/" + subItem.ImageName;
+                }
             }
             return items;
         }
@@ -72,6 +72,11 @@ namespace SoftwarePal.Services
             item.ItemImages  = await GetItemImages(origin, item);
             item.ItemPriceRules = await _itemRepository.GetItemPriceRules(id);
             item.IncludedSubItems = await _itemRepository.GetIncludedSubItems(id);
+            foreach (var subItem in item.IncludedSubItems)
+            {
+                if (subItem.ImageName != null)
+                    subItem.ImageName = origin + "/" + subItem.ImageName;
+            }
             return item;
         }
         public async Task<Item> Update(Item item)
@@ -117,6 +122,11 @@ namespace SoftwarePal.Services
                 item.ItemImages = await GetItemImages(origin, item);
                 item.ItemPriceRules = await _itemRepository.GetItemPriceRules(item.Id);
                 item.IncludedSubItems = await _itemRepository.GetIncludedSubItems(item.Id);
+                foreach (var subItem in item.IncludedSubItems)
+                {
+                    if (subItem.ImageName != null)
+                        subItem.ImageName = origin + "/" + subItem.ImageName;
+                }
             }
             return items;
         }
@@ -148,6 +158,11 @@ namespace SoftwarePal.Services
             item.ItemImages = await GetItemImages(origin, item);
             item.ItemPriceRules = await _itemRepository.GetItemPriceRules(item.Id);
             item.IncludedSubItems = await _itemRepository.GetIncludedSubItems(item.Id);
+            foreach(var subItem in item.IncludedSubItems)
+            {
+                if (subItem.ImageName != null)
+                    subItem.ImageName = origin + "/" + subItem.ImageName;
+            }
             return item;
         }
         public async Task<List<Item>> GetFeaturedItems()
@@ -159,6 +174,11 @@ namespace SoftwarePal.Services
                 items[i].ItemImages = await GetItemImages(origin, items[i]);
                 items[i].ItemPriceRules = await _itemRepository.GetItemPriceRules(items[i].Id);
                 items[i].IncludedSubItems = await _itemRepository.GetIncludedSubItems(items[i].Id);
+                foreach (var subItem in items[i].IncludedSubItems)
+                {
+                    if (subItem.ImageName != null)
+                        subItem.ImageName = origin + "/" + subItem.ImageName;
+                }
             }
             return items;
         }

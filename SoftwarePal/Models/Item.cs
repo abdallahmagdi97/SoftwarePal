@@ -30,7 +30,7 @@ namespace SoftwarePal.Models
         [NotMapped]
         public List<int>? SubItemsIds { get; set; }
         [NotMapped]
-        public List<IncludedSubItem>? IncludedSubItems { get; set; }
+        public List<SubItem>? IncludedSubItems { get; set; }
         public string? Slug { get; set; }
     }
 }
