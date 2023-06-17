@@ -69,6 +69,11 @@ namespace SoftwarePal.Services
         {
             return await _userRepository.GetCurrentUser(user);
         }
+
+        public bool EmailExists(string email)
+        {
+            return _userRepository.EmailExists(email);
+        }
     }
 
     public interface IUserService
@@ -82,5 +87,6 @@ namespace SoftwarePal.Services
         Task<bool> VerifyPassword(User user, string password);
         string GenerateToken(User user);
         Task<User> GetCurrentUser(ClaimsPrincipal user);
+        bool EmailExists(string email);
     }
 }

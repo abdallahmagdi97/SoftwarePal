@@ -89,6 +89,17 @@ namespace SoftwarePal.Repositories
         {
             return await _context.Items.Where(i => i.IsFeatured == true).ToListAsync();
         }
+
+        public async Task<List<Item>> GetRelatedProducts(int productId)
+        {
+            var product = await _context.Items.FindAsync(productId);
+            return await _context.Items.Where(p => p.CategoryId == product.CategoryId || p.OperatingSystem == product.OperatingSystem || p.IsFeatured).Take(20).ToListAsync(); 
+        }
+
+        public async Task<List<Item>> Search(string query)
+        {
+            return await _context.Items.Where(p => p.Name.Contains(query) || p.Description.Contains(query)).ToListAsync();
+        }
     }
 
     public interface IItemRepository
@@ -106,5 +117,7 @@ namespace SoftwarePal.Repositories
         Task<IEnumerable<Item>> GetItemsByCategory(int categoryId);
         Task<Item> GetBySlug(string slug);
         Task<List<Item>> GetFeaturedItems();
+        Task<List<Item>> GetRelatedProducts(int productId);
+        Task<List<Item>> Search(string query);
     }
 }

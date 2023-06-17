@@ -13,7 +13,7 @@ namespace SoftwarePal.Models
         public decimal Price { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public string? UserCreated { get; set; }
-        public string? UserUpdated { get; set; }
+        public string UserCreated { get; set; } = string.Empty;
+        public string UserUpdated { get; set; } = string.Empty;
     }
 }

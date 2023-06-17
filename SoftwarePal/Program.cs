@@ -42,6 +42,10 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVoucherService, VoucherService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IWishListService, WishListService>();
+builder.Services.AddScoped<IRelatedProductsService, RelatedProductsService>();
+builder.Services.AddScoped<IReviewsService, ReviewsService>();
+builder.Services.AddScoped<IContactUsService, ContactUsService>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 // Register Repositories
 builder.Services.AddScoped<IAboutUsRepository, AboutUsRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
@@ -59,6 +63,11 @@ builder.Services.AddScoped<IItemPriceRuleRepository, ItemPriceRuleRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IWishListRepository, WishListRepository>();
+builder.Services.AddScoped<IRelatedProductsRepository, RelatedProductsRepository>();
+builder.Services.AddScoped<IReviewsRepository, ReviewsRepository>();
+builder.Services.AddScoped<IContactUsRepository, ContactUsRepository>();
+builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+
 builder.Services.AddTransient<ItemService>();
 builder.Services.Configure<PayPalOptions>(builder.Configuration.GetSection("PayPalSettings"));
 builder.Services.AddTransient<PayPalService>();

@@ -10,13 +10,13 @@ namespace SoftwarePal.Models
         public int Id { get; set; }
         [ForeignKey("Item")]
         public int ItemId { get; set; }
-        public string? ImageName { get; set; }
+        public string ImageName { get; set; } = string.Empty;
         [NotMapped]
         public IFormFile? Image { get; set; }
         public int ImageOrder { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public string? UserCreated { get; set; }
-        public string? UserUpdated { get; set; }
+        public string UserCreated { get; set; } = string.Empty;
+        public string UserUpdated { get; set; } = string.Empty;
     }
 }

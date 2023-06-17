@@ -187,6 +187,44 @@ namespace SoftwarePal.Services
         {
             return await _itemRepository.Exists(itemId);
         }
+
+        public async Task<List<Item>> GetRelatedProducts(int productId)
+        {
+            if (!await _itemRepository.Exists(productId))
+                throw new ArgumentNullException($"Product with id : {productId} dosen't exist.");
+            var items = await _itemRepository.GetRelatedProducts(productId);
+            string origin = GetAppOrigin();
+            for (int i = 0; i < items.Count(); i++)
+            {
+                items[i].ItemImages = await GetItemImages(origin, items[i]);
+                items[i].ItemPriceRules = await _itemRepository.GetItemPriceRules(items[i].Id);
+                items[i].IncludedSubItems = await _itemRepository.GetIncludedSubItems(items[i].Id);
+                foreach (var subItem in items[i].IncludedSubItems)
+                {
+                    if (subItem.ImageName != null)
+                        subItem.ImageName = origin + "/" + subItem.ImageName;
+                }
+            }
+            return items;
+        }
+
+        public async Task<List<Item>> Search(string query)
+        {
+            var items = await _itemRepository.Search(query);
+            string origin = GetAppOrigin();
+            for (int i = 0; i < items.Count(); i++)
+            {
+                items[i].ItemImages = await GetItemImages(origin, items[i]);
+                items[i].ItemPriceRules = await _itemRepository.GetItemPriceRules(items[i].Id);
+                items[i].IncludedSubItems = await _itemRepository.GetIncludedSubItems(items[i].Id);
+                foreach (var subItem in items[i].IncludedSubItems)
+                {
+                    if (subItem.ImageName != null)
+                        subItem.ImageName = origin + "/" + subItem.ImageName;
+                }
+            }
+            return items;
+        }
     }
 
     public interface IItemService
@@ -204,5 +242,7 @@ namespace SoftwarePal.Services
         string GenerateSlug(string input);
         Task<List<Item>> GetFeaturedItems();
         Task<bool> Exists(int itemId);
+        Task<List<Item>> GetRelatedProducts(int productId);
+        Task<List<Item>> Search(string query);
     }
 }

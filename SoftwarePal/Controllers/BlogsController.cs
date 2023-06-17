@@ -53,7 +53,7 @@ namespace SoftwarePal.Controllers
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
-            blog.UserCreated = user?.Id;
+            blog.UserCreated = user.Id;
             await _blogService.Add(blog);
             return Ok(blog);
         }
@@ -71,7 +71,7 @@ namespace SoftwarePal.Controllers
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
-            blog.UserUpdated = user?.Id;
+            blog.UserUpdated = user.Id;
             await _blogService.Update(blog);
             return Ok(blog);
         }

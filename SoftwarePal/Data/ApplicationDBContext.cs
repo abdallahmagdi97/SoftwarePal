@@ -25,6 +25,11 @@ namespace SoftwarePal.Data
         public DbSet<OrderItem> OrderItems { get;  set; }
         public DbSet<ItemSubItems> ItemSubItems { get;  set; }
         public DbSet<WishList> WishLists { get;  set; }
+        public DbSet<RelatedProducts> RelatedProducts { get;  set; }
+        public DbSet<ContactUs> ContactUs { get;  set; }
+        public DbSet<Statistics> Statistics { get;  set; }
+        public DbSet<Review> Reviews { get;  set; }
+        public DbSet<Search> Search { get;  set; }
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
             : base(options)

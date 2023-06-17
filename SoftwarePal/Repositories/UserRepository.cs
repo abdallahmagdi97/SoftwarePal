@@ -118,6 +118,11 @@ namespace SoftwarePal.Repositories
         {
             return _context.Users.Any(e => e.Id == id);
         }
+
+        public bool EmailExists(string email)
+        {
+            return _context.Users.Any(u =>  u.Email == email);
+        }
     }
 
     public interface IUserRepository
@@ -132,5 +137,6 @@ namespace SoftwarePal.Repositories
         string GenerateToken(User user);
         Task<User> GetCurrentUser(ClaimsPrincipal user);
         bool Exists(string userId);
+        bool EmailExists(string email);
     }
 }

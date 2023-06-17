@@ -13,7 +13,6 @@ namespace SoftwarePal.Models
         public int SubItemId { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public string? UserCreated { get; set; }
-        public string? UserUpdated { get; set; }
+        public string? UserCreated { get; set; } = string.Empty;
     }
 }

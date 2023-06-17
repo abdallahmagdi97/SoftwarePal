@@ -13,6 +13,6 @@ namespace SoftwarePal.Models
         public Item? ItemDetails { get; set; }
         public int Qty { get; set; }
         public DateTime? CreatedAt { get; set; }
-        public string? UserCreated { get; set; }
+        public string UserCreated { get; set; } = string.Empty;
     }
 }

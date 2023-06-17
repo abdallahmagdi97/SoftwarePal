@@ -71,7 +71,16 @@ namespace SoftwarePal.Controllers
 
             return Ok(new PagedResponse<List<Item>>(itemsList, validFilter.PageNumber, validFilter.PageSize, items.Count()));
         }
+        [AllowAnonymous]
+        [HttpGet("Search/{query}")]
+        public async Task<IActionResult> SearchItems([FromQuery] PaginationFilter filter, string query)
+        {
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var items = await _itemService.Search(query);
+            var itemsList = items.Skip((validFilter.PageNumber - 1) * validFilter.PageSize).Take(validFilter.PageSize).ToList();
 
+            return Ok(new PagedResponse<List<Item>>(itemsList, validFilter.PageNumber, validFilter.PageSize, items.Count()));
+        }
         [AllowAnonymous]
         [HttpGet("GetFeaturedItems")]
         public async Task<IActionResult> GetFeaturedItems()
@@ -87,6 +96,13 @@ namespace SoftwarePal.Controllers
             var items = await _itemService.GetItemsByCategory(categoryId);
             return Ok(items);
         }
+        [AllowAnonymous]
+        [HttpGet("GetRelatedProducts")]
+        public async Task<IActionResult> GetRelatedProducts([FromQuery] int productId)
+        {
+            var relatedProducts = await _itemService.GetRelatedProducts(productId);
+            return Ok(relatedProducts);
+        }
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
         public async Task<IActionResult> AddItem([FromForm] Item item)
@@ -94,7 +110,7 @@ namespace SoftwarePal.Controllers
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
-            item.UserCreated = user?.Id;
+            item.UserCreated = user.Id;
             await _itemService.Add(item);
             return Ok(item);
         }

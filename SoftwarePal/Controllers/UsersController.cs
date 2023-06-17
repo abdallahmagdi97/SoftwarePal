@@ -25,7 +25,7 @@ namespace SoftwarePal.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (_userService.GetUserByEmail(user.Email) != null)
+            if (_userService.EmailExists(user.Email))
             {
                 ModelState.AddModelError("Email", "Email address is already in use.");
                 return BadRequest(ModelState);
