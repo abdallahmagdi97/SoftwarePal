@@ -11,17 +11,17 @@ namespace SoftwarePal.Models
         public int Id { get; set; }
         public int CategoryId { get; set; }
         [Required]
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public string Link { get; set; } = string.Empty;
+        public string? Name { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
+        public string? Link { get; set; } = string.Empty;
         public bool IsFeatured { get; set; } = false;
-        public string OperatingSystem { get; set; } = string.Empty;
+        public string? OperatingSystem { get; set; } = string.Empty;
         public int NumberOfUsers { get; set; } = 1;
-        public string Specs { get; set; } = string.Empty;
+        public string? Specs { get; set; } = string.Empty;
         public bool Status { get; set; } = true;
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public string UserCreated { get; set; } = string.Empty;
+        public string? UserCreated { get; set; } = string.Empty;
         public string? UserUpdated { get; set; }
         [NotMapped]
         public List<ItemImage>? ItemImages { get; set; }
@@ -31,6 +31,6 @@ namespace SoftwarePal.Models
         public List<int>? SubItemsIds { get; set; }
         [NotMapped]
         public List<SubItem>? IncludedSubItems { get; set; }
-        public string Slug { get; set; } = string.Empty;
+        public string? Slug { get; set; } = string.Empty;
     }
 }

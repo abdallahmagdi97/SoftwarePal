@@ -27,7 +27,7 @@ namespace SoftwarePal.Repositories
             _context.SaveChanges();
         }
 
-        public async Task<IEnumerable<Category>> GetAll()
+        public async Task<List<Category>> GetAll()
         {
             return await _context.Categories.OrderBy(c => c.Order).ToListAsync();
         }
@@ -67,7 +67,7 @@ namespace SoftwarePal.Repositories
     public interface ICategoryRepository
     {
         Task<Category> Add(Category category);
-        Task<IEnumerable<Category>> GetAll();
+        Task<List<Category>> GetAll();
         Task<Category> GetById(int id);
         Task<Category> Update(Category category);
         void Delete(Category category);
