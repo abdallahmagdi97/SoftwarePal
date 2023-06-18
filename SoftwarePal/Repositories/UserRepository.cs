@@ -87,6 +87,8 @@ namespace SoftwarePal.Repositories
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("FullName", user.FullName),
+                new Claim("Username", user.Username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Role.Split('/').Last(), user.UserRole.ToString())
             };

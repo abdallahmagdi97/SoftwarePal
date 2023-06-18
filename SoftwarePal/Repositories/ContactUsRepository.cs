@@ -21,10 +21,24 @@ namespace SoftwarePal.Repositories
             await _dbContext.ContactUs.AddAsync(contactUs);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<ContactUs> GetContactInquiryById(int contactInquiryId)
+        {
+            return await _dbContext.ContactUs.FindAsync(contactInquiryId);
+        }
+
+        public async Task MarkAsRead(ContactUs contactInquiry)
+        {
+            contactInquiry.IsRead = true;
+            _dbContext.Update(contactInquiry);
+            await _dbContext.SaveChangesAsync();
+        }
     }
     public interface IContactUsRepository
     {
         Task<List<ContactUs>> GetAllContactInquiries();
         Task AddContactInquiry(ContactUs contactUs);
+        Task<ContactUs> GetContactInquiryById(int contactInquiryId);
+        Task MarkAsRead(ContactUs contactInquiry);
     }
 }

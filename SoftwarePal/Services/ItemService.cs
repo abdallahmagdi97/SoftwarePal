@@ -35,7 +35,7 @@ namespace SoftwarePal.Services
                 itemsHelper.SaveImages(item, item.Id);
             if (item.ItemPriceRules != null)
                 await itemsHelper.AddItemPriceRules(item, item.Id);
-            if (item.IncludedSubItems != null)
+            if (item.SubItemsIds != null)
                 await itemsHelper.AddIncludedSubItems(item, item.Id);
             
             return item;

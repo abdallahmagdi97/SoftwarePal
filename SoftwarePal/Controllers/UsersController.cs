@@ -3,6 +3,7 @@ using SoftwarePal.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Net;
 
 namespace SoftwarePal.Controllers
 {
@@ -43,14 +44,12 @@ namespace SoftwarePal.Controllers
 
             if (user == null)
             {
-                ModelState.AddModelError("Email", "Invalid email address or password.");
-                return BadRequest(ModelState);
+                return StatusCode(StatusCodes.Status401Unauthorized, new Response { Status = "Error", Message = "Invalid email address" } );
             }
             bool passwordVerified = await _userService.VerifyPassword(user, loginRequest.Password);
             if (!passwordVerified)
             {
-                ModelState.AddModelError("Email", "Invalid email address or password.");
-                return BadRequest(ModelState);
+                return StatusCode(StatusCodes.Status401Unauthorized, new Response { Status = "Error", Message = "Invalid password" } );
             }
 
             var token = _userService.GenerateToken(user);

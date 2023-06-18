@@ -107,12 +107,25 @@ namespace SoftwarePal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddItem([FromForm] Item item)
         {
+            var files = Request.Form.Files;
             var user = await _userService.GetCurrentUser(HttpContext.User);
             if (user == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
             item.UserCreated = user.Id;
+            AppendItemFiles(files, item);
             await _itemService.Add(item);
             return Ok(item);
+        }
+
+        private void AppendItemFiles(IFormFileCollection files, Item item)
+        {
+            if (files.Count == item.ItemImages.Count)
+            {
+                for (int i = 0; i < files.Count; i++)
+                {
+                    item.ItemImages[i].Image = files[i];
+                }
+            }
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
