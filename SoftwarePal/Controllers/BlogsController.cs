@@ -48,6 +48,7 @@ namespace SoftwarePal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddBlog([FromForm] Blog blog)
         {
+
             if (blog.Image != null)
                 blog.ImageName = await _blogService.SaveImage(blog.Image);
             var user = await _userService.GetCurrentUser(HttpContext.User);
