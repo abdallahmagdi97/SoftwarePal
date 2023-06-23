@@ -26,6 +26,7 @@ namespace SoftwarePal.Services
                 if (cart == null)
                 {
 
+
                     cart = new Cart() { UserId = userId, CreatedAt = DateTime.Now };
                     await _cartRepository.AddToCart(cart);
                     var cartItem = new CartItem() { ItemId = itemId, Qty = Qty, CreatedAt = DateTime.Now, CartId = cart.Id, UserCreated = userId };
