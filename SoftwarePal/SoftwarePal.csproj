@@ -11,6 +11,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Images\Item\**" />
+    <Compile Remove="Images\Slider\**" />
+    <Compile Remove="Images\SubItem\**" />
+    <Compile Remove="Images\Team\**" />
+    <Content Remove="Images\Item\**" />
+    <Content Remove="Images\Slider\**" />
+    <Content Remove="Images\SubItem\**" />
+    <Content Remove="Images\Team\**" />
+    <EmbeddedResource Remove="Images\Item\**" />
+    <EmbeddedResource Remove="Images\Slider\**" />
+    <EmbeddedResource Remove="Images\SubItem\**" />
+    <EmbeddedResource Remove="Images\Team\**" />
+    <None Remove="Images\Item\**" />
+    <None Remove="Images\Slider\**" />
+    <None Remove="Images\SubItem\**" />
+    <None Remove="Images\Team\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16">
@@ -31,11 +50,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Images\Item\" />
+    <Folder Include="Images\Blog\" />
+    <Folder Include="Images\Category\" />
     <Folder Include="Images\AboutUs\" />
-    <Folder Include="Images\Team\" />
-    <Folder Include="Images\Slider\" />
-    <Folder Include="Images\SubItem\" />
   </ItemGroup>
 
 </Project>
