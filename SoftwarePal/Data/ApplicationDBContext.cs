@@ -6,30 +6,30 @@ namespace SoftwarePal.Data
 {
     public class ApplicationDBContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<License> Licenses { get; set; }
-        public DbSet<SubItem> SubItems { get;  set; }
-        public DbSet<Item> Items { get;  set; }
-        public DbSet<Category> Categories { get;  set; }
-        public DbSet<Blog> Blogs { get;  set; }
-        public DbSet<Cart> Carts { get;  set; }
-        public DbSet<CartItem> CartItems { get;  set; }
-        public DbSet<Order> Orders { get;  set; }
-        public DbSet<Slider> Sliders { get;  set; }
-        public DbSet<Voucher> Vouchers { get;  set; }
-        public DbSet<AboutUs> AboutUs { get;  set; }
-        public DbSet<IncludedSubItem> IncludedSubItems { get;  set; }
-        public DbSet<ItemPriceRule> ItemPriceRules { get;  set; }
-        public DbSet<Team> Teams { get;  set; }
-        public DbSet<ItemImage> ItemImages { get;  set; }
-        public DbSet<OrderItem> OrderItems { get;  set; }
-        public DbSet<ItemSubItems> ItemSubItems { get;  set; }
-        public DbSet<WishList> WishLists { get;  set; }
-        public DbSet<RelatedProducts> RelatedProducts { get;  set; }
-        public DbSet<ContactUs> ContactUs { get;  set; }
-        public DbSet<Statistics> Statistics { get;  set; }
-        public DbSet<Review> Reviews { get;  set; }
-        public DbSet<Search> Search { get;  set; }
+        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<License> Licenses { get; set; } = null!;
+        public DbSet<SubItem> SubItems { get; set; } = null!;
+        public DbSet<Item> Items { get; set; } = null!;
+        public DbSet<Category> Categories { get; set; } = null!;    
+        public DbSet<Blog> Blogs { get; set; } = null!;
+        public DbSet<Cart> Carts { get; set; } = null!;
+        public DbSet<CartItem> CartItems { get; set; } = null!;
+        public DbSet<Order> Orders { get; set; } = null!;
+        public DbSet<Slider> Sliders { get; set; } = null!;
+        public DbSet<Voucher> Vouchers { get; set; } = null!;
+        public DbSet<AboutUs> AboutUs { get; set; } = null!;
+        public DbSet<IncludedSubItem> IncludedSubItems { get; set; } = null!;
+        public DbSet<ItemPriceRule> ItemPriceRules { get; set; } = null!;
+        public DbSet<Team> Teams { get; set; } = null!;
+        public DbSet<ItemImage> ItemImages { get; set; } = null!;
+        public DbSet<OrderItem> OrderItems { get; set; } = null!;
+        public DbSet<ItemSubItems> ItemSubItems { get; set; } = null!;
+        public DbSet<WishList> WishLists { get; set; } = null!;
+        public DbSet<RelatedProducts> RelatedProducts { get; set; } = null!;
+        public DbSet<ContactUs> ContactUs { get; set; } = null!;
+        public DbSet<Statistics> Statistics { get; set; } = null!;
+        public DbSet<Review> Reviews { get; set; } = null!;
+        public DbSet<Search> Search { get; set; } = null!;
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
             : base(options)

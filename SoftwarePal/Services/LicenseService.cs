@@ -1,4 +1,5 @@
-﻿using SoftwarePal.Models;
+﻿using PayPalCheckoutSdk.Orders;
+using SoftwarePal.Models;
 using SoftwarePal.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -47,6 +48,16 @@ namespace SoftwarePal.Services
                 throw new InvalidOperationException($"License with ID {license.Id} not found.");
             return await _licenseRepository.Update(license);
         }
+
+        public async Task<License> GetByItemId(int itemId)
+        {
+            return await _licenseRepository.GetByItemId(itemId);
+        }
+
+        public async Task<List<License>> GetMyLicenses(string id)
+        {
+            return await _licenseRepository.GetMyLicenses(id);
+        }
     }
 
     public interface ILicenseService
@@ -56,5 +67,7 @@ namespace SoftwarePal.Services
         Task<License> GetById(int id);
         Task<License> Update(License license);
         void Delete(License license);
+        Task<License> GetByItemId(int itemId);
+        Task<List<License>> GetMyLicenses(string id);
     }
 }

@@ -12,7 +12,6 @@ namespace SoftwarePal.Models
         [ForeignKey("SubItem")]
         public int SubItemId { get; set; }
         public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
         public string? UserCreated { get; set; } = string.Empty;
     }
 }

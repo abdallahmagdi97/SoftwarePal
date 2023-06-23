@@ -125,6 +125,11 @@ namespace SoftwarePal.Repositories
         {
             return _context.Users.Any(u =>  u.Email == email);
         }
+
+        public async Task<List<User>> GetByRoleId(string role)
+        {
+            return await _context.Users.Where(u => nameof(u.UserRole).ToLower() == role.ToLower()).ToListAsync();
+        }
     }
 
     public interface IUserRepository
@@ -140,5 +145,6 @@ namespace SoftwarePal.Repositories
         Task<User> GetCurrentUser(ClaimsPrincipal user);
         bool Exists(string userId);
         bool EmailExists(string email);
+        Task<List<User>> GetByRoleId(string role);
     }
 }

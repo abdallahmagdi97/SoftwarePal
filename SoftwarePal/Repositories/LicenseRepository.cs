@@ -52,6 +52,19 @@ namespace SoftwarePal.Repositories
         {
             return _context.Licenses.Any(e => e.Id == id);
         }
+
+        public async Task<License> GetByItemId(int itemId)
+        {
+            var license = await _context.Licenses.FirstOrDefaultAsync(l => l.ItemId == itemId);
+            if (license == null)
+                throw new ArgumentNullException($"No License is found with this ItemId {itemId}");
+            return license;
+        }
+
+        public async Task<List<License>> GetMyLicenses(string id)
+        {
+            return await _context.Licenses.Where(l => l.UserPurchased == id).ToListAsync();
+        }
     }
 
     public interface ILicenseRepository
@@ -62,6 +75,8 @@ namespace SoftwarePal.Repositories
         Task<License> Update(License license);
         void Delete(License license);
         bool Exists(int id);
+        Task<License> GetByItemId(int itemId);
+        Task<List<License>> GetMyLicenses(string id);
     }
 
 }

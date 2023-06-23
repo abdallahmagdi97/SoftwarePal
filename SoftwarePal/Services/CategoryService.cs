@@ -97,7 +97,7 @@ namespace SoftwarePal.Services
                     {
                         await image.CopyToAsync(fileStream);
                     }
-                    return fullPath.Substring(fullPath.IndexOf("Images")).Replace("\\", "/");
+                    return fullPath[fullPath.IndexOf("Images")..].Replace("\\", "/");
                 }
                 else
                 {
@@ -119,7 +119,7 @@ namespace SoftwarePal.Services
         {
             string normalizedString = input.ToLowerInvariant().Normalize(NormalizationForm.FormD).Trim();
 
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
 
             foreach (char c in normalizedString)
             {

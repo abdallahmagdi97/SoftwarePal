@@ -55,11 +55,12 @@ namespace SoftwarePal.Helpers
         }
         internal async Task UpdateIncludedSubItems(Item item, int id)
         {
+            await _includedSubItemRepository.RemoveSubItemsWithItemId(item.Id);
             if (item.SubItemsIds != null)
             {
                 foreach (var includedItem in item.SubItemsIds)
                 {
-                    await _includedSubItemRepository.Add(new IncludedSubItem() { ItemId = id, SubItemId = includedItem });
+                    await _includedSubItemRepository.Add(new IncludedSubItem() { ItemId = id, SubItemId = includedItem, UserCreated = item.UserUpdated, CreatedAt = DateTime.Now });
                 }
             }
         }
@@ -93,24 +94,27 @@ namespace SoftwarePal.Helpers
         }
         internal async Task SaveImages(Item item, int id)
         {
-            long size = item.ItemImages.Count;
-            List<string> images = new List<string>();
-            for (int i = 0; i < item.ItemImages.Count; i++)
+            if (item.ItemImages != null)
             {
-                if (item.ItemImages[i].Image.Length > 0)
+                long size = item.ItemImages.Count;
+                List<string> images = new List<string>();
+                for (int i = 0; i < item.ItemImages.Count; i++)
                 {
-                    // C:\\Users\\aedris\\source\\repos\\SoftwarePal\\SoftwarePal
-                    var filePath = Path.Combine(Environment.CurrentDirectory, "Images", "Item", (item.ItemImages[i].ImageName ?? "item-") + Guid.NewGuid() + "." + item.ItemImages[i].Image.ContentType.Split('/').Last());
-                    var image = item.ItemImages[i].Image;
-                    item.ItemImages[i].ImageName = filePath.Substring(filePath.IndexOf("Images")).Replace("\\", "/");
-                    images.Add(filePath);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    if (item.ItemImages[i].Image.Length > 0)
                     {
-                        await image.CopyToAsync(fileStream);
+                        // C:\\Users\\aedris\\source\\repos\\SoftwarePal\\SoftwarePal
+                        var filePath = Path.Combine(Environment.CurrentDirectory, "Images", "Item", (item.ItemImages[i].ImageName ?? "item-") + Guid.NewGuid() + "." + item.ItemImages[i].Image.ContentType.Split('/').Last());
+                        var image = item.ItemImages[i].Image;
+                        item.ItemImages[i].ImageName = filePath.Substring(filePath.IndexOf("Images")).Replace("\\", "/");
+                        images.Add(filePath);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await image.CopyToAsync(fileStream);
+                        }
                     }
+                    item.ItemImages[i].ItemId = id;
+                    _itemRepository.SaveImage(item.ItemImages[i]);
                 }
-                item.ItemImages[i].ItemId = id;
-                _itemRepository.SaveImage(item.ItemImages[i]);
             }
         }
     }

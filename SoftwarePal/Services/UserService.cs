@@ -74,6 +74,11 @@ namespace SoftwarePal.Services
         {
             return _userRepository.EmailExists(email);
         }
+
+        public async Task<List<User>> GetByRoleId(string role)
+        {
+            return await _userRepository.GetByRoleId(role);
+        }
     }
 
     public interface IUserService
@@ -88,5 +93,6 @@ namespace SoftwarePal.Services
         string GenerateToken(User user);
         Task<User> GetCurrentUser(ClaimsPrincipal user);
         bool EmailExists(string email);
+        Task<List<User>> GetByRoleId(string role);
     }
 }

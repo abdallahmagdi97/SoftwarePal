@@ -14,8 +14,8 @@ namespace SoftwarePal.Models
         [NotMapped]
         public IFormFile? Image { get; set; }
         public string? ImageName { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        public DateTime? CreatedAt { get; set; } = DateTime.Now;
+        public DateTime? UpdatedAt { get; set; } = DateTime.Now;
         public string? UserCreated { get; set; } = string.Empty;
         public string? UserUpdated { get; set; } = string.Empty;
     }

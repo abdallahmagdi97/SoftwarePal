@@ -10,6 +10,6 @@ namespace SoftwarePal.Models
         public string? Email { get; set; } = string.Empty;
         public string? Message { get; set; } = string.Empty;
         public bool IsRead { get; set; } = false;
-        public DateTime Timestamp { get; set; }
+        public DateTime? Timestamp { get; set; }
     }
 }

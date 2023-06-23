@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SoftwarePal.Data;
 
@@ -11,9 +12,10 @@ using SoftwarePal.Data;
 namespace SoftwarePal.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230623164004_remove update date from subItems")]
+    partial class removeupdatedatefromsubItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -427,6 +429,7 @@ namespace SoftwarePal.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Key")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Status")
@@ -436,9 +439,6 @@ namespace SoftwarePal.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserCreated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserPurchased")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserUpdated")

@@ -30,9 +30,9 @@ namespace SoftwarePal.Services
             if (item.Name != null)
                 item.Slug = GenerateSlug(item.Name);
             await _itemRepository.Add(item);
-            ItemsHelper itemsHelper = new ItemsHelper(_includedSubItemRepository, _itemPriceRuleRepository, _itemRepository, _hostingEnvironment, _httpContextAccessor);
+            ItemsHelper itemsHelper = new(_includedSubItemRepository, _itemPriceRuleRepository, _itemRepository, _hostingEnvironment, _httpContextAccessor);
             if (item.ItemImages != null)
-                itemsHelper.SaveImages(item, item.Id);
+                await itemsHelper.SaveImages(item, item.Id);
             if (item.ItemPriceRules != null)
                 await itemsHelper.AddItemPriceRules(item, item.Id);
             if (item.SubItemsIds != null)
@@ -48,7 +48,7 @@ namespace SoftwarePal.Services
         {
             var items = await _itemRepository.GetAll();
             string origin = GetAppOrigin();
-            for(int i = 0; i < items.Count(); i++)
+            for(int i = 0; i < items.Count; i++)
             {
                 items[i].ItemImages = await GetItemImages(origin, items[i]);
                 items[i].ItemPriceRules = await _itemRepository.GetItemPriceRules(items[i].Id);
@@ -86,7 +86,7 @@ namespace SoftwarePal.Services
                 throw new InvalidOperationException($"Item with ID {item.Id} not found.");
             }
             await _itemRepository.Update(item);
-            ItemsHelper itemsHelper = new ItemsHelper(_includedSubItemRepository, _itemPriceRuleRepository, _itemRepository, _hostingEnvironment, _httpContextAccessor);
+            ItemsHelper itemsHelper = new(_includedSubItemRepository, _itemPriceRuleRepository, _itemRepository, _hostingEnvironment, _httpContextAccessor);
             await itemsHelper.UpdateItemPriceRules(item, item.Id);
             await itemsHelper.UpdateIncludedSubItems(item, item.Id);
             return item;
@@ -134,7 +134,7 @@ namespace SoftwarePal.Services
         {
             string normalizedString = input.ToLowerInvariant().Normalize(NormalizationForm.FormD).Trim();
 
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
 
             foreach (char c in normalizedString)
             {
@@ -169,7 +169,7 @@ namespace SoftwarePal.Services
         {
             var items = await _itemRepository.GetFeaturedItems();
             string origin = GetAppOrigin();
-            for (int i = 0; i < items.Count(); i++)
+            for (int i = 0; i < items.Count; i++)
             {
                 items[i].ItemImages = await GetItemImages(origin, items[i]);
                 items[i].ItemPriceRules = await _itemRepository.GetItemPriceRules(items[i].Id);
@@ -194,7 +194,7 @@ namespace SoftwarePal.Services
                 throw new ArgumentNullException($"Product with id : {productId} dosen't exist.");
             var items = await _itemRepository.GetRelatedProducts(productId);
             string origin = GetAppOrigin();
-            for (int i = 0; i < items.Count(); i++)
+            for (int i = 0; i < items.Count; i++)
             {
                 items[i].ItemImages = await GetItemImages(origin, items[i]);
                 items[i].ItemPriceRules = await _itemRepository.GetItemPriceRules(items[i].Id);
@@ -212,7 +212,7 @@ namespace SoftwarePal.Services
         {
             var items = await _itemRepository.Search(query);
             string origin = GetAppOrigin();
-            for (int i = 0; i < items.Count(); i++)
+            for (int i = 0; i < items.Count; i++)
             {
                 items[i].ItemImages = await GetItemImages(origin, items[i]);
                 items[i].ItemPriceRules = await _itemRepository.GetItemPriceRules(items[i].Id);

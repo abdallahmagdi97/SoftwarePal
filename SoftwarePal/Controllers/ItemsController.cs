@@ -79,7 +79,7 @@ namespace SoftwarePal.Controllers
             var items = await _itemService.Search(query);
             var itemsList = items.Skip((validFilter.PageNumber - 1) * validFilter.PageSize).Take(validFilter.PageSize).ToList();
 
-            return Ok(new PagedResponse<List<Item>>(itemsList, validFilter.PageNumber, validFilter.PageSize, items.Count()));
+            return Ok(new PagedResponse<List<Item>>(itemsList, validFilter.PageNumber, validFilter.PageSize, items.Count));
         }
         [AllowAnonymous]
         [HttpGet("GetFeaturedItems")]
@@ -117,13 +117,16 @@ namespace SoftwarePal.Controllers
             return Ok(item);
         }
 
-        private void AppendItemFiles(IFormFileCollection files, Item item)
+        private static void AppendItemFiles(IFormFileCollection files, Item item)
         {
-            if (files.Count == item.ItemImages.Count)
+            if (item.ItemImages != null)
             {
-                for (int i = 0; i < files.Count; i++)
+                if (files.Count == item.ItemImages.Count)
                 {
-                    item.ItemImages[i].Image = files[i];
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        item.ItemImages[i].Image = files[i];
+                    }
                 }
             }
         }

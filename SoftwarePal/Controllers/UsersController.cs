@@ -21,73 +21,123 @@ namespace SoftwarePal.Controllers
         [HttpPost("register")]
         public IActionResult Register(User user)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            if (_userService.EmailExists(user.Email))
+                if (_userService.EmailExists(user.Email))
+                {
+                    ModelState.AddModelError("Email", "Email address is already in use.");
+                    return BadRequest(ModelState);
+                }
+
+                _userService.AddUser(user);
+
+                return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
+            }
+            catch (Exception ex)
             {
-                ModelState.AddModelError("Email", "Email address is already in use.");
-                return BadRequest(ModelState);
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
-
-            _userService.AddUser(user);
-
-            return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
         }
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
-            var user = await _userService.GetUserByEmail(loginRequest.Email);
-
-            if (user == null)
+            try
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, new Response { Status = "Error", Message = "Invalid email address" } );
+                var user = await _userService.GetUserByEmail(loginRequest.Email);
+
+                if (user == null)
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, new Response { Status = "Error", Message = "Invalid email address" });
+                }
+                bool passwordVerified = await _userService.VerifyPassword(user, loginRequest.Password);
+                if (!passwordVerified)
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, new Response { Status = "Error", Message = "Invalid password" });
+                }
+
+                var token = _userService.GenerateToken(user);
+
+                return Ok(new { token });
             }
-            bool passwordVerified = await _userService.VerifyPassword(user, loginRequest.Password);
-            if (!passwordVerified)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, new Response { Status = "Error", Message = "Invalid password" } );
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                });
             }
-
-            var token = _userService.GenerateToken(user);
-
-            return Ok(new { token });
         }
         [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetById(string id)
         {
-            var user = _userService.GetUserById(id);
-            if (user == null)
+            try
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Not Found" });
-            }
+                var user = _userService.GetUserById(id);
+                if (user == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Not Found" });
+                }
 
-            return Ok(user);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+        }
+        [Authorize(Roles = nameof(UserRole.Admin))]
+        [HttpGet("GetByRoleId/{roleName}")]
+        public async Task<IActionResult> GetByRoleId(string roleName)
+        {
+            try
+            {
+                var users = await _userService.GetByRoleId(roleName);
+                if (users == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Not Found" });
+                }
+
+                return Ok(users);
+            }catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, User user)
         {
-            if (id != user.Id)
+            try
             {
-                return BadRequest();
-            }
+                if (id != user.Id)
+                {
+                    return BadRequest();
+                }
 
-            if (!ModelState.IsValid)
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var currentUser = await _userService.GetCurrentUser(HttpContext.User);
+                if (currentUser == null)
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
+                user.UserUpdated = currentUser?.Id;
+                await _userService.UpdateUser(user);
+
+                return Ok(user);
+            }
+            catch (Exception ex)
             {
-                return BadRequest(ModelState);
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
-            var currentUser = await _userService.GetCurrentUser(HttpContext.User);
-            if (currentUser == null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
-            user.UserUpdated = currentUser?.Id;
-            await _userService.UpdateUser(user);
-
-            return Ok(user);
         }
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpDelete("{id}")]

@@ -32,56 +32,90 @@ namespace SoftwarePal.Controllers
         [HttpGet("mylicenses")]
         public async Task<IActionResult> GetMyLicenses()
         {
-            // Get the current user from the authentication token
-            User user = await _userService.GetCurrentUser(HttpContext.User);
-
-            // Return the licenses to the client
-            return Ok();
+            try
+            {
+                // Get the current user from the authentication token
+                User user = await _userService.GetCurrentUser(HttpContext.User);
+                List<Models.License> licenses = await _licenseService.GetMyLicenses(user.Id);
+                // Return the licenses to the client
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
 
 
-        [Authorize(Roles = nameof(UserRole.Admin))]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetLicense(int id)
+        [Authorize]
+        [HttpGet("GetByItemId/{itemId}")]
+        public async Task<IActionResult> GetByItemId(int itemId)
         {
-            var license = await _licenseService.GetById(id);
-            return Ok(license);
+            try
+            {
+                var license = await _licenseService.GetByItemId(itemId);
+                return Ok(license);
+            } catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpGet]
         public async Task<IActionResult> GetLicenses()
         {
-            var licenses = await _licenseService.GetAll();
-            return Ok(licenses);
+            try
+            {
+                var licenses = await _licenseService.GetAll();
+                return Ok(licenses);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost]
         public async Task<IActionResult> AddLicense([FromBody] Models.License license)
         {
-            var user = await _userService.GetCurrentUser(HttpContext.User);
-            if (user == null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
-            license.UserCreated = user?.Id;
-            await _licenseService.Add(license);
-            return Ok(license);
+            try
+            {
+                var user = await _userService.GetCurrentUser(HttpContext.User);
+                if (user == null)
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
+                license.UserCreated = user?.Id;
+                await _licenseService.Add(license);
+                return Ok(license);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateLicense(int id, [FromBody] Models.License license)
         {
-            if (license.Id != id)
+            try
             {
-                return BadRequest();
+                if (license.Id != id)
+                {
+                    return BadRequest();
+                }
+                var user = await _userService.GetCurrentUser(HttpContext.User);
+                if (user == null)
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
+                license.UserUpdated = user?.Id;
+                await _licenseService.Update(license);
+                return Ok(license);
             }
-            var user = await _userService.GetCurrentUser(HttpContext.User);
-            if (user == null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not found" });
-            license.UserUpdated = user?.Id;
-            await _licenseService.Update(license);
-            return Ok(license);
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
 
         [Authorize(Roles = nameof(UserRole.Admin))]
