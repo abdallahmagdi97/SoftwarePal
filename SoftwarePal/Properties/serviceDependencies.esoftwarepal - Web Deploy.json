@@ -6,11 +6,6 @@
       "type": "mssql.azure",
       "connectionId": "ConnectionStrings:ConnStr",
       "dynamicId": null
-    },
-    "apis1": {
-      "apiEndpoint": "https://softwarepalapimng.azure-api.net/",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/SoftwarePalapimng/apis/SoftwarePal",
-      "type": "apis.azure"
     }
   }
 }
