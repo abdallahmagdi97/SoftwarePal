@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - esoftwarepal
+name: Build and deploy ASP.Net Core app to Azure Web App - spbackend
 
 on:
   push:
@@ -42,11 +42,6 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Delete old artifacts
-        run: |
-          echo "Deleting old artifacts..."
-          rm -rf ${{env.DOTNET_ROOT}}/myapp
-          
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
@@ -56,7 +51,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'esoftwarepal'
+          app-name: 'spbackend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1669C0152FAE4600A6F513F5328D84FF }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8D1FD0E083F34830AE645D4431AFA5DF }}
           package: .
