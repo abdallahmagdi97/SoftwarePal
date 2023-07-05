@@ -42,11 +42,6 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Delete old artifacts
-        run: |
-          echo "Deleting old artifacts..."
-          rm -rf ${{env.DOTNET_ROOT}}/myapp
-          
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
@@ -58,5 +53,5 @@ jobs:
         with:
           app-name: 'esoftwarepal'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1669C0152FAE4600A6F513F5328D84FF }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D679C8B77CB847C5A69105732F9287DB }}
           package: .
